@@ -1,6 +1,6 @@
 # AI Content Planner · 内容策划
 
-做任何内容之前，先把「讲什么、凭什么、缺什么」想清楚。一个给 AI 助手（Claude Code、Codex 等）用的 Agent Skill：把一句话、要求、链接、文件、图片、音视频整理成**立意、段落表、资料底稿和缺口表**，定向补齐事实、参数、步骤、案例，你确认方向后，交给下游去做成品。
+做任何内容之前，先把「讲什么、凭什么、缺什么」想清楚。一个给 AI 助手（Claude Code、Codex 等）用的 Agent Skill：把一句话、要求、链接、文件、图片、音视频分三步整理：**需求**（你拍板）→ **框架**（分几段、每段讲哪几点）→ **内容表**（每段的事实、参数、步骤、案例、素材写全，带来源和核实状态），每步请你确认，补齐后交给下游去做成品。
 
 ## 产出能用在哪
 
@@ -8,7 +8,7 @@
 |---|---|---|
 | 视频 | [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video)（风格、分镜、逐字稿、出片） | 写全 |
 | PPT、课件、报告、图文 | 对应的 Skill 或人 | 留了位置，用到时补全 |
-| 知识库、资料库 | 资料底稿 `research.md` 本身就是：每条信息带种类、来源和核实状态 | 留了位置 |
+| 知识库、资料库 | 内容表 `content.md` 本身就是：每条信息带种类、来源和核实状态 | 留了位置 |
 
 交接格式写在 [`handoff.md`](skills/ai-content-planner/handoff.md)，任何下游照它读就能接上。
 
@@ -75,7 +75,7 @@ AGENTS.md                    给在本仓库干活的 AI 助手看的约定
 
 ## English
 
-AI Content Planner is an Agent Skill for Claude Code, Codex and other assistants. Before you make anything, it turns a one-line idea, a brief, links, files, images or media into a purpose, a segment table, a sourced research sheet and a gap list, fills in the missing facts, and hands the plan off to a downstream skill once you confirm the direction. Version 1 fully covers video (handed to [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video)); slides, courses, reports, articles and knowledge bases have placeholders. Install with `claude plugin marketplace add chans-gh/AI-content-planner` then `claude plugin install ai-content-planner@ai-content-planner`, or run `scripts/install.sh`. The handoff format is documented in [`handoff.md`](skills/ai-content-planner/handoff.md). The skill is written in Chinese.
+AI Content Planner is an Agent Skill for Claude Code, Codex and other assistants. Before you make anything, it turns a one-line idea, a brief, links, files, images or media in three confirmed steps into requirements, a framework (the points each segment must make) and a sourced content sheet organised by segment, fills in the missing facts and evidence, and hands the plan off to a downstream skill. Version 1 fully covers video (handed to [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video)); slides, courses, reports, articles and knowledge bases have placeholders. Install with `claude plugin marketplace add chans-gh/AI-content-planner` then `claude plugin install ai-content-planner@ai-content-planner`, or run `scripts/install.sh`. The handoff format is documented in [`handoff.md`](skills/ai-content-planner/handoff.md). The skill is written in Chinese.
 
 ## 许可
 
