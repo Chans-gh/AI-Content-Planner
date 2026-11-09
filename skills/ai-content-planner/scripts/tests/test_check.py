@@ -1,9 +1,8 @@
-"""check.py 的离线测试。运行：python3 -m unittest discover -s skills/video-content-planner/scripts/tests
+"""check.py 的离线测试。运行：python3 -m unittest discover -s skills/ai-content-planner/scripts/tests
 
 fixtures/ok/ 是一份全通过的；其余每个夹具目录只放改过的文件，测试时叠在 ok/ 上。
 """
 import io
-import json
 import os
 import re
 import shutil
@@ -97,15 +96,20 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn('research.md: 文件不存在', out)
 
-    def test_duration(self):
-        p = check.parse_duration
-        self.assertEqual(p('45 秒'), (45, 45))
-        self.assertEqual(p('40–50 秒'), (40, 50))
-        self.assertEqual(p('1 分 30 秒'), (90, 90))
-        self.assertEqual(p('2 分钟'), (120, 120))
-        self.assertEqual(p('1 分钟 30 秒'), (90, 90))
-        self.assertEqual(p('约 45 秒'), (45, 45))
-        self.assertEqual(p('45 秒左右'), (45, 45))
+    def test_extent(self):
+        p = check.parse_extent
+        self.assertEqual(p('45 秒'), ('时间', 45, 45))
+        self.assertEqual(p('40–50 秒'), ('时间', 40, 50))
+        self.assertEqual(p('1 分 30 秒'), ('时间', 90, 90))
+        self.assertEqual(p('2 分钟'), ('时间', 120, 120))
+        self.assertEqual(p('1 分钟 30 秒'), ('时间', 90, 90))
+        self.assertEqual(p('约 45 秒'), ('时间', 45, 45))
+        self.assertEqual(p('45 秒左右'), ('时间', 45, 45))
+        self.assertEqual(p('3 页'), ('页', 3, 3))
+        self.assertEqual(p('2–4 页'), ('页', 2, 4))
+        self.assertEqual(p('1500 字'), ('字', 1500, 1500))
+        self.assertEqual(p('3 千字'), ('字', 3000, 3000))
+        self.assertEqual(p('不限'), ('不限', 0, 0))
         self.assertIsNone(p('四十秒'))
         self.assertIsNone(p('45'))
 
@@ -133,7 +137,7 @@ class CheckTest(unittest.TestCase):
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
         text = read(path).replace('照片，见 Q1', '照片，见 Q9').replace('收尾，承接 P1', '收尾，承接 P7')
-        text = text.replace('| 用途 | 测试夹具 | 建议 |', '| 用途 | 测试夹具 | 建议 |\n| 凭什么信 | 官方公告（U4-1） | 材料里的 |')
+        text = text.replace('| 凭什么信 | 夹具占位 | 建议 |', '| 凭什么信 | 官方公告（U4-1） | 材料里的 |')
         write(path, text)
         code, out = run(d, False)
         self.assertEqual(code, 1)
@@ -142,15 +146,15 @@ class CheckTest(unittest.TestCase):
         self.assertIn('plan.md:段落: 引用的段 P7 在段落表里没有', out)
 
     def test_whole_film_gap(self):
-        """归风格后、分镜后的缺口，「段」可以写「全片」；空着不行"""
+        """归下游的缺口，「段」可以写「全部」；空着不行"""
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        write(path, read(path).replace('| Q1 | P1 | 现场照片一张 |', '| Q1 | 全片 | 品牌标识 |'))
+        write(path, read(path).replace('| Q1 | P1 | 现场照片一张 |', '| Q1 | 全部 | 品牌标识 |'))
         self.assertEqual(run(d, True)[0], 0)
-        write(path, read(path).replace('| Q1 | 全片 | 品牌标识 |', '| Q1 | | 品牌标识 |'))
+        write(path, read(path).replace('| Q1 | 全部 | 品牌标识 |', '| Q1 | | 品牌标识 |'))
         code, out = run(d, True)
         self.assertEqual(code, 1)
-        self.assertIn('Q1 归分镜后，要写清缺什么、哪段', out)
+        self.assertIn('Q1 归下游，要写清缺什么、哪段', out)
 
     def test_direction_with_note(self):
         """「方向」后面带括注也算方向一行（回放里写「方向（回放模拟）：」被误报过）；只有「局部」不算"""
@@ -166,26 +170,94 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn('没有「方向」一行', out)
 
+    def test_format_line(self):
+        """缺格式行、格式版本不是 1 都报错"""
+        d = self.case('ok')
+        path = os.path.join(d, 'plan.md')
+        text = read(path)
+        write(path, text.replace('格式：ai-content-planner/1\n', ''))
+        code, out = run(d)
+        self.assertEqual(code, 1)
+        self.assertIn('找不到格式行', out)
+        write(path, text.replace('ai-content-planner/1', 'ai-content-planner/2'))
+        code, out = run(d)
+        self.assertEqual(code, 1)
+        self.assertIn('本脚本只认 ai-content-planner/1', out)
+
+    def test_idea_rows(self):
+        """立意要正好是十项"""
+        d = self.case('ok')
+        path = os.path.join(d, 'plan.md')
+        write(path, read(path).replace('| 输出形式 | 视频 | 用户给的 |\n', ''))
+        code, out = run(d)
+        self.assertEqual(code, 1)
+        self.assertIn('立意要正好是这十项', out)
+
+    def test_pages_and_words(self):
+        """篇幅用页、字：单位和目标一致就比合计；各段单位不一致只提示"""
+        d = self.case('ok')
+        path = os.path.join(d, 'plan.md')
+        text = read(path).replace('| 视频 | 用户给的 |', '| PPT | 用户给的 |').replace('20 秒；16:9', '6 页；16:9')
+        text = text.replace('| 8–10 秒 |', '| 3 页 |').replace('| 10 秒 |', '| 3 页 |')
+        write(path, text)
+        self.assertEqual(run(d, True), (0, '通过\n'))
+        write(path, text.replace('| 6 页；16:9', '| 20 页；16:9'))
+        code, out = run(d)
+        self.assertEqual(code, 0)
+        self.assertIn('各段合计 6 页，和目标篇幅 20 页 相差超过 15%', out)
+        write(path, text.replace('| 3 页 |', '| 800 字 |', 1))
+        code, out = run(d)
+        self.assertEqual(code, 0)
+        self.assertIn('各段篇幅单位不一致', out)
+
+    def test_empty_unit(self):
+        """核心内容只写单元号、而这个单元一条数据都没有：--handoff 报错"""
+        d = self.case('ok')
+        rpath = os.path.join(d, 'research.md')
+        write(rpath, read(rpath).rstrip('\n') + '\n\n## U5 空单元\n\n| # | 内容 | 种类 | 来源 | 必须写清的 | 状态 |\n|---|---|---|---|---|---|\n')
+        path = os.path.join(d, 'plan.md')
+        write(path, read(path).replace('下一步的时间（U1-3）', '下一步的时间（U1-3、U5）'))
+        self.assertEqual(run(d)[0], 0)
+        code, out = run(d, True)
+        self.assertEqual(code, 1)
+        self.assertIn('P2 的核心内容引用了单元 U5，它一条数据都没有', out)
+
     def test_enum(self):
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        text = read(path).replace('| 分镜后 | 阶段 1 |', '| 美术 | 阶段 1 |')
+        text = read(path).replace('| 下游 | 阶段 1 |', '| 美术 | 阶段 1 |')
         write(path, text)
         code, out = run(d)
         self.assertEqual(code, 1)
         self.assertIn('Q1 的归谁「美术」', out)
 
 
-class GenresTest(unittest.TestCase):
-    def test_genre_names(self):
-        """genres.md 的题材名（三级标题）都在 ai-coding-video 的 content_types 里；不在仓库里运行就跳过"""
-        tags = os.path.join(os.path.dirname(SKILL), 'ai-coding-video', 'data', 'tags.json')
-        if not os.path.exists(tags):
-            self.skipTest('找不到 ai-coding-video/data/tags.json')
-        names = {c['name'] for c in json.loads(read(tags))['content_types']}
-        heads = re.findall(r'^### (.+)$', read(os.path.join(SKILL, 'genres.md')), re.M)
-        self.assertTrue(heads)
-        self.assertEqual([h for h in heads if h.strip() not in names], [])
+class DocsTest(unittest.TestCase):
+    def sections(self, name):
+        """→ {三级标题或二级标题: 正文}"""
+        text = read(os.path.join(SKILL, name))
+        parts = re.split(r'^#{2,3} (.+)$', text, flags=re.M)
+        return dict(zip(parts[1::2], parts[2::2]))
+
+    def test_genres_three_items(self):
+        """genres.md 每个题材（三级标题）都写了段落组织、至少要有、不算数"""
+        secs = {k: v for k, v in self.sections('genres.md').items()
+                if k not in ('写全的三类', '其他题材', '非事实型内容（纯情绪、虚构）')}
+        self.assertGreaterEqual(len(secs), 9)
+        for k, v in secs.items():
+            for item in ('段落', '至少要有', '不算数'):
+                self.assertIn(item, v, f'genres.md「{k}」缺「{item}」')
+
+    def test_formats_match_template(self):
+        """formats.md 每种形式都有四项和「交给谁」；形式名和模板立意「输出形式」的选项一致"""
+        secs = self.sections('formats.md')
+        for k, v in secs.items():
+            for item in ('段是什么', '篇幅写法', '素材编排写什么', '交接前多查', '交给谁'):
+                self.assertIn(item, v, f'formats.md「{k}」缺「{item}」')
+        tpl = read(os.path.join(SKILL, 'templates', 'plan.md'))
+        m = re.search(r'^\| 输出形式 \| 〔([^；〕]+)', tpl, re.M)
+        self.assertTrue(m)
+        self.assertEqual([x.strip() for x in m.group(1).split('/')], list(secs))
 
 
 if __name__ == '__main__':

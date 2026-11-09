@@ -1,0 +1,17 @@
+# 每次推送和 PR 跑自检：清单、版本号、frontmatter、行数上限、check.py 测试、例子和回放
+name: test
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  selfcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 scripts/selfcheck.py

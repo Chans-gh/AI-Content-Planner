@@ -6,12 +6,12 @@
 
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
-| 案例场景和分镜 | `cases/course-first-video/README.md`、`case.json` | 全文 | 创作参考 | 能 | U1 |
-| 仓库 README「安装」 | `README.md` | 「安装」一节 | 文案依据、画面素材 | 能 | U4-1、U4-2 |
-| 介绍页模板 | `site/src/index.html` | 开头介绍、「三类路线」一节 | 文案依据、画面素材 | 能 | U2-1–U2-3、U4-3 |
-| ai-coding-video 的出片方法 | `skills/ai-coding-video/making.md` | 开头的步骤、「写法」「出片和自检」 | 文案依据、画面素材 | 能 | U3-1、U5-1–U5-4 |
-| 风格包 style-swap 说明 | `packs/style-swap/README.md` | 开头两段 | 文案依据 | 能 | U6-2 |
-| NASA Space Place：What Causes the Seasons? | https://spaceplace.nasa.gov/seasons/en/ | 全文 | 文案依据 | 能 | U7-1、U7-2 |
+| 案例场景和分镜 | `cases/course-first-video/README.md`、`case.json` | 全文 | 参考 | 能 | U1 |
+| 仓库 README「安装」 | `README.md` | 「安装」一节 | 内容依据、素材 | 能 | U4-1、U4-2 |
+| 介绍页模板 | `site/src/index.html` | 开头介绍、「三类路线」一节 | 内容依据、素材 | 能 | U2-1–U2-3、U4-3 |
+| ai-coding-video 的出片方法 | `skills/ai-coding-video/making.md` | 开头的步骤、「写法」「出片和自检」 | 内容依据、素材 | 能 | U3-1、U5-1–U5-4 |
+| 风格包 style-swap 说明 | `packs/style-swap/README.md` | 开头两段 | 内容依据 | 能 | U6-2 |
+| NASA Space Place：What Causes the Seasons? | https://spaceplace.nasa.gov/seasons/en/ | 全文 | 内容依据 | 能 | U7-1、U7-2 |
 
 ## 要哪些单元
 

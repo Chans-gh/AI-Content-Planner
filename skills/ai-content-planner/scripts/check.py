@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""检查 videos/<短名>/ 下的 plan.md、research.md 是否符合模板，交接前加 --handoff。
+"""检查 plans/<短名>/ 下的 plan.md、research.md 是否符合模板，交接前加 --handoff。
 
-用法：python3 -I <本 Skill 目录>/scripts/check.py <videos/短名 目录> [--handoff]
+用法：python3 -I <本 Skill 目录>/scripts/check.py <plans/短名 目录> [--handoff]
 
 只用标准库。按 Markdown 标题找节、按表头找表，不依赖行号。
 输出每个问题一行「文件:节: 问题」，最后一行「通过」或「N 个错、M 个提示」。
@@ -14,18 +14,20 @@ import sys
 
 PLAN_SECTIONS = ['确认记录', '立意', '段落', '取舍', '缺口']
 RESEARCH_SECTIONS = ['资料清单', '要哪些单元', '待核实和有冲突', '检索记录']
-SEG_HEAD = ['段', '作用', '观众收益', '核心内容', '素材编排', '预计时长']
+SEG_HEAD = ['段', '作用', '受众收益', '核心内容', '素材编排', '篇幅']
+IDEA_ROWS = ['用途', '给谁看', '看完得到什么', '一句话主线', '怎么讲', '凭什么信', '不讲什么', '输出形式', '篇幅与规格', '已有品牌与风格']
+FORMAT = 'ai-content-planner/1'
 GAP_HEAD = ['编号', '段', '缺什么', '归谁', '提出于', '状态', '怎么解决的']
 SRC_HEAD = ['资料', '位置', '读到哪', '用途', '能不能公开', '用到哪些编号']
 UNIT_LIST_HEAD = ['单元', '回答什么', '用在哪段', '状态']
 DATA_HEAD = ['#', '内容', '种类', '来源', '必须写清的', '状态']
 
-OWNERS = {'策划', '风格后', '分镜后'}
-RAISED = {'阶段 1', '阶段 2', '分镜', '制作'}
+OWNERS = {'策划', '下游'}
+RAISED = {'阶段 1', '阶段 2', '下游'}
 GAP_STATES = {'待补', '已补', '改内容关闭'}
 DATA_STATES = {'已核实', '〔待核实〕', '有冲突', '已过期', '设定'}
 UNIT_STATES = {'收集中', '够了'}
-USES = {'文案依据', '画面素材', '创作参考'}
+USES = {'内容依据', '素材', '参考'}
 HANDOFF_STATES = {'已交接', '回流中'}
 
 PLACEHOLDER = re.compile(r'〔[^〕]*〕')
@@ -34,8 +36,11 @@ REF_UNIT = re.compile(r'(?<![A-Za-z0-9_])U(\d+)(?![\d-])')
 REF_SEG = re.compile(r'(?<![A-Za-z0-9_])P(\d+)(?![\d])')
 REF_GAP = re.compile(r'(?<![A-Za-z0-9_])Q(\d+)(?![\d])')
 NUM = r'\d+(?:\.\d+)?'
-UNIT_SEC = {'秒': 1, 's': 1, '分钟': 60, '分': 60, 'min': 60}
-DUR_FIND = re.compile(rf'{NUM}\s*分钟?\s*{NUM}\s*秒|{NUM}\s*(?:[–\-~—至到]\s*{NUM}\s*)?(?:秒|分钟|分|min|s)(?![A-Za-z])')
+UNITS = {'秒': ('时间', 1), 's': ('时间', 1), '分钟': ('时间', 60), '分': ('时间', 60), 'min': ('时间', 60),
+         '页': ('页', 1), '千字': ('字', 1000), '万字': ('字', 10000), '字': ('字', 1)}
+UNIT_RE = '千字|万字|分钟|min|秒|分|页|字|s'
+EXT_FIND = re.compile(rf'{NUM}\s*分钟?\s*{NUM}\s*秒|{NUM}\s*(?:[–\-~—至到]\s*{NUM}\s*)?(?:{UNIT_RE})(?![A-Za-z])')
+SHOW = {'时间': '秒', '页': '页', '字': '字'}
 
 
 def is_placeholder(cell):
@@ -44,21 +49,24 @@ def is_placeholder(cell):
     return cell.strip() != '' and rest == ''
 
 
-def parse_duration(text):
-    """'45 秒'、'40–50 秒'、'1 分 30 秒'、'1 分钟 30 秒'、'2 分钟'、'约 45 秒'、'45 秒左右' → (下限, 上限) 秒；解析不了返回 None"""
+def parse_extent(text):
+    """篇幅 → (类, 下限, 上限)，类是 时间（折成秒）/ 页 / 字；「不限」→ ('不限', 0, 0)；解析不了返回 None。
+    认：'45 秒'、'40–50 秒'、'1 分 30 秒'、'1 分钟 30 秒'、'2 分钟'、'3 页'、'1500 字'、'3 千字'、'约 45 秒'、'45 秒左右'"""
     s = re.sub(r'\s+', '', text)
     s = re.sub(r'^(约|大约|~)', '', s)
     s = re.sub(r'(左右|上下)$', '', s)
+    if s == '不限':
+        return '不限', 0, 0
     m = re.fullmatch(rf'({NUM})分钟?({NUM})秒', s)
     if m:
         v = float(m.group(1)) * 60 + float(m.group(2))
-        return v, v
-    m = re.fullmatch(rf'({NUM})(?:[–\-~—至到]({NUM}))?(秒|分钟|分|min|s)', s)
+        return '时间', v, v
+    m = re.fullmatch(rf'({NUM})(?:[–\-~—至到]({NUM}))?({UNIT_RE})', s)
     if m:
-        k = UNIT_SEC[m.group(3)]
+        kind, k = UNITS[m.group(3)]
         lo = float(m.group(1)) * k
         hi = float(m.group(2)) * k if m.group(2) else lo
-        return (lo, hi) if lo <= hi else None
+        return (kind, lo, hi) if lo <= hi else None
     return None
 
 
@@ -208,8 +216,8 @@ def check(folder, handoff=False):
     pmap = {}
     for name, lines in psecs:
         pmap.setdefault(name, lines)
-    if not ptitle.startswith('视频策划'):
-        r.err('plan.md', '第一行标题要是「# 视频策划：片名」')
+    if not ptitle.startswith('内容策划'):
+        r.err('plan.md', '第一行标题要是「# 内容策划：题目」')
     for s in PLAN_SECTIONS:
         if s not in pmap:
             r.err(f'plan.md:{s}', '缺这一节')
@@ -218,6 +226,16 @@ def check(folder, handoff=False):
     status = m.group(1).strip().rstrip('。.') if m else ''
     if not m:
         r.err('plan.md', '找不到状态行（「状态：……（日期）」）')
+    m = re.search(r'^格式[：:]\s*(\S+)', texts['plan.md'], re.M)
+    if not m:
+        r.err('plan.md', f'找不到格式行（标题下第一行写「格式：{FORMAT}」）')
+    elif m.group(1) != FORMAT:
+        r.err('plan.md', f'格式是「{m.group(1)}」，本脚本只认 {FORMAT}')
+    t = find_table(pmap.get('立意', []), ['项', '内容'])
+    if '立意' in pmap and not t:
+        r.err('plan.md:立意', '找不到立意表（表头：项 | 内容 | 来源）')
+    elif t and [row['项'] for row in t[1]] != IDEA_ROWS:
+        r.err('plan.md:立意', '立意要正好是这十项：' + '、'.join(IDEA_ROWS) + '；现在是 ' + '、'.join(row['项'] for row in t[1]))
 
     segs, seg_rows = set(), []
     sec = '段落'
@@ -239,9 +257,9 @@ def check(folder, handoff=False):
                 if p in segs:
                     r.err(f'plan.md:{sec}', f'段号重复：{p}')
                 segs.add(p)
-                d = row.get('预计时长', '')
-                if '预计时长' in head and not is_placeholder(d) and parse_duration(d) is None:
-                    r.err(f'plan.md:{sec}', f'{p} 的预计时长「{d}」解析不出（写「N 秒」或「N–M 秒」）')
+                d = row.get('篇幅', '')
+                if '篇幅' in head and not is_placeholder(d) and parse_extent(d) is None:
+                    r.err(f'plan.md:{sec}', f'{p} 的篇幅「{d}」解析不出（写「N 秒」「N 页」「N 字」、区间，或「不限」）')
 
     gaps, gap_rows = set(), []
     sec = '缺口'
@@ -292,20 +310,26 @@ def check(folder, handoff=False):
                 seen.add((sec, ref))
                 r.err(f'plan.md:{sec}', msg.format(ref))
 
-    # 时长合计和目标比
+    # 篇幅合计和目标比：单位一致才比
     target = None
     t = find_table(pmap.get('立意', []), ['项', '内容'])
     if t:
         for row in t[1]:
-            if row['项'] == '时长与规格':
-                m = DUR_FIND.search(PLACEHOLDER.sub('', row['内容']))
-                target = parse_duration(m.group(0)) if m else None
-    durs = [parse_duration(row['预计时长']) for row in seg_rows]
-    if target and durs and all(durs):
-        lo, hi = sum(d[0] for d in durs), sum(d[1] for d in durs)
-        if hi < target[0] * 0.85 or lo > target[1] * 1.15:
-            fmt = lambda a, b: f'{a:g} 秒' if a == b else f'{a:g}–{b:g} 秒'
-            r.note('plan.md:段落', f'各段合计 {fmt(lo, hi)}，和目标时长 {fmt(*target)} 相差超过 15%')
+            if row['项'] == '篇幅与规格':
+                m = EXT_FIND.search(PLACEHOLDER.sub('', row['内容']))
+                target = parse_extent(m.group(0)) if m else None
+    exts = [parse_extent(row['篇幅']) for row in seg_rows]
+    if exts and all(exts):
+        kinds = {e[0] for e in exts} - {'不限'}
+        if len(kinds) > 1:
+            r.note('plan.md:段落', '各段篇幅单位不一致：' + ' / '.join(sorted(kinds)))
+        elif target and kinds == {target[0]}:
+            lo = sum(e[1] for e in exts if e[0] != '不限')
+            hi = sum(e[2] for e in exts if e[0] != '不限')
+            if hi < target[1] * 0.85 or lo > target[2] * 1.15:
+                u = SHOW[target[0]]
+                fmt = lambda a, b: f'{a:g} {u}' if a == b else f'{a:g}–{b:g} {u}'
+                r.note('plan.md:段落', f'各段合计 {fmt(lo, hi)}，和目标篇幅 {fmt(target[1], target[2])} 相差超过 15%')
 
     # 占位（〔待核实〕是状态，不算）
     count = lambda t: sum(1 for x in PLACEHOLDER.finditer(t) if x.group(0) != '〔待核实〕')
@@ -325,14 +349,17 @@ def check(folder, handoff=False):
     for row in gap_rows:
         if row['归谁'] == '策划' and row['状态'] == '待补':
             r.err('plan.md:缺口', f'{row["编号"]} 归策划、还待补，补完或改内容关闭后才能交接')
-        if row['归谁'] in ('风格后', '分镜后'):
-            if not row['缺什么'] or not (REF_SEG.search(row['段']) or row['段'] == '全片'):
-                r.err('plan.md:缺口', f'{row["编号"]} 归{row["归谁"]}，要写清缺什么、哪段（段号，或「全片」）')
+        if row['归谁'] == '下游':
+            if not row['缺什么'] or not (REF_SEG.search(row['段']) or row['段'] == '全部'):
+                r.err('plan.md:缺口', f'{row["编号"]} 归下游，要写清缺什么、哪段（段号，或「全部」）')
     for row in seg_rows:
         cell = row['核心内容']
         refs = set(x.group(0) for x in REF_DATA.finditer(cell))
-        for u in set(x.group(0) for x in REF_UNIT.finditer(cell)):
-            refs |= {d for d in data if d.startswith(u + '-')}
+        for u in sorted(set(x.group(0) for x in REF_UNIT.finditer(cell))):
+            rows = {d for d in data if d.startswith(u + '-')}
+            if u in units and not rows:
+                r.err('plan.md:段落', f'{row["段"]} 的核心内容引用了单元 {u}，它一条数据都没有')
+            refs |= rows
         for d in sorted(refs):
             st = data.get(d, {}).get('状态')
             if st in ('〔待核实〕', '有冲突'):
@@ -343,8 +370,8 @@ def check(folder, handoff=False):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(description='检查 videos/<短名>/ 下的 plan.md、research.md')
-    ap.add_argument('folder', help='videos/<短名> 目录')
+    ap = argparse.ArgumentParser(description='检查 plans/<短名>/ 下的 plan.md、research.md')
+    ap.add_argument('folder', help='plans/<短名> 目录')
     ap.add_argument('--handoff', action='store_true', help='按交接条件检查')
     a = ap.parse_args(argv)
     r = check(a.folder, a.handoff)

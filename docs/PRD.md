@@ -1,6 +1,6 @@
 # 内容策划 Skill（AI-content-planner）：产品需求
 
-[← 返回说明](../../README.md) · [SPEC：怎么实现](SPEC.md)
+[← 返回说明](../README.md) · [SPEC：怎么实现](SPEC.md)
 
 | 项 | 内容 |
 |---|---|

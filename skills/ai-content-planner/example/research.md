@@ -6,11 +6,11 @@
 
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
-| NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 文案依据 | 能 | U1-1、U1-2 |
-| NASA 博客：第 6 天飞掠实况（2026-04-06） | https://www.nasa.gov/blogs/missions/2026/04/06/artemis-ii-flight-day-6-lunar-flyby-updates/ | 全文 | 文案依据 | 能 | U1-2、U2-1–U2-4、U3-2（有冲突，不引用） |
-| NASA 新闻稿：打破最远纪录（2026-04-06） | https://www.nasa.gov/news-release/nasas-artemis-ii-crew-eclipses-record-for-farthest-human-spaceflight/ | 全文 | 文案依据 | 能 | U2-1、U2-3、U3-1 |
-| NASA 图片 S70-36485（阿波罗 13 号主乘组） | https://images.nasa.gov/details/S70-36485 | 网页没读成：页面靠脚本渲染；改读同一编号的元数据 https://images-api.nasa.gov/search?nasa_id=S70-36485 | 画面素材 | 能 | |
-| NIST SP 811 附录 B.9（换算系数） | https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9 | mile → kilometer 一行 | 文案依据 | 能 | U4-1 |
+| NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 内容依据 | 能 | U1-1、U1-2 |
+| NASA 博客：第 6 天飞掠实况（2026-04-06） | https://www.nasa.gov/blogs/missions/2026/04/06/artemis-ii-flight-day-6-lunar-flyby-updates/ | 全文 | 内容依据 | 能 | U1-2、U2-1–U2-4、U3-2（有冲突，不引用） |
+| NASA 新闻稿：打破最远纪录（2026-04-06） | https://www.nasa.gov/news-release/nasas-artemis-ii-crew-eclipses-record-for-farthest-human-spaceflight/ | 全文 | 内容依据 | 能 | U2-1、U2-3、U3-1 |
+| NASA 图片 S70-36485（阿波罗 13 号主乘组） | https://images.nasa.gov/details/S70-36485 | 网页没读成：页面靠脚本渲染；改读同一编号的元数据 https://images-api.nasa.gov/search?nasa_id=S70-36485 | 素材 | 能 | |
+| NIST SP 811 附录 B.9（换算系数） | https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9 | mile → kilometer 一行 | 内容依据 | 能 | U4-1 |
 
 ## 要哪些单元
 

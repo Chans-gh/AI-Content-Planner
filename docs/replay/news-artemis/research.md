@@ -7,20 +7,20 @@
 
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
-| 案例场景描述、分镜、旁白稿、制作记录 | `cases/news-artemis/README.md`、`case.json`、`script.json`、`log.md` | 全文 | 创作参考、文案依据 | 能 | U6-2、U8-1 |
-| NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 文案依据 | 能 | U1-1–U1-7 |
-| NASA 博客：发射日实况（2026-04-01） | https://www.nasa.gov/blogs/missions/2026/04/01/live-artemis-ii-launch-day-updates/ | 全文 | 文案依据 | 能 | U2-1、U2-3、U2-4 |
-| NASA 博客：第 6 天飞掠实况（2026-04-06） | https://www.nasa.gov/blogs/missions/2026/04/06/artemis-ii-flight-day-6-lunar-flyby-updates/ | 全文 | 文案依据 | 能 | U4-1–U4-4、U4-6、U5-2 |
-| NASA 新闻稿：打破最远纪录（2026-04-06） | https://www.nasa.gov/news-release/nasas-artemis-ii-crew-eclipses-record-for-farthest-human-spaceflight/ | 全文 | 文案依据 | 能 | U4-1、U4-3、U5-1 |
-| NASA 新闻稿：公布乘组（2023-04-03） | https://www.nasa.gov/news-release/nasa-names-astronauts-to-next-moon-mission-first-crew-under-artemis/ | 全文 | 文案依据 | 能 | U2-5、U5-5 |
-| NASA：加速重返月球的计划（讲的是 2026-10-23 NASA 领导层的通报，页面 2026-11-04 发布） | https://www.nasa.gov/missions/artemis/nasa-shares-plans-to-accelerate-artemis-return-to-moon/ | 全文 | 文案依据 | 能 | U7-1–U7-3 |
-| JPL Horizons：Orion（-1024）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='-1024'&OBJ_DATA=YES&MAKE_EPHEM=NO | 全文（对象说明和事件表） | 文案依据 | 能 | U2-2、U3-1、U3-2、U3-4、U4-5 |
-| JPL Horizons：月球（301）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='301'&OBJ_DATA=YES&MAKE_EPHEM=NO | 半径一行 | 文案依据 | 能 | U4-5 |
-| NASA SVS 5632（Artemis II 轨道动画页） | https://svs.gsfc.nasa.gov/5632 | 页面开头的任务说明 | 文案依据、画面素材 | 能 | U3-3 |
-| NASA 图片 S70-34902（阿波罗 13 号故障时的控制中心） | https://images.nasa.gov/details/S70-34902 | 网页没读成：页面靠脚本渲染，只拿到空壳；改读同一编号的元数据 https://images-api.nasa.gov/search?nasa_id=S70-34902 （标题、日期、说明） | 文案依据、画面素材 | 能 | U5-3 |
-| NASA 图片 S70-36485（阿波罗 13 号主乘组） | https://images.nasa.gov/details/S70-36485 | 网页没读成：同上；改读 images-api 元数据 | 文案依据、画面素材 | 能 | U5-4 |
-| NASA 录像：任务后发布会（2026-04-16，约 59 分钟） | https://images.nasa.gov/details/art002m1501061829_Artemis_II_Crew_Discusses_Historic_Moon_Mission_at_Post-Flight_News_Conference_250416 | 元数据全文；录像本身没读成：本次回放没重听，NASA 附带的 .srt 只有一行「[Ambient sounds]」 | 文案依据、画面素材 | 能 | U6-1、U6-2 |
-| NIST SP 811 附录 B.9（换算系数） | https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9 | mile → kilometer 一行 | 文案依据 | 能 | U9-1 |
+| 案例场景描述、分镜、旁白稿、制作记录 | `cases/news-artemis/README.md`、`case.json`、`script.json`、`log.md` | 全文 | 参考、内容依据 | 能 | U6-2、U8-1 |
+| NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 内容依据 | 能 | U1-1–U1-7 |
+| NASA 博客：发射日实况（2026-04-01） | https://www.nasa.gov/blogs/missions/2026/04/01/live-artemis-ii-launch-day-updates/ | 全文 | 内容依据 | 能 | U2-1、U2-3、U2-4 |
+| NASA 博客：第 6 天飞掠实况（2026-04-06） | https://www.nasa.gov/blogs/missions/2026/04/06/artemis-ii-flight-day-6-lunar-flyby-updates/ | 全文 | 内容依据 | 能 | U4-1–U4-4、U4-6、U5-2 |
+| NASA 新闻稿：打破最远纪录（2026-04-06） | https://www.nasa.gov/news-release/nasas-artemis-ii-crew-eclipses-record-for-farthest-human-spaceflight/ | 全文 | 内容依据 | 能 | U4-1、U4-3、U5-1 |
+| NASA 新闻稿：公布乘组（2023-04-03） | https://www.nasa.gov/news-release/nasa-names-astronauts-to-next-moon-mission-first-crew-under-artemis/ | 全文 | 内容依据 | 能 | U2-5、U5-5 |
+| NASA：加速重返月球的计划（讲的是 2026-10-23 NASA 领导层的通报，页面 2026-11-04 发布） | https://www.nasa.gov/missions/artemis/nasa-shares-plans-to-accelerate-artemis-return-to-moon/ | 全文 | 内容依据 | 能 | U7-1–U7-3 |
+| JPL Horizons：Orion（-1024）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='-1024'&OBJ_DATA=YES&MAKE_EPHEM=NO | 全文（对象说明和事件表） | 内容依据 | 能 | U2-2、U3-1、U3-2、U3-4、U4-5 |
+| JPL Horizons：月球（301）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='301'&OBJ_DATA=YES&MAKE_EPHEM=NO | 半径一行 | 内容依据 | 能 | U4-5 |
+| NASA SVS 5632（Artemis II 轨道动画页） | https://svs.gsfc.nasa.gov/5632 | 页面开头的任务说明 | 内容依据、素材 | 能 | U3-3 |
+| NASA 图片 S70-34902（阿波罗 13 号故障时的控制中心） | https://images.nasa.gov/details/S70-34902 | 网页没读成：页面靠脚本渲染，只拿到空壳；改读同一编号的元数据 https://images-api.nasa.gov/search?nasa_id=S70-34902 （标题、日期、说明） | 内容依据、素材 | 能 | U5-3 |
+| NASA 图片 S70-36485（阿波罗 13 号主乘组） | https://images.nasa.gov/details/S70-36485 | 网页没读成：同上；改读 images-api 元数据 | 内容依据、素材 | 能 | U5-4 |
+| NASA 录像：任务后发布会（2026-04-16，约 59 分钟） | https://images.nasa.gov/details/art002m1501061829_Artemis_II_Crew_Discusses_Historic_Moon_Mission_at_Post-Flight_News_Conference_250416 | 元数据全文；录像本身没读成：本次回放没重听，NASA 附带的 .srt 只有一行「[Ambient sounds]」 | 内容依据、素材 | 能 | U6-1、U6-2 |
+| NIST SP 811 附录 B.9（换算系数） | https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9 | mile → kilometer 一行 | 内容依据 | 能 | U9-1 |
 
 ## 要哪些单元
 

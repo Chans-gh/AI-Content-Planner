@@ -1,0 +1,12 @@
+{
+  "name": "ai-content-planner",
+  "interface": { "displayName": "AI Content Planner" },
+  "plugins": [
+    {
+      "name": "ai-content-planner",
+      "source": { "source": "local", "path": "./skills" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Productivity"
+    }
+  ]
+}

@@ -2,6 +2,9 @@
 
 [← SPEC](../SPEC.md) · [PRD 第 8 节](../PRD.md#8-验收)
 
+> 这是第 1 版（`video-content-planner`，在 [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video) 的分支上做）的回放记录。第 2 版只把各目录的 `plan.md`、`research.md` 转成了格式 `ai-content-planner/1`（加格式行、立意十项、新表头和取值），内容和结论不变，见文末「第 2 版转格式」。
+> 文中的 `cases/…`、`skills/ai-coding-video/…`、`README.md`、`site/` 都指 AI-Coding-Video 仓库；「风格后」「分镜后」在第 2 版合成了「下游」，`skills/video-content-planner/` 现在是本仓库的 `skills/ai-content-planner/`。
+
 2026-11-08 至 11-09 做。按 SPEC 第 10 节批 B：三支案例回放、四个边界任务、接手测试，按发现的问题修 Skill，用 `news-artemis` 的回放换掉 `example/`。
 
 ## 怎么回放的
@@ -88,3 +91,12 @@
 | `python3 -I skills/video-content-planner/scripts/check.py <目录> --handoff`，`example/` 和 `replay/` 下 7 个目录 | 8 个都是「通过」 |
 | `python3 skills/ai-coding-video/scripts/build_index.py --check` | 通过 |
 | `git diff --stat 3d0a110 -- site .github skills/ai-coding-video cases samples packs media.json` | 空 |
+
+## 第 2 版转格式
+
+2026-11-09 做。用一次性脚本把 7 个目录和 `example/` 转成 `ai-content-planner/1`：标题改「内容策划」、加格式行；立意的「时长与规格」拆成「输出形式：视频」和「篇幅与规格」；段落表「观众收益」「预计时长」改成「受众收益」「篇幅」；缺口表「风格后」「分镜后」→「下游」，「提出于」的「分镜」「制作」→「下游」，「全片」→「全部」；资料清单的用途改成「内容依据 / 素材 / 参考」。内容没动。
+
+| 命令（在本仓库根目录） | 结果 |
+|---|---|
+| `python3 -I skills/ai-content-planner/scripts/check.py <目录> --handoff`，`example/` 和本目录下 7 个目录 | 8 个都是「通过」 |
+| `python3 scripts/selfcheck.py` | 通过（含上面一项） |

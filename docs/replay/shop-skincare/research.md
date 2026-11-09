@@ -6,13 +6,13 @@
 
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
-| 案例场景、规矩、分镜 | `cases/shop-skincare/README.md`、`case.json` | 全文 | 创作参考、文案依据 | 能 | U1、U2 |
-| 国家药监局公告页：发布《化妆品功效宣称评价规范》（2021 年第 50 号） | nmpa.gov.cn 首页和公告页 | 没读成：nmpa.gov.cn 的网页返回 412（拒绝脚本访问）；改读下一行的附件 | 文案依据 | 能 | |
-| 《化妆品功效宣称评价规范》正文（药监局网站上的 .doc 附件） | https://www.nmpa.gov.cn/directory/web/nmpa/images/1628750777458012079.doc | 正文全文（抽文本时条号丢了，按条文内容引）；附 1–4 没读 | 文案依据 | 能 | U4-1–U4-4 |
-| 《化妆品标签管理办法》（国务院公报 2021 年第 23 号转载的药监局 2021 年第 77 号公告） | https://www.gov.cn/gongbao/content/2021/content_5631831.htm | 全文 | 文案依据、画面素材 | 能 | U4-5–U4-8 |
-| 《已使用化妆品原料目录》Ⅰ | 药监局网站「化妆品查询」 | 没读成：nmpa.gov.cn 查询页返回 412；搜到的 .docx 是目录Ⅱ（新原料），不含要查的三种 | 文案依据 | 能 | |
-| FDA Cosmetics Labeling Guide（2022-02-25 版） | https://www.fda.gov/cosmetics/cosmetics-labeling-regulations/cosmetics-labeling-guide | 「Declaration of ingredients」一节 | 创作参考 | 能 | |
-| 维基百科：积雪草、库拉索芦荟、茶树 | https://zh.wikipedia.org/zh-cn/积雪草 等三页 | 开头和分类框（学名） | 文案依据 | 只用摘要 | U3-1–U3-3 |
+| 案例场景、规矩、分镜 | `cases/shop-skincare/README.md`、`case.json` | 全文 | 参考、内容依据 | 能 | U1、U2 |
+| 国家药监局公告页：发布《化妆品功效宣称评价规范》（2021 年第 50 号） | nmpa.gov.cn 首页和公告页 | 没读成：nmpa.gov.cn 的网页返回 412（拒绝脚本访问）；改读下一行的附件 | 内容依据 | 能 | |
+| 《化妆品功效宣称评价规范》正文（药监局网站上的 .doc 附件） | https://www.nmpa.gov.cn/directory/web/nmpa/images/1628750777458012079.doc | 正文全文（抽文本时条号丢了，按条文内容引）；附 1–4 没读 | 内容依据 | 能 | U4-1–U4-4 |
+| 《化妆品标签管理办法》（国务院公报 2021 年第 23 号转载的药监局 2021 年第 77 号公告） | https://www.gov.cn/gongbao/content/2021/content_5631831.htm | 全文 | 内容依据、素材 | 能 | U4-5–U4-8 |
+| 《已使用化妆品原料目录》Ⅰ | 药监局网站「化妆品查询」 | 没读成：nmpa.gov.cn 查询页返回 412；搜到的 .docx 是目录Ⅱ（新原料），不含要查的三种 | 内容依据 | 能 | |
+| FDA Cosmetics Labeling Guide（2022-02-25 版） | https://www.fda.gov/cosmetics/cosmetics-labeling-regulations/cosmetics-labeling-guide | 「Declaration of ingredients」一节 | 参考 | 能 | |
+| 维基百科：积雪草、库拉索芦荟、茶树 | https://zh.wikipedia.org/zh-cn/积雪草 等三页 | 开头和分类框（学名） | 内容依据 | 只用摘要 | U3-1–U3-3 |
 
 ## 要哪些单元
 
