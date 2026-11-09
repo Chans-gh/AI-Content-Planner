@@ -26,7 +26,8 @@
 | [`templates/research.md`](templates/research.md) | 资料底稿模板 |
 | [`example/`](example/) | 填好的例子：Artemis II 的 60 秒短解说，事实全部来自 NASA 公开来源 |
 | [`scripts/check.py`](scripts/check.py) | 检查两份文件；`--handoff` 按交接条件查 |
-| [`scripts/tests/`](scripts/tests/) | `check.py` 的离线测试和夹具 |
+| [`scripts/fetch_article.py`](scripts/fetch_article.py) | 抓原文：网页落成 `plans/<短名>/source/<名字>/` 的正文、图表清单和原图，用法和产物写在文件开头 |
+| [`scripts/tests/`](scripts/tests/) | 两个脚本的离线测试：`check.py` 用夹具，`fetch_article.py` 在本机起假网站，不连外网 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 更新记录 |
 
 ## 检查脚本
@@ -36,7 +37,7 @@ python3 -I <本 Skill 目录>/scripts/check.py plans/<短名>            # 格�
 python3 -I <本 Skill 目录>/scripts/check.py plans/<短名> --handoff  # 再加交接条件
 ```
 
-只用 Python 标准库。按标题找节、按表头找表，不依赖行号。每个问题一行「文件:节: 问题」，最后一行「通过」或「N 个错、M 个提示」；有错退出码 1。
+两个脚本都只用 Python 标准库。按标题找节、按表头找表，不依赖行号。每个问题一行「文件:节: 问题」，最后一行「通过」或「N 个错、M 个提示」；有错退出码 1。
 
 ## 维护
 
@@ -45,4 +46,4 @@ python3 -I <本 Skill 目录>/scripts/check.py plans/<短名> --handoff  # 再�
 - 加输出形式：`formats.md` 加一节（四项加「交给谁」），模板立意「输出形式」的选项跟着加，测试会核对两边一致。
 - `types.md` 的大类和代号只增不改，加小类在它末尾的修改记录记一行。
 - 每次改动在 [CHANGELOG.md](CHANGELOG.md) 表头下加一行；改了行为的升 `SKILL.md` 的 `version`，两份 `plugin.json` 跟着改。
-- 本 Skill 不带素材和生成服务；读网页、读文档用宿主自带的工具。
+- 本 Skill 不带素材和生成服务；抓网页用 `scripts/fetch_article.py`（只用标准库，不要 Key），别的读取用宿主自带的工具。
