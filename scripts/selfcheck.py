@@ -105,7 +105,7 @@ def check_examples():
 
 def main():
     items = [('清单和版本号', check_manifests), ('SKILL.md frontmatter', check_frontmatter),
-             ('行数上限', check_lines), ('check.py 测试', check_tests), ('例子和回放 --handoff', check_examples)]
+             ('行数上限', check_lines), ('脚本测试', check_tests), ('例子和回放 --handoff', check_examples)]
     failed = 0
     for title, fn in items:
         bad = fn()
