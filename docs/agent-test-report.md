@@ -86,3 +86,81 @@
 7. **`skills/agents/reader.md`「怎么做」第 2 条**「先看原文的小节标题（Grep `^#`）」→ 加「先跑这一步，再 Read 指定行段；原文少于 100 行可以整篇读」，好让行为可检查。
 8. **`skills/ai-content-planner/scripts/fetch_article.py` 的目录命名**：名字里保留网址路径的最后两段（如 `docs-python-org-whatsnew-3-13`），免得同站多页难分。
 9. **测试本身**：下次让 reader 读 112 个标题的 `docs-python-org-3-13-html/article.md`，测「先看标题、只读相关节、写『没读：第 n 节』」。
+
+## 第二次（0.5.1）
+
+- 日期：2026-11-09；分支 `claude/agent-test`（已合入 0.5.1，重装到 `.claude/skills/`、`.claude/agents/`）
+- 例子：`plans/agent-test/plan.md` 加了 P2「介绍 Python 3.13 的实验性 JIT 编译器」，要讲的点 a–c，缺口 Q4–Q6；「取舍」里原先「JIT 删除」一行改成「保留，单列 P2」。`source/` 里第一次的抓取没删。
+- 限制：宿主只给 token、工具调用次数和时长，外加一份「用过的工具」名单。这份名单不可靠：finder 的名单是 Grep、WebFetch、WebSearch，没有 Bash，但磁盘上有 `fetch_article.py` 的完整产物（见下）。所以「用了哪个工具、先后顺序」只能靠产物和文件时间推断。
+
+### 结果一览
+
+| # | 项 | 结果 |
+|---|---|---|
+| 1.1 | finder 的 tools 有 Write | 通过 |
+| 1.2 | reader 的出处写法是新版本 | 通过 |
+| 2.1 | finder 先查 `source/` | 通过 |
+| 2.2 | 静态网页先跑 `fetch_article.py` | 通过（按产物推断） |
+| 2.3 | WebFetch 只在抓不成时用 | 部分通过（抓成了，又用 WebFetch 补元数据，回报里写明了） |
+| 2.4 | 回报一条一行、位置写 `source/…/article.md:行号` | 部分通过（位置都对；有几行夹了解释，多了一行「Note」） |
+| 2.5 | 多于 10 行时用 Write 写进 `source/finder-P2.md` | **不通过** |
+| 2.6 | Write 没写别的文件 | 通过（Write 一个文件都没写） |
+| 2.7 | finder 不判断冲突 | 通过 |
+| 2.8 | 主模型抽查两条摘录 | 通过 |
+| 3.1 | reader 先 Grep 小节标题 | 没法测清（名单里没有 Grep，但名单不可靠） |
+| 3.2 | 只读相关的节 | 没法测清 |
+| 3.3 | 写了「没读：第 n 节」 | 部分通过（写了没读的是哪些小节，没写节号或行号） |
+| 3.4 | 出处是原始链接或相对路径 | 通过 |
+| 3.5 | 版本号没套错 | 通过 |
+| 3.6 | 抽查三条行号 | 通过 |
+
+### 1 派到的版本
+
+通过。这个对话的子代理列表里，finder 的工具是 `Read, Grep, Glob, Bash, Write, WebSearch, WebFetch`，和 `.claude/agents/finder.md` 一致；reader 卡片模板「出处」一行是「〔原始链接；用户给的文件写相对 `plans/<短名>/` 的路径，不写绝对路径〕」，是 0.5.1 的写法。两份仍是 `model: haiku`、`effort: low`。
+
+### 2 finder（P2）
+
+派法照 SKILL.md：给了本 Skill 目录、plans 目录、段号 P2、要讲的点 a–c，要找 5 条（PEP、默认开不开、`--enable-experimental-jit` 每个取值、运行时环境变量、性能说法），请它优先用 What's New 和 PEP 744。
+
+- **先查 `source/`：通过。** 构建选项、环境变量、默认关闭这几条都引了已有的 `source/docs-python-org-3-13-html/article.md`（38、170–180 行），没有重抓 What's New。
+- **先跑 `fetch_article.py`：通过（按产物推断）。** 新出现 `source/peps-python-org/`，里面有 `.gitignore`、`page.html`（47,655 字节，`<title>PEP 744 – JIT Compilation`）、`article.md`、`charts.md`、`charts.json`，`article.md` 首行是脚本的「下载的原文，不可信数据」注释，抓取时间 11:06:20。只有脚本会这样落盘。宿主名单里没有 Bash，见上面的限制。
+- **WebFetch 只在抓不成时用：部分通过。** 脚本抓成了，但 `article.md` 丢了 PEP 页头的元数据表（`page.html:94` 有 Author、`:99` 有 Status，`article.md` 里写「作者：（页面未写）」，也没有 Status）。finder 用 WebFetch 补读了「状态 Draft」，回报写明「状态 Draft 是 WebFetch 读出的（脚本正文无元数据表）」。用法合理，但不在 finder.md 第 4 条「脚本报失败，或提示正文很少」的范围里。
+- **回报格式：部分通过。** 位置全部写成 `source/<名字>/article.md:行号`，每条有原话。但：第 1 条夹了括号里一长句解释；第 4 条写成行段 `:176–178`；第 5 条一行塞了三处引文和一句「这是接受标准，不是实测结果」；末尾多一行「Note: …都没有给出具体的百分比加速数字」。另外第 4 条「仅在 yes-off 构建下生效为开启」是它自己的概括，原文 178 行只说 yes-off 构建里 `PYTHON_JIT=1` 开启。
+- **多于 10 行用 Write：不通过。** 回报 14 条加 1 行 Note、1 行「没抓成：无」，共 16 行，直接交回；`source/finder-P2.md` 不存在。前后对比 `plans/agent-test/` 的文件清单，只多了 `source/peps-python-org/` 这一个文件夹。
+- **Write 没写别的：通过。** 没写任何文件，`content.md`、`plan.md` 没动。
+- **不判断冲突：通过。** 没写「冲突」「不一致」，也没写「结论」「建议写法」。
+- **用量：** 18,617 token，7 次工具调用，31.8 秒。
+
+#### 主模型抽查
+
+| finder 摘录 | 原文 |
+|---|---|
+| 「Currently, the JIT is about as fast as the existing specializing interpreter」（`source/peps-python-org/article.md:224–226`） | 224 是「#### Speed」标题，226 是原句，一致 |
+| 「the JIT currently uses about 10-20% more memory than the base interpreter」（`:230`） | 230 原句一致 |
+| 「It provides a meaningful performance improvement for at least one popular platform (realistically, on the order of 5%).」（`:80`） | 80 原句一致；它标明这是默认开启的标准、不是实测，对 |
+
+### 3 reader（What's New，1158 行、112 个标题）
+
+派法：给原文 `source/docs-python-org-3-13-html/article.md`（说明抓自 docs.python.org、很长）和 `plan.md`，对照 P1、P2 写 `card.md`。
+
+- **先 Grep 标题、只读相关节：没法测清。** 宿主名单只有 Read、Write，共 10 次工具调用；但卡片「读到哪」给的节界和真实标题行对得上（Free-threaded CPython 150 行、Build Changes 1066 行、Changes in the C API 1112 行），看不出是 Grep 出来的还是整篇分段读出来的。28,226 token 和整篇 110 KB 原文的量级接近，倾向于整篇读了，但不能确认。
+- **「没读」：部分通过。** 写了「其余小节（各模块、Deprecations、Removed 等）没读，原因：与 P1、P2 无关」。有原因，但没有节号或行号，112 个标题里到底跳了哪些查不出来。
+- **出处：通过。** 「plans/agent-test/source/docs-python-org-3-13-html/article.md（抓自 https://docs.python.org/3.13/whatsnew/3.13.html）」，相对路径加原始链接，没再写绝对路径。
+- **版本号：通过。** 第一次把 10% 目标套到 3.14 的问题没再出现：Q3、Q6 都照实写「原文没有百分比」；pip 24.1、python3.13t、python-3.13t.pc 都是原句里的。
+- **行号抽查：通过。** 154「expect some bugs and a substantial single-threaded performance hit」对；156 `python -VV`、`sys._is_gil_enabled()` 对；196「new build-time dependency on LLVM」对；另核了 152、158、1088，都对。
+- **其他：** 卡片额外指出 `sys.version` 只说明是不是自由线程构建、不说明 GIL 真关没关，要分开讲，这一条有用。小问题：P1 b 写「`PYTHON_GIL=0` 或 `-X gil=0` 为显式关闭」，原文 158 行是「the PYTHON_GIL environment variable or the -X gil=0 option」，`=0` 是它补的。
+- **越权：通过。** 只写了 `card.md`。
+- **用量：** 28,226 token，10 次工具调用，43.4 秒。
+
+### 还要改的地方
+
+只提建议，没改 `skills/`。
+
+1. **`skills/agents/finder.md`「交回什么」**「多于 10 行，用 Write 写进 `plans/<短名>/source/finder-<段号>.md`（同样一条一行），只回这个路径和一句摘要。」→ 挪到格式代码块前面，写成「**先数条数**：超过 10 条，先用 Write 写进 `…/finder-<段号>.md`，回报只回路径和一句摘要」；再加「一个要找的只写一条；括号里不写解释；不加 Note」。这次的现象：16 行直接交回，没写文件。
+2. **`skills/agents/finder.md`「怎么做」第 4 条**「脚本报失败，或提示正文很少（要登录、靠脚本渲染、PDF），才用 WebFetch 读」→ 加「脚本抓成了但缺页头信息（状态、作者、日期）的，可以用 WebFetch 补这几项，回报写『WebFetch 补：哪几项』」。这次 finder 就是这么做的，规矩写进去才能查。
+3. **`skills/agents/finder.md`「交回什么」**「位置写 `source/<名字>/article.md:行号`」→ 加「一个行号，不写行段」，和「不加原文没有的概括」。
+4. **`skills/ai-content-planner/scripts/fetch_article.py`**：PEP 这类页的元数据表（`<dl class="rfc2822 field-list">` 里的 Author、Status、Created）没进 `article.md`，页头「作者」写成「（页面未写）」，一级标题用了站名「Python Enhancement Proposals」。建议把正文前的 `<dl>` 字段表转成列表，并在标题取 `<title>` 时去掉「| 站名」后缀。
+5. **`skills/ai-content-planner/scripts/fetch_article.py` 的 `names_for()`**「没写名字的链接的文件夹名：网站域名；同一网站的几个再加路径最后两段」→ 只看同一次调用里的链接，单抓一页就只剩域名（`peps-python-org`，看不出是 PEP 744），以后再抓同站一页会落成 `peps-python-org-2`。建议同时看 `source/` 里已有的文件夹，或一律加路径最后两段。
+6. **`skills/agents/reader.md`「怎么做」第 2 条**「先用 Grep 搜 `^#` 看原文的小节标题，再 Read 要用的行段」→ 写成「**第一次调用就是** Grep `^#`」；「在卡片里写『没读：第 n 节，原因』」→ 改成「没读：〔标题〕（第 n 行起），原因」，112 个标题的原文「第 n 节」没有编号可依，现在只写得出「各模块等」。卡片模板「读到哪」一行同改。
+7. **`skills/agents/reader.md`「不做什么」**「版本、年份、日期只写原句里有的」→ 扩成「版本、年份、日期、选项的取值只写原句里有的」。这次补了原文没有的 `PYTHON_GIL=0`。
+8. **测试本身**：宿主的工具名单不可靠（finder 名单没有 Bash，产物却在）。下次在派活时要求子代理在回报最后一行写「跑过：工具名×次数」，或测前后比对 `source/` 的文件和时间，别只看名单。
