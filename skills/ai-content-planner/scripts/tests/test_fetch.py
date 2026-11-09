@@ -180,9 +180,26 @@ class FetchArticle(unittest.TestCase):
             self.assertIn("成功 3，失败 1", log.getvalue())
             self.assertRegex(log.getvalue(), r"失败 127-0-0-1-gone：.*/gone")
 
+    def test_page_title_prefers_main_h1_then_title_without_site(self):
+        def title(html):
+            root = fetch_article.parse(html)
+            return fetch_article.page_title(root, fetch_article.main_node(root))
+        head = "<html><head><title>PEP 744 – JIT Compilation | peps.python.org</title></head><body>"
+        self.assertEqual(title(head + "<header><h1>Python Enhancement Proposals</h1></header>"
+                               "<article><h1>PEP 744 – JIT Compilation</h1><p>Text</p></article></body></html>"),
+                         "PEP 744 – JIT Compilation")
+        self.assertEqual(title(head + "<header><h1>Python Enhancement Proposals</h1></header>"
+                               "<article><p>Text</p></article></body></html>"), "PEP 744 – JIT Compilation")
+        self.assertEqual(title("<html><body><h1>Only</h1><main><p>x</p></main></body></html>"), "Only")
+
     def test_names_for_links_from_one_site_and_name_needs_one_link(self):
         self.assertEqual(fetch_article.names_for(["https://www.a16z.com/top-100/", "https://a16z.com/news/x", "https://openai.com/"]),
-                         ["a16z-com-top-100", "a16z-com-x", "openai-com"])
+                         ["a16z-com-top-100", "a16z-com-news-x", "openai-com"])
+        self.assertEqual(fetch_article.names_for(["https://docs.python.org/3.13/howto/free-threading-python.html",
+                                                  "https://docs.python.org/3.13/whatsnew/3.13.html"]),
+                         ["docs-python-org-howto-free-threading-python", "docs-python-org-whatsnew-3-13"])
+        self.assertEqual(fetch_article.names_for(["https://peps.python.org/pep-0744/", "https://example.com/"]),
+                         ["peps-python-org-pep-0744", "example-com"])
         with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
             fetch_article.main([self.url, self.url, str(self.dir), "--name", "x"])
 

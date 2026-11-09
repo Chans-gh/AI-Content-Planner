@@ -3,12 +3,12 @@
   "owner": {
     "name": "Chans"
   },
-  "description": "AI Content Planner：做内容之前的策划：立意、段落、资料底稿、缺口表；产出可交给视频、PPT、报告、课件等下游。",
+  "description": "AI Content Planner：做内容之前的策划：需求、框架、按段写全的内容表、缺口表，三步各请用户确认；产出可交给视频、PPT、报告、课件等下游。",
   "plugins": [
     {
       "name": "ai-content-planner",
       "source": "./skills",
-      "description": "做内容之前的策划：立意、段落、资料底稿、缺口表；产出可交给视频、PPT、报告、课件等下游。"
+      "description": "做内容之前的策划：需求、框架、按段写全的内容表、缺口表，三步各请用户确认；产出可交给视频、PPT、报告、课件等下游。"
     }
   ]
 }
