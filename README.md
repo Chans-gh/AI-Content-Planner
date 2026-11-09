@@ -50,6 +50,8 @@ claude plugin marketplace add chans-gh/AI-Coding-Video
 claude plugin install ai-coding-video@ai-coding-video
 ```
 
+加过 AI-Coding-Video 市场的，也可以从那里装本 Skill：`claude plugin install ai-content-planner@ai-coding-video`（Codex：`codex plugin add ai-content-planner@ai-coding-video`）。
+
 先用本 Skill 把内容定下来（产出在你项目的 `plans/<短名>/`），状态变成「已交接」后，ai-coding-video 从这里接着选风格、写分镜、出片。下游发现缺内容，会在缺口表加一行，回到本 Skill 补。
 
 ## 装好以后怎么问
