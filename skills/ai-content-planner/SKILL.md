@@ -1,7 +1,7 @@
 ---
 name: ai-content-planner
 description: 做内容之前的策划：把一句话、要求、链接、文件、图片、音视频分三步整理成需求、框架（每段要讲的点）和按段写全的内容表，每步请用户确认，补齐事实、参数、步骤、案例和素材后交给下游。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
-version: 0.5.1
+version: 0.5.2
 display_name: 内容策划
 display_name_en: AI Content Planner
 description_en: "Content planning before anything is made, in three confirmed steps: turns a one-line idea, a brief, links, files, images, audio or video into requirements, a framework (the points each segment must make) and a content sheet filled in segment by segment, with the facts, specs, steps, examples and evidence each point needs, then hands off to a downstream skill. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much material to choose from, has too little, needs a through-line and segments, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
