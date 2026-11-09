@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""仓库自检：清单、版本号、frontmatter、行数上限、测试、例子和回放。CI 和提交前都跑这一个。
+"""仓库自检：清单、版本号、frontmatter、子代理、行数上限、测试、例子和回放。CI 和提交前都跑这一个。
 
 用法（在任意目录）：python3 scripts/selfcheck.py
 只用标准库。每项一行，最后一行「通过」或「N 项不通过」；不通过退出码 1。
@@ -17,6 +17,7 @@ NAME = 'ai-content-planner'
 SKILL = os.path.join(ROOT, 'skills', NAME)
 MANIFESTS = ['.claude-plugin/marketplace.json', '.agents/plugins/marketplace.json',
              'skills/.claude-plugin/plugin.json', 'skills/.codex-plugin/plugin.json']
+AGENTS = ['finder', 'reader']   # skills/agents/<name>.md，随插件装
 LIMITS = {'SKILL.md': 130, 'README.md': 60, 'handoff.md': 80, 'formats.md': 80, 'types.md': 130}
 
 sys.path.insert(0, os.path.join(SKILL, 'scripts'))
@@ -71,6 +72,30 @@ def check_frontmatter():
     return bad
 
 
+def check_agents():
+    """每个子代理文件有 frontmatter、name 和文件名一致、model 有值"""
+    bad = []
+    for name in AGENTS:
+        rel = f'skills/agents/{name}.md'
+        try:
+            text = read(rel)
+        except OSError:
+            bad.append(f'{rel} 不存在')
+            continue
+        m = re.match(r'---\n(.*?)\n---\n', text, re.S)
+        if not m:
+            bad.append(f'{rel} 没有 frontmatter')
+            continue
+        fm = dict((k.strip(), v.strip()) for k, _, v in (line.partition(':') for line in m.group(1).split('\n')))
+        if fm.get('name') != name:
+            bad.append(f'{rel} 的 name 要和文件名 {name} 一致，现在是 {fm.get("name")}')
+        if not fm.get('model'):
+            bad.append(f'{rel} 的 model 没有值')
+        if not fm.get('description'):
+            bad.append(f'{rel} 缺 description')
+    return bad
+
+
 def check_lines():
     bad = []
     for f, n in LIMITS.items():
@@ -104,7 +129,7 @@ def check_examples():
 
 
 def main():
-    items = [('清单和版本号', check_manifests), ('SKILL.md frontmatter', check_frontmatter),
+    items = [('清单和版本号', check_manifests), ('SKILL.md frontmatter', check_frontmatter), ('子代理', check_agents),
              ('行数上限', check_lines), ('脚本测试', check_tests), ('例子和回放 --handoff', check_examples)]
     failed = 0
     for title, fn in items:
