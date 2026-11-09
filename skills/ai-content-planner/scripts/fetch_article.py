@@ -317,22 +317,32 @@ def save_image(entry, n, folder):
     return None
 
 
+def page_title(root, node):
+    """标题：正文里的 <h1>；没有就用 <title>，去掉末尾「| 站名」这类后缀；再没有用页面第一个 <h1>。"""
+    h1 = node.find("h1")
+    if h1 and text_of(h1):
+        return text_of(h1)
+    tt = root.find("title")
+    if tt and text_of(tt):
+        return re.sub(r"\s+(\||·|—|-)\s+[^|·—]*$", "", text_of(tt)).strip() or text_of(tt)
+    h1 = root.find("h1")
+    return text_of(h1) if h1 else ""
+
+
 def slug(text):
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
 
 
 def names_for(urls):
-    """没写名字的链接的文件夹名：网站域名；同一网站的几个再加路径最后两段（去掉 .html 这类后缀）。"""
+    """没写名字的链接的文件夹名：网站域名加路径最后两段（去掉 .html 这类后缀）；重名的加 -2、-3。"""
     hosts = [slug((urllib.parse.urlsplit(u).hostname or "page").removeprefix("www.")) or "page" for u in urls]
     names = []
     for u, h in zip(urls, hosts):
-        name = h
-        if hosts.count(h) > 1:
-            tail = [p for p in urllib.parse.urlsplit(u).path.split("/") if p][-2:]
-            if tail:
-                tail[-1] = re.sub(r"\.(s?html?|php|aspx?)$", "", tail[-1], flags=re.I)
-            path = slug("-".join(tail))[:40].strip("-")
-            name = f"{h}-{path}" if path else h
+        tail = [p for p in urllib.parse.urlsplit(u).path.split("/") if p][-2:]
+        if tail:
+            tail[-1] = re.sub(r"\.(s?html?|php|aspx?)$", "", tail[-1], flags=re.I)
+        path = slug("-".join(tail))[:40].strip("-")
+        name = f"{h}-{path}" if path else h
         n, base = 2, name
         while name in names:
             name, n = f"{base}-{n}", n + 1
@@ -409,12 +419,11 @@ def fetch_one(url, plan, name, images=False):
         raise SystemExit(f"不是网页：{ctype}")
     (out / "page.html").write_bytes(raw)
     root = parse(decode(raw, charset))
-    h1, tt = root.find("h1"), root.find("title")
-    title = text_of(h1) if h1 else (text_of(tt) if tt else "")
     meta = {m.get("property") or m.get("name") or m.get("itemprop"): m.get("content") for m in root.find_all("meta") if m.get("content")}
     author = meta.get("author") or meta.get("article:author") or ""
     published = meta.get("article:published_time") or meta.get("datePublished") or ""
     node = main_node(root)
+    title = page_title(root, node)
     clean(node)
     lines, found = walk(node, final)
 
