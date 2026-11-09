@@ -182,7 +182,10 @@ class FetchArticle(unittest.TestCase):
 
     def test_names_for_links_from_one_site_and_name_needs_one_link(self):
         self.assertEqual(fetch_article.names_for(["https://www.a16z.com/top-100/", "https://a16z.com/news/x", "https://openai.com/"]),
-                         ["a16z-com-top-100", "a16z-com-x", "openai-com"])
+                         ["a16z-com-top-100", "a16z-com-news-x", "openai-com"])
+        self.assertEqual(fetch_article.names_for(["https://docs.python.org/3.13/howto/free-threading-python.html",
+                                                  "https://docs.python.org/3.13/whatsnew/3.13.html"]),
+                         ["docs-python-org-howto-free-threading-python", "docs-python-org-whatsnew-3-13"])
         with self.assertRaises(SystemExit), contextlib.redirect_stderr(io.StringIO()):
             fetch_article.main([self.url, self.url, str(self.dir), "--name", "x"])
 
