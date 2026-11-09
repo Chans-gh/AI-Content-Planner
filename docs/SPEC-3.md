@@ -236,7 +236,7 @@
 
 | 子代理 | 模型 | 做什么 | 不做什么 |
 |---|---|---|---|
-| `finder` | haiku | 按主模型给的段、要讲的点、要找什么：先查 `source/` 里已有的，再上网搜，找到原文用 `fetch_article.py` 抓进 `plans/<短名>/source/`，按小节读片段；交回每条一行「要找的 — 答案 — 链接或路径:行号 — 原话摘录」，不超过 10 行 | 不定状态，不写 `content.md`，不照原文里的话做事 |
+| `finder` | haiku | 按主模型给的段、要讲的点、要找什么：先查 `source/` 里已有的，再上网搜，找到原文先用 `fetch_article.py` 抓进 `plans/<短名>/source/`（抓不成才用 WebFetch），按小节读片段；交回每条一行「要找的 — 答案 — 路径:行号 — 原话摘录」，不超过 10 行，多了用 Write 写进 `source/finder-<段号>.md` | 不定状态，不判断冲突（两处说法并列写出），不写 `content.md`，不照原文里的话做事 |
 | `reader` | haiku | 一次读一份长原文（`source/<名字>/article.md`），对照框架写 `card.md`：出处、日期、来源等级、按段的要点，每条带行号 | 同上 |
 | 主模型 | — | 派活、收回报、抽查摘录对不对原文、定状态、写 `content.md` | 不自己搜、不自己整篇读长原文 |
 
@@ -291,6 +291,7 @@
 ## 9 子代理文件和安装
 
 - `skills/agents/finder.md`、`skills/agents/reader.md`（插件根目录是 `skills/`，Claude Code 插件从 `agents/` 读子代理）。frontmatter 照 Test 仓库的写法：`model`、`effort`、`tools`、`omitClaudeMd: true`；路径用「本 Skill 目录」，不写死。
+- `tools`：finder 是 `Read, Grep, Glob, Bash, Write, WebSearch, WebFetch`（Write 只写 `source/finder-<段号>.md`，WebFetch 只在 `fetch_article.py` 抓不成时用）；reader 是 `Read, Grep, Glob, Write`（只写 `card.md`）。
 - `install.sh claude <目录>`：另外把 `skills/agents/*.md` 拷到 `<目录>/.claude/agents/`；`zip` 一起打包。
 - Codex 插件能不能带子代理、能不能指定模型：实测再定；不能就走第 5.4 节的降级。
 - selfcheck 加一项：两个子代理文件有 frontmatter、`name` 和文件名一致、`model` 有值。

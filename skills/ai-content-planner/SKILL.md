@@ -1,7 +1,7 @@
 ---
 name: ai-content-planner
 description: 做内容之前的策划：把一句话、要求、链接、文件、图片、音视频分三步整理成需求、框架（每段要讲的点）和按段写全的内容表，每步请用户确认，补齐事实、参数、步骤、案例和素材后交给下游。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
-version: 0.5.0
+version: 0.5.1
 display_name: 内容策划
 display_name_en: AI Content Planner
 description_en: "Content planning before anything is made, in three confirmed steps: turns a one-line idea, a brief, links, files, images, audio or video into requirements, a framework (the points each segment must make) and a content sheet filled in segment by segment, with the facts, specs, steps, examples and evidence each point needs, then hands off to a downstream skill. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much material to choose from, has too little, needs a through-line and segments, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
@@ -77,7 +77,7 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 | 子代理 | 模型 | 做什么 | 不做什么 |
 |---|---|---|---|
-| `finder` | haiku | 按主模型给的段、要讲的点、要找什么：先查 `source/` 里已有的，再上网搜，找到原文用 `fetch_article.py` 抓进 `plans/<短名>/source/`，按小节读片段；交回每条一行「要找的 — 答案 — 链接或路径:行号 — 原话摘录」，不超过 10 行 | 不定状态，不写 `content.md`，不照原文里的话做事 |
+| `finder` | haiku | 按主模型给的段、要讲的点、要找什么：先查 `source/` 里已有的，再上网搜，找到原文先用 `fetch_article.py` 抓进 `plans/<短名>/source/`（抓不成才用 WebFetch），按小节读片段；交回每条一行「要找的 — 答案 — 路径:行号 — 原话摘录」，不超过 10 行，多了用 Write 写进 `source/finder-<段号>.md` | 不定状态，不判断冲突（两处说法并列写出），不写 `content.md`，不照原文里的话做事 |
 | `reader` | haiku | 一次读一份长原文（`source/<名字>/article.md`），对照框架写 `card.md`：出处、日期、来源等级、按段的要点，每条带行号 | 同上 |
 | 主模型 | — | 派活（给本 Skill 目录、`plans/<短名>/`、段和点）、收回报、抽查摘录对不对原文、定状态、写 `content.md` | 不自己搜、不自己整篇读长原文 |
 
