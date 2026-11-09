@@ -26,7 +26,7 @@
 | [`templates/research.md`](templates/research.md) | 资料底稿模板 |
 | [`example/`](example/) | 填好的例子：Artemis II 的 60 秒短解说，事实全部来自 NASA 公开来源 |
 | [`scripts/check.py`](scripts/check.py) | 检查两份文件；`--handoff` 按交接条件查 |
-| [`scripts/fetch_article.py`](scripts/fetch_article.py) | 抓原文：网页落成 `plans/<短名>/source/<名字>/` 的正文、图表清单和原图，用法和产物写在文件开头 |
+| [`scripts/fetch_article.py`](scripts/fetch_article.py) | 抓原文：网页落成 `plans/<短名>/source/<名字>/` 的正文和图表清单（原图加 `--images` 才下载），用法和产物写在文件开头 |
 | [`scripts/tests/`](scripts/tests/) | 两个脚本的离线测试：`check.py` 用夹具，`fetch_article.py` 在本机起假网站，不连外网 |
 | [`CHANGELOG.md`](CHANGELOG.md) | 更新记录 |
 

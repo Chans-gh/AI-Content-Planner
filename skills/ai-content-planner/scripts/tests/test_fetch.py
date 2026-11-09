@@ -90,6 +90,7 @@ class FetchArticle(unittest.TestCase):
         cls.dir = Path(cls.tmp.name)
         with contextlib.redirect_stdout(io.StringIO()):
             cls.out = fetch_article.main([cls.url, str(cls.dir), "--name", "report"])
+            cls.with_images = fetch_article.main([cls.url, str(cls.dir), "--name", "report-img", "--images"])
 
     @classmethod
     def tearDownClass(cls):
@@ -119,16 +120,34 @@ class FetchArticle(unittest.TestCase):
 
     def test_charts_largest_version_no_logo_icon_duplicate_or_broken(self):
         charts = json.loads((self.out / "charts.json").read_text(encoding="utf-8"))
+        self.assertFalse((self.out / "images").exists())                                # 默认不下载
+        self.assertEqual([c["file"] for c in charts], ["", ""])
         self.assertEqual([c["size"] for c in charts], [[1600, 1200], [800, 600]])     # WordPress 原图、懒加载的图
         self.assertEqual(charts[0]["title"], "Top 50 web products by monthly visits")
         self.assertEqual(charts[0]["title_from"], "figcaption")
         self.assertEqual(charts[1]["title"], "Mobile apps by MAU")                      # 去掉了 Chart titled
         self.assertEqual(charts[0]["section"], "Web rankings")
-        self.assertEqual(sorted(p.name.split("-", 1)[0] for p in (self.out / "images").iterdir()), ["01", "02"])
         table = (self.out / "charts.md").read_text(encoding="utf-8")
         self.assertIn("共 2 张", table)
-        self.assertIn("| 1 | `images/01-", table)
-        self.assertIn("| 1600×1200 |", table)
+        self.assertIn("没下载，要用原图加 --images 重抓", table)
+        self.assertIn("| 1 | — | 1600×1200 |", table)
+
+    def test_images_downloaded_only_with_flag_and_within_total(self):
+        charts = json.loads((self.with_images / "charts.json").read_text(encoding="utf-8"))
+        self.assertEqual([c["size"] for c in charts], [[1600, 1200], [800, 600]])
+        self.assertEqual(sorted(p.name.split("-", 1)[0] for p in (self.with_images / "images").iterdir()), ["01", "02"])
+        self.assertIn("| 1 | `images/01-", (self.with_images / "charts.md").read_text(encoding="utf-8"))
+        first = charts[0]["bytes"]
+        cap, fetch_article.MAX_IMAGES_TOTAL = fetch_article.MAX_IMAGES_TOTAL, first + 1     # 只装得下第一张
+        try:
+            with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
+                out = fetch_article.main([self.url, tmp, "--name", "capped", "--images"])
+                capped = json.loads((out / "charts.json").read_text(encoding="utf-8"))
+                self.assertEqual([bool(c["file"]) for c in capped], [True, False])
+                self.assertEqual(len(list((out / "images").iterdir())), 1)
+                self.assertIn("1 张超过", (out / "charts.md").read_text(encoding="utf-8"))
+        finally:
+            fetch_article.MAX_IMAGES_TOTAL = cap
 
     def test_charset_from_meta(self):
         with tempfile.TemporaryDirectory() as tmp, contextlib.redirect_stdout(io.StringIO()):
@@ -191,6 +210,7 @@ class ImageInfo(unittest.TestCase):
         vp8l = b"RIFF\x00\x00\x00\x00WEBPVP8L" + b"\x00" * 4 + b"\x2f" + bits.to_bytes(4, "little")
         self.assertEqual(fetch_article.image_info(vp8l), ("webp", (500, 300)))
         self.assertIsNone(fetch_article.image_info(b"<html>not found</html>"))
+        self.assertIsNone(fetch_article.image_info(jpeg[:30]))                         # 只读到开头，尺寸还没出现
 
 
 if __name__ == "__main__":
