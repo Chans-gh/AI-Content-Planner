@@ -1,0 +1,2 @@
+# 更新记录每次只在表头下加一行：并行的分支各加一行时，合并时两行都保留，不报冲突
+skills/ai-content-planner/CHANGELOG.md merge=union
