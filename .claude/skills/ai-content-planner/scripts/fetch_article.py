@@ -322,14 +322,17 @@ def slug(text):
 
 
 def names_for(urls):
-    """没写名字的链接的文件夹名：网站域名；同一网站的几个再加路径最后一段。"""
+    """没写名字的链接的文件夹名：网站域名；同一网站的几个再加路径最后两段（去掉 .html 这类后缀）。"""
     hosts = [slug((urllib.parse.urlsplit(u).hostname or "page").removeprefix("www.")) or "page" for u in urls]
     names = []
     for u, h in zip(urls, hosts):
         name = h
         if hosts.count(h) > 1:
-            tail = [p for p in urllib.parse.urlsplit(u).path.split("/") if p]
-            name = f"{h}-{slug(tail[-1])[:40]}".strip("-") if tail and slug(tail[-1]) else h
+            tail = [p for p in urllib.parse.urlsplit(u).path.split("/") if p][-2:]
+            if tail:
+                tail[-1] = re.sub(r"\.(s?html?|php|aspx?)$", "", tail[-1], flags=re.I)
+            path = slug("-".join(tail))[:40].strip("-")
+            name = f"{h}-{path}" if path else h
         n, base = 2, name
         while name in names:
             name, n = f"{base}-{n}", n + 1
