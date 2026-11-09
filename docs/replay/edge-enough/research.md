@@ -4,7 +4,7 @@
 
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
-| NASA 新闻稿：打破最远纪录（用户给的） | https://www.nasa.gov/news-release/nasas-artemis-ii-crew-eclipses-record-for-farthest-human-spaceflight/ | 全文 | 文案依据 | 能 | U1-1、U1-2 |
+| NASA 新闻稿：打破最远纪录（用户给的） | https://www.nasa.gov/news-release/nasas-artemis-ii-crew-eclipses-record-for-farthest-human-spaceflight/ | 全文 | 内容依据 | 能 | U1-1、U1-2 |
 
 ## 要哪些单元
 

@@ -1,15 +1,15 @@
 ---
-name: video-content-planner
-description: 做视频之前的内容策划：把一句话、要求、链接、文件、图片、音视频整理成立意、段落表、资料底稿和缺口表，定向补齐事实、参数、步骤、案例，确认方向后交接。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、下游发现内容缺口时使用。定风格、分镜、逐字稿、出片用 ai-coding-video。
-version: 0.1.0
-display_name: 视频内容策划
-display_name_en: Video Content Planner
-description_en: "Content planning before a video is made: turns a one-line idea, a brief, links, files, images, audio or video into a purpose, a segment table, a research sheet and a gap list, fills in the facts, specs, steps and examples that are missing, and hands off once the direction is confirmed. Use it when the user only has an idea, has too much material to choose from, has too little, needs a through-line and segments, or when a later stage finds a content gap. For style, storyboard, script and rendering use ai-coding-video."
+name: ai-content-planner
+description: 做内容之前的策划：把一句话、要求、链接、文件、图片、音视频整理成立意、段落表、资料底稿和缺口表，定向补齐事实、参数、步骤、案例，确认方向后交给下游。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
+version: 0.2.0
+display_name: 内容策划
+display_name_en: AI Content Planner
+description_en: "Content planning before anything is made: turns a one-line idea, a brief, links, files, images, audio or video into a purpose, a segment table, a research sheet and a gap list, fills in the facts, specs, steps and examples that are missing, and hands off to a downstream skill once the direction is confirmed. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much material to choose from, has too little, needs a through-line and segments, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
 ---
 
-# 视频内容策划
+# 内容策划
 
-管做视频的前两个阶段：把用户给的东西整理成讲什么、怎么分段、凭什么信，补齐缺的内容，终点是交接给 ai-coding-video。维护说明见 [README.md](README.md)。
+管做任何内容之前的两个阶段：把用户给的东西整理成讲什么、怎么分段、凭什么信，补齐缺的内容，终点是交接给下游（做视频、PPT、报告、课件等的 Skill）。维护说明见 [README.md](README.md)。
 
 ## 什么时候用
 
@@ -17,9 +17,9 @@ description_en: "Content planning before a video is made: turns a one-line idea,
 - 资料太多（链接、报告、录屏一大堆），要取舍；
 - 资料不够，要补事实、参数、步骤、案例；
 - 要定一句话主线、分几段、每段讲什么；
-- 下游（分镜、制作）发现内容缺口，在缺口表加了行。
+- 下游（做视频、PPT 等的 Skill）发现内容缺口，在缺口表加了行。
 
-不用：只选风格、改构图、处理编码、渲染已定的镜头，这些直接用 ai-coding-video。
+不用：只做形式（选风格、排版、改构图、渲染）的，直接用对应的下游 Skill。
 
 ## 两个阶段
 
@@ -28,7 +28,7 @@ description_en: "Content planning before a video is made: turns a one-line idea,
 | 1 内容整理 | 读输入、立意、摸底、段落骨架、取舍 | `plan.md` 草稿、`research.md` 摸底 | 用户确认方向 |
 | 2 补齐 | 按缺口表定向搜集、核对、回填、校准 | `plan.md`、`research.md` 定稿 | 归「策划」的缺口清零，交接 |
 
-每个阶段结束都要用户点头，点头的内容记进确认记录。交接后转 ai-coding-video 的 `storyboard.md`（风格、分镜、逐字稿）。
+每个阶段结束都要用户点头，点头的内容记进确认记录。交接后按 `handoff.md` 交给下游；交给谁看立意的「输出形式」和 `formats.md`。
 
 ## 按输入读到什么程度
 
@@ -49,16 +49,16 @@ description_en: "Content planning before a video is made: turns a one-line idea,
 
 ## 写什么
 
-在用户项目的 `videos/<短名>/` 下复制 `templates/plan.md`、`templates/research.md` 两份，照模板填，节和表头不改。
+在用户项目的 `plans/<短名>/` 下复制 `templates/plan.md`、`templates/research.md` 两份，照模板填，节和表头不改。先在立意里定输出形式，段怎么切、篇幅怎么写看 `formats.md`。
 
-- **段落表六列**：段、作用、观众收益、核心内容、素材编排、预计时长。编号只写在规定的格子里，脚本也只查这几格：U 编号写在核心内容、立意「凭什么信」、缺口「怎么解决的」；Q 编号写在素材编排；P 编号写在作用（承接哪段）和缺口的「段」（整片都要的写「全片」）。
-- **缺口表的「归谁」三种**：策划 = 讲清楚需要的事实、参数、步骤、解释（挡交接）；风格后 = 按风格找的图、品牌资产；分镜后 = 某个镜头的截图、录屏、生成片段。缺截图但连点哪个按钮都不知道的，拆两行：步骤归策划，截图归分镜后。
+- **段落表六列**：段、作用、受众收益、核心内容、素材编排、篇幅。编号只写在规定的格子里，脚本也只查这几格：U 编号写在核心内容、立意「凭什么信」、缺口「怎么解决的」；Q 编号写在素材编排；P 编号写在作用（承接哪段）和缺口的「段」（全部都要的写「全部」）。
+- **缺口表的「归谁」两种**：策划 = 讲清楚需要的事实、参数、步骤、解释（挡交接）；下游 = 做成品时才要的图、品牌资产、截图、录屏、生成素材，具体工序写在「缺什么」里。缺截图但连点哪个按钮都不知道的，拆两行：步骤归策划，截图归下游。
 - **资料底稿**：每条信息数据标种类（`types.md`），写清该种类必须写清的；各题材至少要有什么看 `genres.md`。
 - **实质变化**：以下五种要用户确认受影响的段，确认后在确认记录加一行「局部」；其余补充直接回填，在缺口表「怎么解决的」写一句：
   1. 核心结论或卖点被推翻、改弱；
   2. 段落增删或顺序变化；
   3. 删掉用户的必须内容；
-  4. 受众、用途、时长目标变化；
+  4. 受众、用途、输出形式、篇幅目标变化；
   5. 作为核心表达的数字变了。
 
 ## 交接
@@ -68,15 +68,15 @@ description_en: "Content planning before a video is made: turns a one-line idea,
 1. 确认记录里有「方向」一行；
 2. 缺口表没有归「策划」且「待补」的行；
 3. 核心内容引用的信息数据没有〔待核实〕和「有冲突」；
-4. 每段核心内容是具体内容，不是动作标题（按 `genres.md` 的「不算数」自查）；
-5. 归「风格后」「分镜后」的行写清了缺什么、哪段；
-6. `python3 -I <本 Skill 目录>/scripts/check.py videos/<短名> --handoff` 通过。
+4. 每段核心内容是具体内容，不是动作标题（按 `genres.md` 的「不算数」和 `formats.md` 该形式的「交接前多查」自查）；
+5. 归「下游」的行写清了缺什么、哪段（段号或「全部」）；
+6. `python3 -I <本 Skill 目录>/scripts/check.py plans/<短名> --handoff` 通过。
 
-给用户的交接说明写这几句：一句话主线和段数、总时长；第 4 条的自查依据；留给下游的缺口几条、各归谁；下一步转 ai-coding-video 的 `storyboard.md`。
+给用户的交接说明写这几句：一句话主线、段数和总篇幅；第 4 条的自查依据；留给下游的缺口几条；交给哪个下游（视频交给 ai-coding-video 的 `storyboard.md`）。
 
 ## 回流
 
-下游在缺口表加的行（`提出于` 是分镜或制作），状态改成「回流中」，按阶段 2 补齐：补上就回填、写「怎么解决的」，补不了就改内容关闭；属于实质变化的先问用户。处理完重新跑 `--handoff`，状态改回「已交接」。下游手里的版本和 `plan.md` 不同时，按当前段落判断，不恢复已删的内容。
+下游在缺口表加的行（`提出于` 是下游），状态改成「回流中」，按阶段 2 补齐：补上就回填、写「怎么解决的」，补不了就改内容关闭；属于实质变化的先问用户。处理完重新跑 `--handoff`，状态改回「已交接」。下游手里的版本和 `plan.md` 不同时，按当前段落判断，不恢复已删的内容。
 
 ## 规矩
 
@@ -94,7 +94,9 @@ description_en: "Content planning before a video is made: turns a one-line idea,
 | `templates/plan.md` | 策划稿模板：状态、确认记录、立意、段落、取舍、缺口 |
 | `templates/research.md` | 资料底稿模板：资料清单、单元、信息数据、待核实、检索记录 |
 | `types.md` | 信息的种类和每类必须写清的 |
-| `genres.md` | 各题材的段落组织、交接前至少要有的、不算数的写法 |
+| `genres.md` | 各内容题材的段落组织、交接前至少要有的、不算数的写法 |
+| `formats.md` | 各输出形式：段是什么、篇幅怎么写、交接前多查什么、交给谁 |
+| `handoff.md` | 交接说明：给下游 Skill 看的文件、编号、格式版本、能改哪里 |
 | `example/` | 填好的 `plan.md`、`research.md` |
 | `scripts/check.py` | 检查两份文件，交接前加 `--handoff` |
 | `CHANGELOG.md` | 更新记录 |

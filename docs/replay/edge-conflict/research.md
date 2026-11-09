@@ -4,8 +4,8 @@
 
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
-| NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 文案依据 | 能 | U1-1、U1-3 |
-| JPL Horizons：Orion（-1024）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='-1024'&OBJ_DATA=YES&MAKE_EPHEM=NO | 事件表 | 文案依据 | 能 | U1-2 |
+| NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 内容依据 | 能 | U1-1、U1-3 |
+| JPL Horizons：Orion（-1024）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='-1024'&OBJ_DATA=YES&MAKE_EPHEM=NO | 事件表 | 内容依据 | 能 | U1-2 |
 
 ## 要哪些单元
 

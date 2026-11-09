@@ -4,7 +4,7 @@
 
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
-| NASA：加速重返月球的计划（10-23 更新） | https://www.nasa.gov/missions/artemis/nasa-shares-plans-to-accelerate-artemis-return-to-moon/ | Artemis III、Artemis IV 两节 | 文案依据 | 能 | U1-1、U1-2 |
+| NASA：加速重返月球的计划（10-23 更新） | https://www.nasa.gov/missions/artemis/nasa-shares-plans-to-accelerate-artemis-return-to-moon/ | Artemis III、Artemis IV 两节 | 内容依据 | 能 | U1-1、U1-2 |
 
 ## 要哪些单元
 

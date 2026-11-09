@@ -213,7 +213,7 @@ description_en: "〔上面那段的英文〕"
 ## 8 迁移步骤（批 D）
 
 1. 维护者在 GitHub 建空仓库 `Chans-gh/AI-content-planner`（不勾初始化 README），加到会话里。
-2. 初始提交：照第 1 节建外壳，`skills/ai-content-planner/` 和 `docs/` 先原样拷入起点提交的内容（不改内容，只改目录名）。提交说明写「从 Chans-gh/AI-Coding-Video 分支 claude/dazzling-faraday-lwjvus 提交 6151c44 迁入」。推到新仓库的 `main`。
+2. 初始提交：`skills/ai-content-planner/` 和 `docs/` 原样拷入起点提交的内容（不改内容，只改目录名），加 `LICENSE`、`.gitignore`、`.gitattributes`；第 1 节其余的外壳在第 3 步的分支上建。提交说明写「从 Chans-gh/AI-Coding-Video 分支 claude/dazzling-faraday-lwjvus 提交 6151c44 迁入」。推到新仓库的 `main`。
 3. 之后在新仓库开分支做第 2–7 节的改动，PR 合并到 `main`。
 4. Skill 的 CHANGELOG 记一行 0.2.0：改名、解耦、格式 1、`handoff.md`、`formats.md`。旧的 0.1.0 三行保留，标「在 AI-Coding-Video 分支上做，没发布」。
 

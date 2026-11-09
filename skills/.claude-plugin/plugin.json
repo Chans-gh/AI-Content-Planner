@@ -1,0 +1,19 @@
+{
+  "name": "ai-content-planner",
+  "description": "做内容之前的策划：立意、段落、资料底稿、缺口表；产出可交给视频、PPT、报告、课件等下游。",
+  "version": "0.2.0",
+  "author": {
+    "name": "Chans"
+  },
+  "homepage": "https://github.com/chans-gh/AI-content-planner",
+  "repository": "https://github.com/chans-gh/AI-content-planner",
+  "license": "MIT",
+  "keywords": [
+    "planning",
+    "research",
+    "content",
+    "outline",
+    "fact-check"
+  ],
+  "skills": "./"
+}
