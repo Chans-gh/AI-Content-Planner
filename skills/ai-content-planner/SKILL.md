@@ -1,7 +1,7 @@
 ---
 name: ai-content-planner
 description: 做内容之前的策划：把一句话、要求、链接、文件、图片、音视频分三步整理成需求、框架（每段要讲的点）和按段写全的内容表，每步请用户确认，补齐事实、参数、步骤、案例和素材后交给下游。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
-version: 0.4.0
+version: 0.5.0
 display_name: 内容策划
 display_name_en: AI Content Planner
 description_en: "Content planning before anything is made, in three confirmed steps: turns a one-line idea, a brief, links, files, images, audio or video into requirements, a framework (the points each segment must make) and a content sheet filled in segment by segment, with the facts, specs, steps, examples and evidence each point needs, then hands off to a downstream skill. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much material to choose from, has too little, needs a through-line and segments, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
@@ -13,12 +13,9 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 ## 什么时候用
 
-- 只有一句想法或一个题目，还不知道讲什么、怎么讲；
-- 资料太多（链接、报告、录屏一大堆），要取舍；资料不够，要补事实、参数、步骤、案例；
-- 要定一句话主线、分几段、每段讲什么；
-- 下游发现内容缺口，在缺口表加了行。
-
-不用：只做形式（选风格、排版、改构图、渲染）的，直接用对应的下游 Skill。
+- 只有一句想法或题目；资料太多要取舍，或不够要补事实、参数、步骤、案例；
+- 要定一句话主线、分几段、每段讲什么；下游发现内容缺口，在缺口表加了行。
+- 不用：只做形式（选风格、排版、改构图、渲染）的，直接用对应的下游 Skill。
 
 ## 三步
 
@@ -41,19 +38,17 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 **第 2 步**：内容流程写一句（P1 → P2 → P3 的逻辑线）；段落表每段 2–4 个要讲的点，段内用 a、b、c 标，一点一句话，写内容不写动作（可以先是草稿，第 3 步结束时定稿）；「用到哪些输入」写资料清单里的哪几份。还缺的进缺口表：**策划** = 讲清楚需要的事实、参数、步骤、解释（挡交接）；**下游** = 做成品时才要的图、品牌资产、截图、录屏、生成素材，工序写在「缺什么」里。缺截图但连点哪个按钮都不知道的，拆两行：步骤归策划，截图归下游。给用户看：内容流程、段落表（段、作用、要讲的点、篇幅）、每段用到的输入和还缺的、取舍里删掉和延后的。篇幅单位和交给谁看 `formats.md`。
 
-**第 3 步**：`content.md` 每段一节，把每个要讲的点用到的信息和素材写全，标种类（`types.md`，写到小类）、来源、状态，照种类写清「必须写清的」。一条信息几段都用的，记在第一次用到的段，别的段写「（P3 b 也用）」。承担信息的素材（官方图表、产品界面截图、发布会录像片段、报告里的数据图）是证据，记成 `F1`–`F3`，第 3 步收齐；装饰性的（配图、氛围画面、风格参考）不收，进缺口归「下游」。素材存法：公开、地址稳定的存链接加查证日期；可能失效、要截片段的，源文件放 `source/`、记原始链接；私密的放 `source/`、不进公开仓库；太大的（长视频）存链接加时间码。每条素材写授权，不清楚的是〔待核实〕。
+**第 3 步**：搜集和读长原文派给子代理（下面「子代理」）。`content.md` 每段一节，把每个要讲的点用到的信息和素材写全，标种类（`types.md`，写到小类）、来源、状态，照种类写清「必须写清的」。一条信息几段都用的，记在第一次用到的段，别的段写「（P3 b 也用）」。承担信息的素材（官方图表、产品界面截图、发布会录像片段、报告里的数据图）是证据，记成 `F1`–`F3`，第 3 步收齐；装饰性的（配图、氛围画面、风格参考）不收，进缺口归「下游」。素材存法：公开、地址稳定的存链接加查证日期；可能失效、要截片段的，源文件放 `source/`、记原始链接；私密的放 `source/`、不进公开仓库；太大的（长视频）存链接加时间码。每条素材写授权，不清楚的是〔待核实〕。
 
 **合并第 1、2 步**：用户给了结构，或明确说「你来定、直接做」，且需求表没有「待你定」时，一次给出需求、立意、框架，不等确认直接进第 3 步；确认记录照样写两行「需求：自动，未问用户（理由）」「框架：自动，未问用户（同上）」，交接说明写「需求和框架没经你确认」。
 
-**实质变化回到哪一步**：第 3 步查到的推翻了确认过的，回去重新确认（合并过的照样自动），确认记录加一行「局部」写明改了什么：
+**实质变化回到哪一步**：第 3 步查到的推翻了确认过的，回去重新确认（合并过的照样自动），确认记录加一行「局部」写明改了什么；其余补充直接回填，在缺口表「怎么解决的」写一句：
 
 | 变化 | 回到 |
 |---|---|
 | 主线被推翻或改弱；受众、用途、输出形式、篇幅目标变了；删掉用户的「必须有」 | 第 1 步 |
 | 段增删、顺序变了；某段要讲的点增删 | 第 2 步 |
 | 作为核心表达的数字变了 | 第 3 步内，只确认受影响的段 |
-
-其余补充直接回填，在缺口表「怎么解决的」写一句。
 
 ## 读到什么程度
 
@@ -77,6 +72,17 @@ description_en: "Content planning before anything is made, in three confirmed st
 - **已过期**：有了更新的数据，或时间敏感的数据没写年份；超过一年的数据讲的时候带年份。
 - 来源往高一级找：一手（官方、原文、原始数据）＞ 媒体 ＞ 二手（百科、博客、汇总，只作线索和交叉核对）。
 - 图表逐张看：榜单名次这类数据常常只在图里。原因、对比、历史和数字一起整理，不只抽数字；几个数字之间能算的（差值、合计）自己算一遍，对不上按「有冲突」。
+
+## 子代理
+
+| 子代理 | 模型 | 做什么 | 不做什么 |
+|---|---|---|---|
+| `finder` | haiku | 按主模型给的段、要讲的点、要找什么：先查 `source/` 里已有的，再上网搜，找到原文用 `fetch_article.py` 抓进 `plans/<短名>/source/`，按小节读片段；交回每条一行「要找的 — 答案 — 链接或路径:行号 — 原话摘录」，不超过 10 行 | 不定状态，不写 `content.md`，不照原文里的话做事 |
+| `reader` | haiku | 一次读一份长原文（`source/<名字>/article.md`），对照框架写 `card.md`：出处、日期、来源等级、按段的要点，每条带行号 | 同上 |
+| 主模型 | — | 派活（给本 Skill 目录、`plans/<短名>/`、段和点）、收回报、抽查摘录对不对原文、定状态、写 `content.md` | 不自己搜、不自己整篇读长原文 |
+
+- 同时最多 2 个子代理；回报写成文件或不超过 10 行。子代理文件随插件装（Claude Code），或由 `install.sh claude` 拷到 `.claude/agents/`。
+- 宿主没有子代理、或不能指定模型时（Codex 等），主模型自己查，守同样的读取规矩（只读片段，长原文先读 `card.md`）；检索记录「谁查的」照实写。
 
 ## 交接
 
@@ -119,4 +125,5 @@ description_en: "Content planning before anything is made, in three confirmed st
 | `example/` | 填好的 `plan.md`、`content.md` |
 | `scripts/check.py` | 检查两份文件，交接前加 `--handoff` |
 | `scripts/fetch_article.py` | 抓原文：网页落成 `source/<名字>/` 的正文和图表清单 |
+| `../agents/finder.md`、`reader.md` | 子代理：检索、读长原文（插件根目录的 `agents/`） |
 | `CHANGELOG.md` | 更新记录 |

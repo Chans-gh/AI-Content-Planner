@@ -7,6 +7,7 @@
 | 路径 | 是什么 | 怎么对待 |
 |---|---|---|
 | `skills/ai-content-planner/` | Skill 本体，唯一正本 | 改完跑 `python3 scripts/selfcheck.py`；维护规矩见它的 [README](skills/ai-content-planner/README.md)「维护」一节 |
+| `skills/agents/` | 随包的子代理 `finder`、`reader`（Claude Code 插件从这里读） | `name` 和文件名一致、`model` 有值，自检会查 |
 | `skills/.claude-plugin/`、`skills/.codex-plugin/` | 两家的插件清单 | `version` 和 SKILL.md 的 `version` 一起改，自检会查 |
 | `.claude-plugin/`、`.agents/plugins/` | 两家的插件市场清单 | 只改描述 |
 | `scripts/` | `install.sh` 拷贝安装和打包；`selfcheck.py` 自检 | 路径一律相对脚本自己的位置 |

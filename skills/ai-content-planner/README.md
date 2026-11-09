@@ -27,6 +27,7 @@
 | [`scripts/check.py`](scripts/check.py) | 检查两份文件；`--handoff` 按交接条件查 |
 | [`scripts/fetch_article.py`](scripts/fetch_article.py) | 抓原文：网页落成 `plans/<短名>/source/<名字>/` 的正文和图表清单（原图加 `--images` 才下载），用法和产物写在文件开头 |
 | [`scripts/tests/`](scripts/tests/) | 两个脚本的离线测试：`check.py` 用夹具，`fetch_article.py` 在本机起假网站，不连外网 |
+| [`../agents/`](../agents/) | 随包的子代理 `finder`（检索、抓原文）、`reader`（读长原文写要点卡），都用 haiku；Claude Code 插件自动带上，`install.sh claude` 拷到 `.claude/agents/` |
 | [`CHANGELOG.md`](CHANGELOG.md) | 更新记录 |
 
 ## 检查脚本

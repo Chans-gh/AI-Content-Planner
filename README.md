@@ -31,7 +31,7 @@ codex plugin add ai-content-planner@ai-content-planner
 **其他助手**（拷贝 Skill 文件夹）：先 `git clone` 本仓库，再运行：
 
 ```bash
-scripts/install.sh claude   # → ~/.claude/skills/
+scripts/install.sh claude   # → ~/.claude/skills/，子代理 finder、reader → ~/.claude/agents/
 scripts/install.sh codex    # → ~/.agents/skills/（Codex 不走插件时用；DeepSeek Harness 也读这里）
 scripts/install.sh dsh      # → ~/.dsh/skills/（DeepSeek Harness）
 scripts/install.sh all      # 以上三处都装
@@ -64,6 +64,7 @@ claude plugin install ai-coding-video@ai-coding-video
 
 ```
 skills/ai-content-planner/   Skill 本体（唯一正本，随插件和 install.sh 安装）
+skills/agents/               随包的子代理 finder、reader（Claude Code）
 skills/.claude-plugin/       Claude Code 插件清单（插件市场清单在 .claude-plugin/）
 skills/.codex-plugin/        Codex 插件清单（插件市场清单在 .agents/plugins/）
 scripts/install.sh           拷贝安装、打 zip

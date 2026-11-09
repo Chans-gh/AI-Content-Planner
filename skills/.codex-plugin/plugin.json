@@ -1,6 +1,6 @@
 {
   "name": "ai-content-planner",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "做内容之前的策划：需求、框架、按段写全的内容表、缺口表，三步各请用户确认；产出可交给视频、PPT、报告、课件等下游。",
   "author": { "name": "Chans" },
   "homepage": "https://github.com/chans-gh/AI-content-planner",
