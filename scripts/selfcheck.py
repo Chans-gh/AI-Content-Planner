@@ -17,7 +17,7 @@ NAME = 'ai-content-planner'
 SKILL = os.path.join(ROOT, 'skills', NAME)
 MANIFESTS = ['.claude-plugin/marketplace.json', '.agents/plugins/marketplace.json',
              'skills/.claude-plugin/plugin.json', 'skills/.codex-plugin/plugin.json']
-LIMITS = {'SKILL.md': 110, 'README.md': 60, 'handoff.md': 80, 'formats.md': 80, 'genres.md': 120, 'types.md': 130}
+LIMITS = {'SKILL.md': 130, 'README.md': 60, 'handoff.md': 80, 'formats.md': 80, 'types.md': 130}
 
 sys.path.insert(0, os.path.join(SKILL, 'scripts'))
 import check  # noqa: E402

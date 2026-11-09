@@ -1,7 +1,7 @@
 {
   "name": "ai-content-planner",
-  "version": "0.3.0",
-  "description": "做内容之前的策划：立意、段落、资料底稿、缺口表；产出可交给视频、PPT、报告、课件等下游。",
+  "version": "0.4.0",
+  "description": "做内容之前的策划：需求、框架、按段写全的内容表、缺口表，三步各请用户确认；产出可交给视频、PPT、报告、课件等下游。",
   "author": { "name": "Chans" },
   "homepage": "https://github.com/chans-gh/AI-content-planner",
   "repository": "https://github.com/chans-gh/AI-content-planner",
@@ -10,8 +10,8 @@
   "skills": "./.",
   "interface": {
     "displayName": "AI Content Planner",
-    "shortDescription": "做内容之前的策划：立意、段落、资料底稿、缺口表",
-    "longDescription": "把一句话、要求、链接、文件、图片、音视频整理成立意、段落表、资料底稿和缺口表，定向补齐事实、参数、步骤、案例，确认方向后按统一的交接格式交给下游：做视频交给 ai-coding-video，做 PPT、课件、报告、图文、知识库交给对应的 Skill。资料底稿每条带种类、来源和核实状态，自带检查脚本。",
+    "shortDescription": "做内容之前的策划：需求、框架、内容表、缺口表",
+    "longDescription": "把一句话、要求、链接、文件、图片、音视频分三步整理成需求、框架（每段要讲的点）和按段写全的内容表，每步请用户确认，补齐事实、参数、步骤、案例和素材后按统一的交接格式交给下游：做视频交给 ai-coding-video，做 PPT、课件、报告、图文、知识库交给对应的 Skill。内容表每条带种类、来源和核实状态，自带检查脚本。",
     "developerName": "Chans",
     "category": "Productivity"
   }

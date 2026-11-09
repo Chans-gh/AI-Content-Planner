@@ -65,17 +65,122 @@ class CheckTest(unittest.TestCase):
         self.assertNotIn('引用的段', out)   # 表头错了不连带报引用
 
     def test_missing_ref(self):
-        self.assertFails('missing_ref', r'引用的 U1-9 在 research.md 里没有', handoff=False)
+        self.assertFails('missing_ref', r'plan.md:缺口: 引用的 P2-9 在 content.md 里没有', handoff=False)
 
     def test_open_gap(self):
         self.assertEqual(run(self.case('open_gap'))[0], 0)   # 普通检查只看格式
         self.assertFails('open_gap', r'Q2 归策划、还待补')
 
-    def test_unverified(self):
-        self.assertFails('unverified', r'P2 的核心内容用了 U1-2，它还是「〔待核实〕」')
-
     def test_closed_no_reason(self):
         self.assertFails('closed_no_reason', r'Q3 是「改内容关闭」', handoff=False)
+
+    def test_unverified(self):
+        """「不用」的〔待核实〕不挡交接；改成讲 a 就挡"""
+        self.assertEqual(run(self.case('unverified'))[0], 0)
+        self.assertFails('unverified', r'P1 的「a」用了 P1-2，它还是「〔待核实〕」')
+
+    def test_old_format(self):
+        """格式 1 报错，提示按 CHANGELOG 转，不再往下查"""
+        code, out = run(self.case('old_format'))
+        self.assertEqual(code, 1)
+        self.assertIn('本脚本只认 ai-content-planner/2；这是旧格式，按本 Skill 的 CHANGELOG.md 转成格式 2', out)
+        self.assertEqual(out.count('\n'), 2, out)
+
+    def test_research_md_hint(self):
+        """只有格式 1 的 research.md：提示改名"""
+        shutil.copy(os.path.join(FIX, 'ok', 'plan.md'), self.tmp)
+        shutil.copy(os.path.join(FIX, 'ok', 'content.md'), os.path.join(self.tmp, 'research.md'))
+        code, out = run(self.tmp)
+        self.assertEqual(code, 1)
+        self.assertIn('research.md 改名 content.md', out)
+
+    def test_need_rows(self):
+        self.assertFails('need_rows', r'需求要正好是这8项：用途和场景、给谁看', handoff=False)
+
+    def test_idea_rows(self):
+        d = self.case('ok')
+        path = os.path.join(d, 'plan.md')
+        write(path, read(path).replace('| 怎么讲 | 夹具占位 | 建议 |\n', '| 怎么讲 | 夹具占位 | 建议 |\n| 凭什么信 | 夹具占位 | 建议 |\n'))
+        code, out = run(d)
+        self.assertEqual(code, 1)
+        self.assertIn('立意要正好是这3项', out)
+
+    def test_need_tbd(self):
+        """需求有「待你定」：普通检查过，--handoff 不过"""
+        self.assertEqual(run(self.case('need_tbd'))[0], 0)
+        self.assertFails('need_tbd', r'「给谁看」还是「待你定」')
+
+    def test_no_flow(self):
+        self.assertFails('no_flow', r'缺「内容流程：」一行', handoff=False)
+
+    def test_bad_points(self):
+        self.assertFails('bad_points', r'P1 的要讲的点要按「a. 一点一句<br>b. ……」写', handoff=False)
+        d = self.case('ok')
+        path = os.path.join(d, 'plan.md')
+        write(path, read(path).replace('<br>b. 是谁做的', '<br>c. 是谁做的'))
+        code, out = run(d)
+        self.assertEqual(code, 1)
+        self.assertIn('P1 的要讲的点要从 a 起按顺序编：现在是 a、c', out)
+
+    def test_uncovered(self):
+        """要讲的点没有一条信息对应：--handoff 报错"""
+        self.assertEqual(run(self.case('uncovered'))[0], 0)
+        self.assertFails('uncovered', r'P2 的「a」在 content.md 里没有对应的信息')
+
+    def test_shared_counts(self):
+        """「（P2 b 也用）」算作 P2 的 b；去掉以后 P2 b 没有信息"""
+        d = self.case('ok')
+        path = os.path.join(d, 'content.md')
+        write(path, read(path).replace('（P2 b 也用）', ''))
+        code, out = run(d, True)
+        self.assertEqual(code, 1)
+        self.assertIn('P2 的「b」在 content.md 里没有对应的信息', out)
+        write(path, read(path).replace('| P1-3 | b |', '| P1-3 | b（P2 也用） |'))
+        self.assertEqual(run(d, True)[0], 1)   # 没写字母的「也用」不算作哪一点
+        self.assertEqual(run(d)[0], 0)
+
+    def test_wrong_letter(self):
+        self.assertFails('wrong_letter', r'P1-1 讲的「c」不在 P1 的要讲的点里', handoff=False)
+
+    def test_bad_section(self):
+        self.assertFails('bad_section', r'content.md:P7 收尾: 段 P7 在 plan.md 的框架里没有', handoff=False)
+
+    def test_wrong_prefix(self):
+        self.assertFails('wrong_prefix', r'编号格式不对：P1-4（这一节写 P2-1、P2-2）', handoff=False)
+
+    def test_shared_missing(self):
+        self.assertFails('shared_missing', r'P1-3 写了「P7 也用」，P7 在框架里没有', handoff=False)
+
+    def test_no_frame_confirm(self):
+        self.assertEqual(run(self.case('no_frame_confirm'))[0], 0)
+        code, out = run(self.case('no_frame_confirm'), True)
+        self.assertEqual(code, 1)
+        self.assertIn('没有「框架」一行', out)
+        self.assertNotIn('没有「需求」一行', out)
+
+    def test_auto_confirm(self):
+        """合并第 1、2 步：确认记录写「自动，未问用户」也算"""
+        self.assertEqual(run(self.case('auto_confirm'), True), (0, '通过\n'))
+
+    def test_confirm_with_note(self):
+        """「需求」后面带括注也算（回放写「需求（回放模拟）：」）；认不出的行报错"""
+        d = self.case('ok')
+        path = os.path.join(d, 'plan.md')
+        text = read(path)
+        write(path, text.replace('2026-11-09 需求：', '2026-11-09 需求（演示用）：'))
+        self.assertEqual(run(d, True), (0, '通过\n'))
+        write(path, text.replace('2026-11-09 需求：', '2026-11-09 方向：'))
+        code, out = run(d, True)
+        self.assertEqual(code, 1)
+        self.assertIn('这一行认不出是哪种确认', out)
+        self.assertIn('没有「需求」一行', out)
+
+    def test_bad_enum(self):
+        code, out = run(self.case('bad_enum'))
+        self.assertEqual(code, 1)
+        self.assertIn('Q1 的归谁「美术」', out)
+        self.assertIn('Q1 的提出于「阶段 1」要取 下游 / 第 1 步 / 第 2 步 / 第 3 步', out)
+        self.assertIn('状态「阶段 2 补齐中」要取', out)
 
     def test_example_handoff(self):
         code, out = run(os.path.join(SKILL, 'example'), True)
@@ -83,7 +188,7 @@ class CheckTest(unittest.TestCase):
 
     def test_template_only_notes(self):
         """刚复制的模板：普通检查没有错，只有占位提示；--handoff 不通过"""
-        for f in ('plan.md', 'research.md'):
+        for f in ('plan.md', 'content.md'):
             shutil.copy(os.path.join(SKILL, 'templates', f), self.tmp)
         code, out = run(self.tmp)
         self.assertEqual(code, 0, out)
@@ -94,7 +199,7 @@ class CheckTest(unittest.TestCase):
         shutil.copy(os.path.join(FIX, 'ok', 'plan.md'), self.tmp)
         code, out = run(self.tmp)
         self.assertEqual(code, 1)
-        self.assertIn('research.md: 文件不存在', out)
+        self.assertIn('content.md: 文件不存在', out)
 
     def test_extent(self):
         p = check.parse_extent
@@ -116,36 +221,34 @@ class CheckTest(unittest.TestCase):
     def test_duration_total_note(self):
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        text = read(path).replace('20 秒；16:9', '60 秒；16:9')
-        write(path, text)
+        write(path, read(path).replace('20 秒；16:9', '60 秒；16:9'))
         code, out = run(d)
         self.assertEqual(code, 0)
         self.assertIn('相差超过 15%', out)
 
     def test_model_names_not_refs(self):
-        """规定格子以外的「华为 P40」「2026 年 Q1」「仰望 U9」是正文，不当引用"""
+        """规定格子以外的「华为 P40」「2026 年 Q1」「P9-9」是正文，不当引用"""
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        text = read(path).replace('| 背景故事 | 延后 | 时长不够 |', '| 华为 P40、仰望 U9 的对比 | 删除 | 2026 年 Q1 的旧闻 |')
+        text = read(path).replace('| 背景故事 | 延后 | 时长不够 |', '| 华为 P40、仰望 U9 的对比 | 删除 | 2026 年 Q1 的旧闻，P9-9 |')
+        text = text.replace('a. 某日发生某事', 'a. 某日发生某事，对比华为 P40')
         write(path, text)
         for handoff in (False, True):
             code, out = run(d, handoff)
             self.assertEqual((code, out.strip()), (0, '通过'))
 
     def test_scoped_refs_still_checked(self):
-        """规定的格子里写了不存在的编号照样报：素材编排的 Q、作用的 P、凭什么信的 U"""
+        """规定的格子里写了不存在的编号照样报：作用的 P、缺口「段」的 P"""
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        text = read(path).replace('照片，见 Q1', '照片，见 Q9').replace('收尾，承接 P1', '收尾，承接 P7')
-        text = text.replace('| 凭什么信 | 夹具占位 | 建议 |', '| 凭什么信 | 官方公告（U4-1） | 材料里的 |')
+        text = read(path).replace('收尾，承接 P1', '收尾，承接 P7').replace('| Q1 | P1 |', '| Q1 | P8 |')
         write(path, text)
-        code, out = run(d, False)
+        code, out = run(d)
         self.assertEqual(code, 1)
-        self.assertIn('plan.md:立意: 引用的 U4-1 在 research.md 里没有', out)
-        self.assertIn('plan.md:段落: 引用的缺口 Q9 在缺口表里没有', out)
-        self.assertIn('plan.md:段落: 引用的段 P7 在段落表里没有', out)
+        self.assertIn('plan.md:框架: 引用的段 P7 在框架里没有', out)
+        self.assertIn('plan.md:缺口: 引用的段 P8 在框架里没有', out)
 
-    def test_whole_film_gap(self):
+    def test_whole_gap(self):
         """归下游的缺口，「段」可以写「全部」；空着不行"""
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
@@ -156,42 +259,13 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn('Q1 归下游，要写清缺什么、哪段', out)
 
-    def test_direction_with_note(self):
-        """「方向」后面带括注也算方向一行（回放里写「方向（回放模拟）：」被误报过）；只有「局部」不算"""
-        d = self.case('ok')
-        path = os.path.join(d, 'plan.md')
-        text = read(path)
-        lines = [l for l in text.split('\n') if re.match(r'\s*-\s.*方向[：:]', l)]
-        self.assertTrue(lines)
-        write(path, text.replace(lines[0], lines[0].replace('方向：', '方向（演示用）：', 1)))
-        self.assertEqual(run(d, True), (0, '通过\n'))
-        write(path, text.replace(lines[0], '- 2026-11-08 局部：只改了 P1'))
-        code, out = run(d, True)
-        self.assertEqual(code, 1)
-        self.assertIn('没有「方向」一行', out)
-
     def test_format_line(self):
-        """缺格式行、格式版本不是 1 都报错"""
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        text = read(path)
-        write(path, text.replace('格式：ai-content-planner/1\n', ''))
+        write(path, read(path).replace('格式：ai-content-planner/2\n', ''))
         code, out = run(d)
         self.assertEqual(code, 1)
         self.assertIn('找不到格式行', out)
-        write(path, text.replace('ai-content-planner/1', 'ai-content-planner/2'))
-        code, out = run(d)
-        self.assertEqual(code, 1)
-        self.assertIn('本脚本只认 ai-content-planner/1', out)
-
-    def test_idea_rows(self):
-        """立意要正好是十项"""
-        d = self.case('ok')
-        path = os.path.join(d, 'plan.md')
-        write(path, read(path).replace('| 输出形式 | 视频 | 用户给的 |\n', ''))
-        code, out = run(d)
-        self.assertEqual(code, 1)
-        self.assertIn('立意要正好是这十项', out)
 
     def test_pages_and_words(self):
         """篇幅用页、字：单位和目标一致就比合计；各段单位不一致只提示"""
@@ -210,54 +284,19 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn('各段篇幅单位不一致', out)
 
-    def test_empty_unit(self):
-        """核心内容只写单元号、而这个单元一条数据都没有：--handoff 报错"""
-        d = self.case('ok')
-        rpath = os.path.join(d, 'research.md')
-        write(rpath, read(rpath).rstrip('\n') + '\n\n## U5 空单元\n\n| # | 内容 | 种类 | 来源 | 必须写清的 | 状态 |\n|---|---|---|---|---|---|\n')
-        path = os.path.join(d, 'plan.md')
-        write(path, read(path).replace('下一步的时间（U1-3）', '下一步的时间（U1-3、U5）'))
-        self.assertEqual(run(d)[0], 0)
-        code, out = run(d, True)
-        self.assertEqual(code, 1)
-        self.assertIn('P2 的核心内容引用了单元 U5，它一条数据都没有', out)
-
-    def test_enum(self):
-        d = self.case('ok')
-        path = os.path.join(d, 'plan.md')
-        text = read(path).replace('| 下游 | 阶段 1 |', '| 美术 | 阶段 1 |')
-        write(path, text)
-        code, out = run(d)
-        self.assertEqual(code, 1)
-        self.assertIn('Q1 的归谁「美术」', out)
-
 
 class DocsTest(unittest.TestCase):
-    def sections(self, name):
-        """→ {三级标题或二级标题: 正文}"""
-        text = read(os.path.join(SKILL, name))
-        parts = re.split(r'^#{2,3} (.+)$', text, flags=re.M)
-        return dict(zip(parts[1::2], parts[2::2]))
-
-    def test_genres_three_items(self):
-        """genres.md 每个题材（三级标题）都写了段落组织、至少要有、不算数"""
-        secs = {k: v for k, v in self.sections('genres.md').items()
-                if k not in ('写全的三类', '其他题材', '非事实型内容（纯情绪、虚构）')}
-        self.assertGreaterEqual(len(secs), 9)
-        for k, v in secs.items():
-            for item in ('段落', '至少要有', '不算数'):
-                self.assertIn(item, v, f'genres.md「{k}」缺「{item}」')
-
     def test_formats_match_template(self):
-        """formats.md 每种形式都有四项和「交给谁」；形式名和模板立意「输出形式」的选项一致"""
-        secs = self.sections('formats.md')
-        for k, v in secs.items():
-            for item in ('段是什么', '篇幅写法', '素材编排写什么', '交接前多查', '交给谁'):
-                self.assertIn(item, v, f'formats.md「{k}」缺「{item}」')
+        """formats.md 的表：每种形式都写了篇幅单位和交给谁；形式名和模板需求「输出形式」的选项一致"""
+        text = read(os.path.join(SKILL, 'formats.md'))
+        t = check.find_table(text.split('\n'), ['输出形式', '篇幅单位', '交给谁'])
+        self.assertTrue(t)
+        for row in t[1]:
+            self.assertTrue(row['篇幅单位'] and row['交给谁'], row)
         tpl = read(os.path.join(SKILL, 'templates', 'plan.md'))
         m = re.search(r'^\| 输出形式 \| 〔([^；〕]+)', tpl, re.M)
         self.assertTrue(m)
-        self.assertEqual([x.strip() for x in m.group(1).split('/')], list(secs))
+        self.assertEqual([x.strip() for x in m.group(1).split('/')], [row['输出形式'] for row in t[1]])
 
 
 if __name__ == '__main__':
