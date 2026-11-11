@@ -179,6 +179,16 @@ class FetchArticle(unittest.TestCase):
             self.assertEqual(got, ["127-0-0-1-article", "127-0-0-1-article-2", "named-one"])   # 同一网站：路径最后一段区分
             self.assertIn("成功 3，失败 1", log.getvalue())
             self.assertRegex(log.getvalue(), r"失败 127-0-0-1-gone：.*/gone")
+            self.assertFalse((Path(tmp) / "source" / "127-0-0-1-gone").exists())   # 抓失败不留空文件夹
+
+    def test_failed_refetch_keeps_old_article(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            old = Path(tmp) / "source" / "kept"
+            old.mkdir(parents=True)
+            (old / "article.md").write_text("旧的正文", encoding="utf-8")
+            with contextlib.redirect_stdout(io.StringIO()), self.assertRaises((SystemExit, OSError)):
+                fetch_article.main([self.base + "/gone", tmp, "--name", "kept"])
+            self.assertEqual((old / "article.md").read_text(encoding="utf-8"), "旧的正文")
 
     def test_page_title_prefers_main_h1_then_title_without_site(self):
         def title(html):

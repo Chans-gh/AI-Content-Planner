@@ -32,6 +32,9 @@ USES = {'内容依据', '素材', '参考'}
 HANDOFF_STATES = {'已交接', '回流中'}
 NOT_USED = '不用'
 TBD = '待你定'
+FIRST_STEP = '需求待确认'
+CONTENT_STUB = ('# 内容表\n\n## 资料清单\n\n| 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |\n|---|---|---|---|---|---|\n'
+                '\n## 待核实和有冲突\n\n## 检索记录\n')   # 第 1 步还没建 content.md 时代替它，内容表的检查都跳过
 
 PLACEHOLDER = re.compile(r'〔[^〕]*〕')
 REF_DATA = re.compile(r'(?<![A-Za-z0-9_])P(\d+)-(\d+)(?![\d])')
@@ -176,15 +179,23 @@ def check_rows(r, pmap, sec, names):
 
 def check(folder, handoff=False):
     r = Report()
-    texts = {}
+    texts, stub = {}, False
     for name in ('plan.md', 'content.md'):
         p = os.path.join(folder, name)
-        if not os.path.isfile(p):
-            hint = '（格式 1 的 research.md 改名 content.md，按 CHANGELOG 转）' if name == 'content.md' and os.path.isfile(os.path.join(folder, 'research.md')) else ''
-            r.err(name, '文件不存在' + hint)
-        else:
+        if os.path.isfile(p):
             with open(p, encoding='utf-8') as f:
                 texts[name] = f.read()
+    if 'plan.md' not in texts:
+        r.err('plan.md', '文件不存在')
+    elif 'content.md' not in texts:
+        m = re.search(r'^状态[：:]\s*([^（(\n]*)', texts['plan.md'], re.M)
+        if m and m.group(1).strip().rstrip('。.') == FIRST_STEP and not handoff:
+            r.note('content.md', f'还没建：「{FIRST_STEP}」时可以先不建，第 2 步前复制模板、先填资料清单')
+            texts['content.md'] = CONTENT_STUB
+            stub = True
+        else:
+            hint = '（格式 1 的 research.md 改名 content.md，按 CHANGELOG 转）' if os.path.isfile(os.path.join(folder, 'research.md')) else ''
+            r.err('content.md', '文件不存在' + hint)
     if len(texts) < 2:
         return r
 
@@ -356,7 +367,7 @@ def check(folder, handoff=False):
                     continue
                 bad = [u for u in re.split(r'、', use) if u.strip() not in USES]
                 if not use or bad:
-                    r.err(f'content.md:{sec}', f'「{row["资料"]}」的用途「{use}」要取 ' + ' / '.join(sorted(USES)) + '，多个用「、」隔开')
+                    r.err(f'content.md:{sec}', f'「{row["资料"]}」的用途「{use}」要取 ' + ' / '.join(sorted(USES)) + '，多个用「、」隔开；补充说明写进「读到哪」或「能不能公开」')
 
     # 引用都要存在：只查规定写编号的那几格，别处的「华为 P40」「2026 年 Q1」是正文
     cells = []   # (位置, 格子内容, 查哪几种编号)
@@ -367,7 +378,7 @@ def check(folder, handoff=False):
     reported = set()
     for sec, cell, kinds in cells:
         found = []
-        if 'D' in kinds:
+        if 'D' in kinds and not stub:
             found += [(x.group(0), data, '引用的 {} 在 content.md 里没有') for x in REF_DATA.finditer(cell)]
         if 'P' in kinds:
             found += [(x.group(0), segs, '引用的段 {} 在框架里没有') for x in REF_SEG.finditer(cell)]

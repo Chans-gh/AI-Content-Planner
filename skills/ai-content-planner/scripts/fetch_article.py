@@ -24,6 +24,7 @@ import concurrent.futures
 import hashlib
 import json
 import re
+import shutil
 import struct
 import urllib.parse
 import urllib.request
@@ -410,13 +411,24 @@ def main(argv=None):
 
 
 def fetch_one(url, plan, name, images=False):
+    """先抓、确认是网页再建文件夹：抓失败不留空文件夹，重抓失败也不动已有的 article.md；
+    建了新文件夹以后出错，整个删掉"""
     out = plan / "source" / name
-    out.mkdir(parents=True, exist_ok=True)
-    (out / ".gitignore").write_text("# 下载的原网页和图片不进仓库，要用时重新抓\npage.html\nimages/\n", encoding="utf-8")
-
     raw, ctype, final, charset = fetch(url, MAX_PAGE)
     if "html" not in ctype:
         raise SystemExit(f"不是网页：{ctype}")
+    new = not out.exists()
+    out.mkdir(parents=True, exist_ok=True)
+    try:
+        return write_one(out, plan, raw, final, charset, images)
+    except BaseException:
+        if new:
+            shutil.rmtree(out, ignore_errors=True)
+        raise
+
+
+def write_one(out, plan, raw, final, charset, images):
+    (out / ".gitignore").write_text("# 下载的原网页和图片不进仓库，要用时重新抓\npage.html\nimages/\n", encoding="utf-8")
     (out / "page.html").write_bytes(raw)
     root = parse(decode(raw, charset))
     meta = {m.get("property") or m.get("name") or m.get("itemprop"): m.get("content") for m in root.find_all("meta") if m.get("content")}

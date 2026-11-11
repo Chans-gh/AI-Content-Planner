@@ -6,6 +6,7 @@
 
 | 日期 | 更新内容 |
 |---|---|
+| 2026-11-11 | 0.5.3：按布丁包带货片（下游 ai-coding-video 的一次实际生产）记下的四个小问题改。`SKILL.md`「三步」表第 1 步的「写进」加上 `content.md` 资料清单，第 1 步就复制两份模板；`check.py` 在「需求待确认」时没有 `content.md` 只提示、不报错（`--handoff` 照样报错）；模板 `content.md` 写明资料清单「用途」只填内容依据、素材、参考，补充说明写进「读到哪」或「能不能公开」，报错信息也这么写；`fetch_article.py` 先抓、确认是网页再建文件夹，抓失败不留只有 `.gitignore` 的空文件夹，重抓失败不动已有的 `article.md`；`types.md`「容易归错的」加一条：用户自己就是品牌方、主办方时，参数标 A2、A3，来历和理念标 C4，自家数据标 G2。交接格式不变 |
 | 2026-11-09 | 0.5.2：按子代理第二次实测改。`finder` 先数条数，超过 10 条先写 `finder-<段号>.md`；一个要找的只写一条、一个行号；脚本抓成了只缺页头信息的可用 WebFetch 补并写明。`reader` 第一次调用就 Grep 标题，没读的写「没读：〔标题〕（第 n 行起）」；选项的取值也只写原句里有的。`fetch_article.py` 文件夹名一律带路径最后两段（单抓一页也带，如 `peps-python-org-pep-0744`）；标题先取正文里的 `<h1>`，没有就用 `<title>` 并去掉「\| 站名」后缀。交接格式不变 |
 | 2026-11-09 | 0.5.1：按子代理实测改。`finder` 找到原文先用 `fetch_article.py` 抓，抓不成才用 WebFetch；回报严格一条一行、位置写 `source/<名字>/article.md:行号`，多于 10 行用新加的 Write 工具写进 `source/finder-<段号>.md`；不判断冲突，两处说法并列写出。`reader` 先 Grep 小节标题再读行段（不到 100 行可整篇读），出处写原始链接或相对路径，版本、年份只写原句里有的。`fetch_article.py` 同一网站几个链接的文件夹名改用路径最后两段、去掉 `.html` 这类后缀（`docs-python-org-whatsnew-3-13`）。SPEC-3 第 5.4、9 节同步。交接格式不变 |
 | 2026-11-09 | 0.5.0：随包两个子代理（SPEC-3 批 G）。`skills/agents/finder.md`（上网搜索、用 `fetch_article.py` 抓原文、按小节读片段，交回每条一行带原话摘录）、`reader.md`（一次读一份长原文，对照框架写 `card.md`），都用 haiku，不定状态、不写 `content.md`。Claude Code 插件从插件根目录的 `agents/` 读；`install.sh claude` 另外拷到 `.claude/agents/`，`zip` 一起打包。Codex 的自定义子代理是 `.codex/agents/` 下的 TOML、模型要写 OpenAI 的，官方文档没说插件能带，所以 Codex 走降级：主模型自己查，守同样的读取规矩。`SKILL.md` 加「子代理」一节；selfcheck 加子代理检查。交接格式不变（仍是 2） |

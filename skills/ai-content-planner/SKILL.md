@@ -1,7 +1,7 @@
 ---
 name: ai-content-planner
 description: 做内容之前的策划：把一句话、要求、链接、文件、图片、音视频分三步整理成需求、框架（每段要讲的点）和按段写全的内容表，每步请用户确认，补齐事实、参数、步骤、案例和素材后交给下游。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
-version: 0.5.2
+version: 0.5.3
 display_name: 内容策划
 display_name_en: AI Content Planner
 description_en: "Content planning before anything is made, in three confirmed steps: turns a one-line idea, a brief, links, files, images, audio or video into requirements, a framework (the points each segment must make) and a content sheet filled in segment by segment, with the facts, specs, steps, examples and evidence each point needs, then hands off to a downstream skill. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much material to choose from, has too little, needs a through-line and segments, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
@@ -21,12 +21,12 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 | 步 | 做什么 | 写进 | 结束条件 | 状态行 |
 |---|---|---|---|---|
-| 1 读输入、出需求 | 认出触发，读用户给的；轻量摸底；填需求表和立意表 | `plan.md` 需求、立意 | 用户确认需求 | 需求待确认 |
+| 1 读输入、出需求 | 认出触发，读用户给的；轻量摸底；填需求表和立意表 | `plan.md` 需求、立意；`content.md` 资料清单 | 用户确认需求 | 需求待确认 |
 | 2 构建框架 | 在确认的需求上设计段落：内容流程、每段要讲的点、用到哪些输入、还缺什么 | `plan.md` 框架、取舍、缺口 | 用户确认框架 | 框架待确认 |
 | 3 补齐内容 | 按段搜集、核实，写全每段的信息和素材；归「策划」的缺口清零 | `content.md`、`source/`、缺口 | 「交接」的条件全满足 | 补齐中 → 已交接 |
 | 回流 | 下游在缺口表加行，回到第 3 步（实质变化回到更早的步） | 同上 | 重新满足交接条件 | 回流中 → 已交接 |
 
-文件放在用户项目的 `plans/<短名>/`（短名：英文小写加连字符，取题目的关键词）：复制 `templates/plan.md`、`templates/content.md`，照模板填，节和表头不改；抓下来的原文和用户给的文件放 `source/<名字>/`。每步确认的内容记进 `plan.md` 的确认记录。
+文件放在用户项目的 `plans/<短名>/`（短名：英文小写加连字符，取题目的关键词）：第 1 步就复制 `templates/plan.md`、`templates/content.md`（先填资料清单），照模板填，节和表头不改；抓下来的原文和用户给的文件放 `source/<名字>/`。每步确认的内容记进 `plan.md` 的确认记录。
 
 ## 每步怎么做
 

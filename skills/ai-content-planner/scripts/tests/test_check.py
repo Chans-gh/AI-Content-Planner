@@ -201,6 +201,15 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(code, 1)
         self.assertIn('content.md: 文件不存在', out)
 
+    def test_first_step_without_content(self):
+        """「需求待确认」时还没建 content.md：只提示；别的状态、--handoff 照样报错"""
+        path = os.path.join(self.tmp, 'plan.md')
+        write(path, read(os.path.join(FIX, 'ok', 'plan.md')).replace('状态：已交接', '状态：需求待确认'))
+        code, out = run(self.tmp)
+        self.assertEqual(code, 0, out)
+        self.assertIn('content.md: 还没建', out)
+        self.assertEqual(run(self.tmp, True)[0], 1)
+
     def test_extent(self):
         p = check.parse_extent
         self.assertEqual(p('45 秒'), ('时间', 45, 45))
