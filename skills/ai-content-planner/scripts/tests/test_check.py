@@ -80,10 +80,10 @@ class CheckTest(unittest.TestCase):
         self.assertFails('unverified', r'P1 的「a」用了 P1-2，它还是「〔待核实〕」')
 
     def test_old_format(self):
-        """格式 1 报错，提示按 CHANGELOG 转，不再往下查"""
+        """格式 2 报错，提示按 CHANGELOG 转，不再往下查"""
         code, out = run(self.case('old_format'))
         self.assertEqual(code, 1)
-        self.assertIn('本脚本只认 ai-content-planner/2；这是旧格式，按本 Skill 的 CHANGELOG.md 转成格式 2', out)
+        self.assertIn('本脚本只认 ai-content-planner/3；这是旧格式，按本 Skill 的 CHANGELOG.md 转成格式 3', out)
         self.assertEqual(out.count('\n'), 2, out)
 
     def test_research_md_hint(self):
@@ -95,20 +95,20 @@ class CheckTest(unittest.TestCase):
         self.assertIn('research.md 改名 content.md', out)
 
     def test_need_rows(self):
-        self.assertFails('need_rows', r'需求要正好是这8项：用途和场景、给谁看', handoff=False)
+        self.assertFails('need_rows', r'需求要正好是这5项：用途和场景、必须有', handoff=False)
 
-    def test_idea_rows(self):
+    def test_effect_rows(self):
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        write(path, read(path).replace('| 怎么讲 | 夹具占位 | 建议 |\n', '| 怎么讲 | 夹具占位 | 建议 |\n| 凭什么信 | 夹具占位 | 建议 |\n'))
+        write(path, read(path).replace('| 衡量 | 无 | | 用户给的 |\n', '| 衡量 | 无 | | 用户给的 |\n| 凭什么信 | 夹具占位 | | 建议 |\n'))
         code, out = run(d)
         self.assertEqual(code, 1)
-        self.assertIn('立意要正好是这3项', out)
+        self.assertIn('效果要正好是这6项', out)
 
     def test_need_tbd(self):
-        """需求有「待你定」：普通检查过，--handoff 不过"""
+        """效果有「待你定」：普通检查过，--handoff 不过"""
         self.assertEqual(run(self.case('need_tbd'))[0], 0)
-        self.assertFails('need_tbd', r'「给谁看」还是「待你定」')
+        self.assertFails('need_tbd', r'plan.md:效果: 「起点」还是「待你定」')
 
     def test_no_flow(self):
         self.assertFails('no_flow', r'缺「内容流程：」一行', handoff=False)
@@ -156,24 +156,24 @@ class CheckTest(unittest.TestCase):
         code, out = run(self.case('no_frame_confirm'), True)
         self.assertEqual(code, 1)
         self.assertIn('没有「框架」一行', out)
-        self.assertNotIn('没有「需求」一行', out)
+        self.assertNotIn('没有「效果」一行', out)
 
     def test_auto_confirm(self):
         """合并第 1、2 步：确认记录写「自动，未问用户」也算"""
         self.assertEqual(run(self.case('auto_confirm'), True), (0, '通过\n'))
 
     def test_confirm_with_note(self):
-        """「需求」后面带括注也算（回放写「需求（回放模拟）：」）；认不出的行报错"""
+        """「效果」后面带括注也算（回放写「效果（回放模拟）：」）；认不出的行报错"""
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
         text = read(path)
-        write(path, text.replace('2026-11-09 需求：', '2026-11-09 需求（演示用）：'))
+        write(path, text.replace('2026-11-09 效果：', '2026-11-09 效果（演示用）：'))
         self.assertEqual(run(d, True), (0, '通过\n'))
-        write(path, text.replace('2026-11-09 需求：', '2026-11-09 方向：'))
+        write(path, text.replace('2026-11-09 效果：', '2026-11-09 需求：'))
         code, out = run(d, True)
         self.assertEqual(code, 1)
         self.assertIn('这一行认不出是哪种确认', out)
-        self.assertIn('没有「需求」一行', out)
+        self.assertIn('没有「效果」一行', out)
 
     def test_bad_enum(self):
         code, out = run(self.case('bad_enum'))
@@ -202,9 +202,9 @@ class CheckTest(unittest.TestCase):
         self.assertIn('content.md: 文件不存在', out)
 
     def test_first_step_without_content(self):
-        """「需求待确认」时还没建 content.md：只提示；别的状态、--handoff 照样报错"""
+        """「效果待确认」时还没建 content.md：只提示；别的状态、--handoff 照样报错"""
         path = os.path.join(self.tmp, 'plan.md')
-        write(path, read(os.path.join(FIX, 'ok', 'plan.md')).replace('状态：已交接', '状态：需求待确认'))
+        write(path, read(os.path.join(FIX, 'ok', 'plan.md')).replace('状态：已交接', '状态：效果待确认'))
         code, out = run(self.tmp)
         self.assertEqual(code, 0, out)
         self.assertIn('content.md: 还没建', out)
@@ -271,7 +271,7 @@ class CheckTest(unittest.TestCase):
     def test_format_line(self):
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        write(path, read(path).replace('格式：ai-content-planner/2\n', ''))
+        write(path, read(path).replace('格式：ai-content-planner/3\n', ''))
         code, out = run(d)
         self.assertEqual(code, 1)
         self.assertIn('找不到格式行', out)
@@ -280,7 +280,7 @@ class CheckTest(unittest.TestCase):
         """篇幅用页、字：单位和目标一致就比合计；各段单位不一致只提示"""
         d = self.case('ok')
         path = os.path.join(d, 'plan.md')
-        text = read(path).replace('| 视频 | 用户给的 |', '| PPT | 用户给的 |').replace('20 秒；16:9', '6 页；16:9')
+        text = read(path).replace('| 视频 | 用户定 |', '| PPT | 用户定 |').replace('20 秒；16:9', '6 页；16:9')
         text = text.replace('| 8–10 秒 |', '| 3 页 |').replace('| 10 秒 |', '| 3 页 |')
         write(path, text)
         self.assertEqual(run(d, True), (0, '通过\n'))
@@ -293,6 +293,136 @@ class CheckTest(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn('各段篇幅单位不一致', out)
 
+    # ---------- 格式 3：效果、形式、打法、自查、说法、衍生、受众、素材、约束 ----------
+    def edit(self, fname, *pairs):
+        d = self.case('ok')
+        path = os.path.join(d, fname)
+        text = read(path)
+        for a, b in pairs:
+            self.assertIn(a, text)
+            text = text.replace(a, b)
+        write(path, text)
+        return d
+
+    def test_blocks_numbered(self):
+        d = self.edit('plan.md', ('① 跟我有什么关系<br>② 以后还有下文吗', '跟我有什么关系'))
+        code, out = run(d)
+        self.assertEqual(code, 1)
+        self.assertIn('阻力要按强弱编号', out)
+
+    def test_play_table(self):
+        """打法：正好一行「选」；抓的阻力要在效果里；只有一个打法提示"""
+        code, out = run(self.edit('plan.md', ('| 慢 | |', '| 慢 | 选 |')))
+        self.assertEqual(code, 1)
+        self.assertIn('打法表要正好一行「选」写「选」，现在 2 行', out)
+        code, out = run(self.edit('plan.md', ('| B 先问后答 | ② |', '| B 先问后答 | ③ |')))
+        self.assertIn('打法「B 先问后答」写了「③」，效果的阻力里没有这一条', out)
+        code, out = run(self.edit('plan.md', ('| B 先问后答 | ② | 无 | 一个问题 | 慢 | |\n', '')))
+        self.assertEqual(code, 0, out)
+        self.assertIn('只有一个打法', out)
+        code, out = run(self.edit('plan.md', ('一句话主线：', '主线：')))
+        self.assertIn('缺「一句话主线：」一行', out)
+
+    def test_form_basis(self):
+        code, out = run(self.edit('plan.md', ('| 结构 | 先事后下一步 | 终点 |', '| 结构 | 先事后下一步 | |')))
+        self.assertEqual(code, 1)
+        self.assertIn('「结构」的「由哪条效果推出」空着', out)
+
+    def test_frame_audience(self):
+        """受众要有「→」；「到」写成知道 X 只提示；怎么证明不能空"""
+        code, out = run(self.edit('plan.md', ('「以后呢」→ 记下某月', '记下某月')))
+        self.assertEqual(code, 1)
+        self.assertIn('P2 的受众要写「原来的念头 → 看完这段的念头或动作」', out)
+        code, out = run(self.edit('plan.md', ('「以后呢」→ 记下某月', '「以后呢」→ 知道下一步在某月')))
+        self.assertEqual(code, 0, out)
+        self.assertIn('P2 的受众「到」以「知道下」开头', out)
+        code, out = run(self.edit('plan.md', ('| 时间上屏 |', '| |')))
+        self.assertIn('P2 的「怎么证明」空着', out)
+
+    def test_empty_words(self):
+        code, out = run(self.edit('plan.md', ('| 终点 | 记下下一步的月份 |', '| 终点 | 引发共鸣 |')))
+        self.assertEqual(code, 0, out)
+        self.assertIn('「终点」写了「引发共鸣」', out)
+
+    def test_self_check(self):
+        code, out = run(self.edit('plan.md', ('| 阻力 | ① → P1；② → P2 |', '| 阻力 | ① → P1 |')))
+        self.assertEqual(code, 1)
+        self.assertIn('阻力② 没写由哪段回应', out)
+        code, out = run(self.edit('plan.md', ('| 终点 | P2 |', '| 终点 | 结尾 |')))
+        self.assertIn('终点一行要写落在哪段', out)
+        code, out = run(self.edit('plan.md', ('| 衍生 | P1、P2 |', '| 衍生 | P1、P5 |')))
+        self.assertIn('plan.md:效果自查: 引用的段 P5 在框架里没有', out)
+
+    def test_say(self):
+        """说法：点要在框架里；不能丢的引用要存在；交接时每段至少一行"""
+        code, out = run(self.edit('plan.md', ('| P2 a | 记下月份 |', '| P2 c | 记下月份 |')))
+        self.assertEqual(code, 1)
+        self.assertIn('点「P2 c」的「c」不在 P2 的要讲的点里', out)
+        code, out = run(self.edit('plan.md', ('| P1-1；K1 |', '| P1-9；K7；M4 |')))
+        self.assertIn('plan.md:说法: 引用的 P1-9 在 content.md 里没有', out)
+        self.assertIn('引用的 K7 在 content.md 的约束表里没有', out)
+        self.assertIn('引用的 M4 在 content.md 的素材表里没有', out)
+        d = self.edit('plan.md', ('| P2 a | 记下月份 | 「下一步，某月。」 | P2-1；Q2 |\n', ''))
+        self.assertEqual(run(d)[0], 0)
+        code, out = run(d, True)
+        self.assertIn('P2 没有说法：每段至少一行', out)
+
+    def test_spin(self):
+        """衍生：形式写了「无」就只写「无」；形式有衍生，节里不能写「无」；交接时要有行"""
+        d = self.edit('plan.md', ('| 衍生 | 拆一条 10 秒 |', '| 衍生 | 无 |'))
+        code, out = run(d)
+        self.assertEqual(code, 1)
+        self.assertIn('形式的衍生写了「无」，这一节就只写「无」', out)
+        d = self.edit('plan.md', ('| 衍生 | 拆一条 10 秒 |', '| 衍生 | 无 |'),
+                      ('| 条 | 用哪些点 | 第一句 | 放在哪 |\n|---|---|---|---|\n| D1 | P1 a、P2 a | 「某日，某事。」 | 10 秒短片 |', '无'))
+        self.assertEqual(run(d, True), (0, '通过\n'))
+        d = self.edit('plan.md', ('| 条 | 用哪些点 | 第一句 | 放在哪 |\n|---|---|---|---|\n| D1 | P1 a、P2 a | 「某日，某事。」 | 10 秒短片 |', '无'))
+        code, out = run(d)
+        self.assertIn('形式的衍生是「拆一条 10 秒」，这一节不能写「无」', out)
+        code, out = run(self.edit('plan.md', ('| D1 | P1 a、P2 a |', '| E1 | P1 a、P3 a |')))
+        self.assertIn('编号格式不对：E1（写 D1、D2）', out)
+        self.assertIn('E1 的用哪些点「P1 a、P3 a」的段 P3 在框架里没有', out)
+
+    def test_assets(self):
+        code, out = run(self.edit('content.md', ('| 裁后用：裁掉水印 | 能 |', '| 随便 | 可以 |')))
+        self.assertEqual(code, 1)
+        self.assertIn('M1 的能怎么用「随便」要取', out)
+        self.assertIn('M1 的能不能送生成「可以」要取', out)
+        d = self.edit('content.md', ('| 裁后用：裁掉水印 | 能 |', '| 只作参考 | 〔待核实〕：授权没写 |'))
+        code, out = run(d, True)
+        self.assertEqual(code, 0, out)
+        self.assertIn('M1 能不能送生成还没核实，下游按「不能」处理', out)
+        code, out = run(self.edit('content.md', ('| 能 | P1 |', '| 能 | P4 |')))
+        self.assertIn('content.md:素材: 引用的段 P4 在框架里没有', out)
+        code, out = run(self.edit('content.md', ('| F2 | M1 |', '| F2 | M3 |')))
+        self.assertIn('content.md: 引用的 M3 在 content.md 的素材表里没有', out)
+        code, out = run(self.edit('content.md', ('| M1 | https', '| X1 | https')))
+        self.assertIn('content.md:素材: 编号格式不对：X1（写 M1、M2）', out)
+
+    def test_rules(self):
+        d = self.edit('content.md', ('| M1 | 已核实 |', '| M1 | 〔待核实〕 |'))
+        self.assertEqual(run(d)[0], 0)
+        code, out = run(d, True)
+        self.assertEqual(code, 1)
+        self.assertIn('K1 还是「〔待核实〕」：约束要已核实或是设定才能交接', out)
+        code, out = run(self.edit('content.md', ('| K1 | 现场的旗是蓝色的 | M1 |', '| K1 | 现场的旗是蓝色的 | M2、P1-8 |')))
+        self.assertIn('content.md:约束: 引用的 M2 在 content.md 的素材表里没有', out)
+        self.assertIn('content.md:约束: 引用的 P1-8 在 content.md 里没有', out)
+        code, out = run(self.edit('plan.md', ('现场照片 M1，照 K1', '现场照片 M1，照 K2')))
+        self.assertIn('plan.md:框架: 引用的 K2 在 content.md 的约束表里没有', out)
+
+    def test_voices(self):
+        code, out = run(self.edit('content.md', ('| C6 | 某平台评论区 · 2026-11-09 · 抽 20 条里 6 条这么说 | ① |', '| C6 | 某平台评论区 · 2026-11-09 · 抽 20 条里 6 条这么说 | ③ |')))
+        self.assertEqual(code, 1)
+        self.assertIn('V1 的对应哪条阻力写了「③」，效果的阻力里没有这一条', out)
+
+    def test_missing_new_sections(self):
+        code, out = run(self.edit('content.md', ('## 约束', '## 限制')))
+        self.assertEqual(code, 1)
+        self.assertIn('content.md:约束: 缺这一节', out)
+        code, out = run(self.edit('plan.md', ('## 效果自查', '## 自查')))
+        self.assertIn('plan.md:效果自查: 缺这一节', out)
+
 
 class DocsTest(unittest.TestCase):
     def test_formats_match_template(self):
@@ -303,7 +433,7 @@ class DocsTest(unittest.TestCase):
         for row in t[1]:
             self.assertTrue(row['篇幅单位'] and row['交给谁'], row)
         tpl = read(os.path.join(SKILL, 'templates', 'plan.md'))
-        m = re.search(r'^\| 输出形式 \| 〔([^；〕]+)', tpl, re.M)
+        m = re.search(r'^\| 输出形式和规格 \| 〔([^；〕]+)', tpl, re.M)
         self.assertTrue(m)
         self.assertEqual([x.strip() for x in m.group(1).split('/')], [row['输出形式'] for row in t[1]])
 
