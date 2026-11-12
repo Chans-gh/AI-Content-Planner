@@ -1,39 +1,50 @@
-# 推送版本标签（v0.6.1 这样）时：自检、核对标签和 SKILL.md 的 version、用 install.sh zip 打包，发 Release 并附上 zip
+# 发 Release：自检、用 install.sh zip 打包，按 SKILL.md 的 version 建标签 v<version>、发 Release 并附上 zip。
+# 三种触发：
+#   - main 上 SKILL.md（或本文件）变了：这个版本还没发过就发；发过就跳过（只改了别的、没升 version）
+#   - 推标签 v*：标签要和 SKILL.md 的 version 一致；发过就替换 zip
+#   - 手动运行（Actions 页面 → release → Run workflow）：同 main，发过就替换 zip
 name: release
 on:
   push:
+    branches: [main]
+    paths:
+      - "skills/ai-content-planner/SKILL.md"
+      - ".github/workflows/release.yml"
     tags: ["v*"]
   workflow_dispatch:
-    inputs:
-      tag:
-        description: "要发布的标签（已推送的，如 v0.6.1）"
-        required: true
 permissions:
   contents: write
+concurrency:
+  group: release
+  cancel-in-progress: false
 jobs:
   release:
     runs-on: ubuntu-latest
     env:
-      TAG: ${{ inputs.tag || github.ref_name }}
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ inputs.tag || github.ref }}
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
       - run: python3 scripts/selfcheck.py
-      - name: 标签要和 SKILL.md 的 version 一致
+      - name: 从 SKILL.md 取版本号
         run: |
           v="$(sed -n 's/^version: *//p' skills/ai-content-planner/SKILL.md | head -1)"
-          [ "v$v" = "$TAG" ] || { echo "标签 $TAG 和 SKILL.md 的 version $v 不一致"; exit 1; }
+          [ -n "$v" ] || { echo "SKILL.md 没有 version"; exit 1; }
+          echo "TAG=v$v" >> "$GITHUB_ENV"
+          if [ "$GITHUB_REF_TYPE" = tag ] && [ "$GITHUB_REF_NAME" != "v$v" ]; then
+            echo "标签 $GITHUB_REF_NAME 和 SKILL.md 的 version $v 不一致"; exit 1
+          fi
       - run: scripts/install.sh zip
-      - name: 发 Release（已有就替换 zip）
+      - name: 发 Release
         run: |
           if gh release view "$TAG" >/dev/null 2>&1; then
+            if [ "$GITHUB_EVENT_NAME" = push ] && [ "$GITHUB_REF_TYPE" = branch ]; then
+              echo "$TAG 已经发过，version 没变，跳过"; exit 0
+            fi
             gh release upload "$TAG" dist/ai-content-planner.zip --clobber
           else
-            gh release create "$TAG" dist/ai-content-planner.zip --title "$TAG" \
+            gh release create "$TAG" dist/ai-content-planner.zip --target "$GITHUB_SHA" --title "$TAG" --latest \
               --notes "内容策划 Skill ${TAG#v}。更新内容见 skills/ai-content-planner/CHANGELOG.md。下载 ai-content-planner.zip，解压后把 ai-content-planner/ 放进助手的 Skill 目录（Claude Code 另把 agents/ 放进 .claude/agents/），或上传到 WorkBuddy 等上传技能包的助手。"
           fi
