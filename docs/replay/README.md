@@ -2,7 +2,7 @@
 
 [← SPEC](../SPEC.md) · [PRD 第 8 节](../PRD.md#8-验收)
 
-> 这是第 1 版（`video-content-planner`，在 [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video) 的分支上做）的回放记录。第 2 版只把各目录的 `plan.md`、`research.md` 转成了格式 `ai-content-planner/1`（加格式行、立意十项、新表头和取值），内容和结论不变，见文末「第 2 版转格式」。第 3 版再转成格式 `ai-content-planner/2`（`research.md` 改名 `content.md`，按段组织），见文末「第 3 版转格式」。第 4 版（0.6.0）再转成格式 `ai-content-planner/3`，并加了一支 [shop-handbag](shop-handbag/)，见文末「第 4 版转格式」；正文里的 U 编号、「阶段」「方向」是第 1 版的说法。
+> 这是第 1 版（`video-content-planner`，在 [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video) 的分支上做）的回放记录。第 2 版只把各目录的 `plan.md`、`research.md` 转成了格式 `ai-content-planner/1`（加格式行、立意十项、新表头和取值），内容和结论不变，见文末「第 2 版转格式」。第 3 版再转成格式 `ai-content-planner/2`（`research.md` 改名 `content.md`，按段组织），见文末「第 3 版转格式」。第 4 版（0.6.0）再转成格式 `ai-content-planner/3`，见文末「第 4 版转格式」；正文里的 U 编号、「阶段」「方向」是第 1 版的说法。
 > 文中的 `cases/…`、`skills/ai-coding-video/…`、`README.md`、`site/` 都指 AI-Coding-Video 仓库；「风格后」「分镜后」在第 2 版合成了「下游」，`skills/video-content-planner/` 现在是本仓库的 `skills/ai-content-planner/`。
 
 2026-11-08 至 11-09 做。按 SPEC 第 10 节批 B：三支案例回放、四个边界任务、接手测试，按发现的问题修 Skill，用 `news-artemis` 的回放换掉 `example/`。
@@ -132,17 +132,6 @@
 - **效果、形式、打法、从 → 到、效果自查、说法是照原内容补写的，没有重新策划**：要讲的点、事实、状态、取舍、缺口都没动。所以这 7 支的打法只有一个（`check.py` 提示「只有一个打法」），阻力多半标「推断」；它们验收的是格式和交接条件，不验收效果。`example/` 补了第二个打法，`check.py --handoff` 是「通过」。
 - 补进的素材、约束：`example/` 加 M1（阿波罗 13 号乘组照片，有真人的脸，不能送生成）；`shop-skincare` 加 K1（30 毫升玻璃滴管瓶）和 D1（15 秒投流短片）。
 
-**新回放 [shop-handbag](shop-handbag/)**：一次真实带货片（北山制包所《旷野》布丁包，4 分 30 秒，用户是品牌方）按 0.6.0 从头走。原稿（0.5.x 做的）不在本仓库；事实从用户给的商品文字和 35 张图重新读，素材包不进仓库。和原稿比，变的是三处：
-
-| | 原稿（0.5.x） | 这一版 |
-|---|---|---|
-| 第 1 步问了什么 | 真人出镜、音色、画幅、预算这类生产问题 | 看完要她做什么、她卡在哪、旁白谁来说、能不能叫「上新」 |
-| 「装得下吗」「多少钱」在第几秒回答 | 约 1:55、4:25 | 0:25、0:45（前 55 秒自成一支短讲解） |
-| 换题测试（换成别的千元水桶包） | 10 段里 9 段照样成立 | 9 段里 4 段不成立：开头、开合、来历、收口 |
-| 交给下游的 | 要讲的点和事实 | 再加说法、8 条约束（提手结构、配色、瓜果意象）、8 组素材的处理和能不能送生成、3 条衍生 |
-
-上次下游返工的三处（容量图带别家标志、提绳画到包身侧面、「瓜果」画成菠萝），分别由素材 M4「不能：别家的标志」、约束 K3、K8 挡住。阻力没有买家原话，标「推断」，Q1 改内容关闭；用户导出原话后回流复核。
-
 边界任务的中间态，照第 3 版的做法在临时目录改回去跑 `check.py --handoff`（改法同第 3 版那张表；edge-thin 另把状态改「效果待确认」）：
 
 | 任务 | 输出 |
@@ -156,5 +145,5 @@
 
 | 命令（在本仓库根目录） | 结果 |
 |---|---|
-| `python3 -I skills/ai-content-planner/scripts/check.py <目录> --handoff`，`example/` 和本目录下 8 个目录 | `example/`、`shop-handbag` 是「通过」；另 7 支 0 个错，各 1 个「只有一个打法」的提示 |
+| `python3 -I skills/ai-content-planner/scripts/check.py <目录> --handoff`，`example/` 和本目录下 7 个目录 | `example/` 是「通过」；7 支 0 个错，各 1 个「只有一个打法」的提示 |
 | `python3 scripts/selfcheck.py` | 通过（含上面一项） |

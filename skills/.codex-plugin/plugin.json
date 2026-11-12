@@ -1,7 +1,7 @@
 {
   "name": "ai-content-planner",
-  "version": "0.6.0",
-  "description": "做内容之前的策划：需求、框架、按段写全的内容表、缺口表，三步各请用户确认；产出可交给视频、PPT、报告、课件等下游。",
+  "version": "0.6.1",
+  "description": "做内容之前的策划：先挖出要的效果和形式，再定打法和框架，补齐事实、说法和画面约束，三步各请用户确认；任何类型同一套问法，产出可交给视频、PPT、报告、课件等下游。",
   "author": { "name": "Chans" },
   "homepage": "https://github.com/chans-gh/AI-content-planner",
   "repository": "https://github.com/chans-gh/AI-content-planner",
@@ -10,8 +10,8 @@
   "skills": "./.",
   "interface": {
     "displayName": "AI Content Planner",
-    "shortDescription": "做内容之前的策划：需求、框架、内容表、缺口表",
-    "longDescription": "把一句话、要求、链接、文件、图片、音视频分三步整理成需求、框架（每段要讲的点）和按段写全的内容表，每步请用户确认，补齐事实、参数、步骤、案例和素材后按统一的交接格式交给下游：做视频交给 ai-coding-video，做 PPT、课件、报告、图文、知识库交给对应的 Skill。内容表每条带种类、来源和核实状态，自带检查脚本。",
+    "shortDescription": "做内容之前的策划：效果、打法、框架、说法",
+    "longDescription": "从一句话、要求、链接、文件、图片、音视频里挖出要的效果（谁在什么时刻遇到、卡在哪、看完做什么）和形式，给打法、排框架（每段把受众从哪个念头带到哪个念头），补齐事实、参数、步骤、案例和素材，写好参考说法和画面约束，每步请用户确认，按统一的交接格式交给下游：做视频交给 ai-coding-video，做 PPT、课件、报告、图文、知识库交给对应的 Skill。内容表每条带种类、来源和核实状态，自带检查脚本。",
     "developerName": "Chans",
     "category": "Productivity"
   }
