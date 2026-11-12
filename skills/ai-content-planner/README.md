@@ -49,4 +49,5 @@ python3 -I <本 Skill 目录>/scripts/brief.py plans/<短名>            # 精�
 - 加输出形式：`formats.md` 的表加一行（篇幅单位、注意力预算按什么算、交给谁），模板形式「输出形式和规格」的选项跟着加，测试会核对两边一致。
 - `types.md` 的大类和代号只增不改，加小类在它末尾的修改记录记一行。
 - 每次改动在 [CHANGELOG.md](CHANGELOG.md) 表头下加一行；改了行为的升 `SKILL.md` 的 `version`，两份 `plugin.json` 跟着改。
+- 发版：合并到 `main` 后推标签 `v<version>`（和 `SKILL.md` 的 `version` 一致），`.github/workflows/release.yml` 自检、打 zip、发 Release；插件市场直接读 `main`，不用另发。
 - 本 Skill 不带素材和生成服务；抓网页用 `scripts/fetch_article.py`（只用标准库，不要 Key），别的读取用宿主自带的工具。
