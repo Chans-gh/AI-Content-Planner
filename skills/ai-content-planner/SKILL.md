@@ -1,7 +1,7 @@
 ---
 name: ai-content-planner
 description: 做内容之前的策划：先从用户的一句话、要求、链接、文件、图片、音视频里挖出要的效果（谁在什么时刻遇到、卡在哪、看完做什么）和形式，再给打法、排框架（每段把受众从哪个念头带到哪个念头），补齐事实、参数、步骤、案例和素材，写好参考说法和画面约束后交给下游；每步请用户确认。任何类型（带货、获客、品牌、公益、预告、互动、课程等）用同一套问法，不套模板。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、要内容有效果、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
-version: 0.6.0
+version: 0.6.1
 display_name: 内容策划
 display_name_en: AI Content Planner
 description_en: "Content planning before anything is made, in three confirmed steps: first digs out of the user's words, links, files, images, audio or video the effect the piece must have (who meets it at what moment, what holds them back, what they do afterwards) and the form that follows from it; then offers approaches and builds a framework that moves the audience from one thought to the next segment by segment; then fills in the facts, specs, steps, examples and evidence, writes reference lines and visual constraints, and hands off to a downstream skill. One set of questions for every kind of piece (sales, lead generation, brand, public-interest, teaser, interactive, courses), no genre templates. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much or too little material, needs a through-line and segments, wants the piece to work, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
