@@ -7,6 +7,21 @@
 | NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 内容依据 | 能 | P1-1、P1-2 |
 | JPL Horizons：Orion（-1024）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='-1024'&OBJ_DATA=YES&MAKE_EPHEM=NO | 事件表 | 内容依据 | 能 | P1-3 |
 
+## 受众
+
+| # | 内容 | 种类 | 来源 | 对应哪条阻力 | 状态 |
+|---|---|---|---|---|---|
+
+## 素材
+
+| # | 文件 | 内容 | 字、标志、水印、人脸 | 能怎么用 | 能不能送生成 | 用到哪段 |
+|---|---|---|---|---|---|---|
+
+## 约束
+
+| # | 必须守的样子 | 依据 | 状态 |
+|---|---|---|---|
+
 ## P1 报溅落
 
 | # | 讲哪一点 | 内容 | 种类 | 来源 | 必须写清的 | 状态 |

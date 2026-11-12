@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""检查 plans/<短名>/ 下的 plan.md、content.md 是否符合模板（格式 ai-content-planner/2），交接前加 --handoff。
+"""检查 plans/<短名>/ 下的 plan.md、content.md 是否符合模板（格式 ai-content-planner/3），交接前加 --handoff。
 
 用法：python3 -I <本 Skill 目录>/scripts/check.py <plans/短名 目录> [--handoff]
 
@@ -12,35 +12,58 @@ import os
 import re
 import sys
 
-FORMAT = 'ai-content-planner/2'
-OLD_FORMATS = {'ai-content-planner/1'}
-PLAN_SECTIONS = ['确认记录', '需求', '立意', '框架', '取舍', '缺口']
-CONTENT_SECTIONS = ['资料清单', '待核实和有冲突', '检索记录']
-NEED_ROWS = ['用途和场景', '给谁看', '输出形式', '篇幅与规格', '必须有', '不要', '已有材料', '品牌与风格']
-IDEA_ROWS = ['看完得到什么', '一句话主线', '怎么讲']
-FRAME_HEAD = ['段', '作用', '受众收益', '要讲的点', '用到哪些输入', '篇幅']
+FORMAT = 'ai-content-planner/3'
+OLD_FORMATS = {'ai-content-planner/1', 'ai-content-planner/2'}
+PLAN_SECTIONS = ['确认记录', '需求', '效果', '形式', '立意', '框架', '效果自查', '说法', '衍生', '取舍', '缺口']
+CONTENT_SECTIONS = ['资料清单', '受众', '素材', '约束', '待核实和有冲突', '检索记录']
+NEED_ROWS = ['用途和场景', '必须有', '不要', '已有材料', '品牌与风格']
+EFFECT_ROWS = ['接触时刻', '起点', '阻力', '终点', '衡量', '杠杆']
+FORM_ROWS = ['输出形式和规格', '篇幅和注意力', '结构', '声音', '证明方式', '制作条件', '衍生']
+FORM_NEED_BASIS = ['篇幅和注意力', '结构', '声音', '证明方式']   # 「由哪条效果推出」不能空
+SELF_ROWS = ['阻力', '终点', '注意力预算', '换题测试', '衍生']
+PLAY_HEAD = ['打法', '抓哪条阻力', '用哪个杠杆', '开头', '代价', '选']
+FRAME_HEAD = ['段', '作用', '受众：从 → 到', '要讲的点', '怎么证明', '用到哪些输入', '篇幅']
+SAY_HEAD = ['点', '要的效果', '参考说法', '不能丢的']
+SPIN_HEAD = ['条', '用哪些点', '第一句', '放在哪']
 GAP_HEAD = ['编号', '段', '缺什么', '归谁', '提出于', '状态', '怎么解决的']
 SRC_HEAD = ['资料', '位置', '读到哪', '用途', '能不能公开', '用到哪些编号']
+VOICE_HEAD = ['#', '内容', '种类', '来源', '对应哪条阻力', '状态']
+ASSET_HEAD = ['#', '文件', '内容', '字、标志、水印、人脸', '能怎么用', '能不能送生成', '用到哪段']
+RULE_HEAD = ['#', '必须守的样子', '依据', '状态']
 DATA_HEAD = ['#', '讲哪一点', '内容', '种类', '来源', '必须写清的', '状态']
 
-STATUSES = {'需求待确认', '框架待确认', '补齐中', '已交接', '回流中'}
+STATUSES = {'效果待确认', '框架待确认', '补齐中', '已交接', '回流中'}
 OWNERS = {'策划', '下游'}
 RAISED = {'第 1 步', '第 2 步', '第 3 步', '下游'}
 GAP_STATES = {'待补', '已补', '改内容关闭'}
 DATA_STATES = {'已核实', '〔待核实〕', '有冲突', '已过期', '设定'}
+RULE_STATES = {'已核实', '〔待核实〕', '设定'}
 USES = {'内容依据', '素材', '参考'}
+ASSET_USES = {'原样', '裁后用', '重画', '只作参考'}
+ASSET_GEN = {'能', '不能', '〔待核实〕'}
 HANDOFF_STATES = {'已交接', '回流中'}
 NOT_USED = '不用'
+NONE = '无'
 TBD = '待你定'
+FIRST_STEP = '效果待确认'
+CONTENT_STUB = ('# 内容表\n\n## 资料清单\n\n| 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |\n|---|---|---|---|---|---|\n'
+                '\n## 受众\n\n## 素材\n\n## 约束\n\n## 待核实和有冲突\n\n## 检索记录\n')   # 第 1 步还没建 content.md 时代替它，内容表的检查都跳过
+INFO_TO = ('知道', '了解', '感受到', '认识到')            # 「到」这样开头是信息收益，提示
+EMPTY_WORDS = ('引发共鸣', '提升好感', '增强信任', '提升认知', '加深印象')
+CIRCLED = '①②③④⑤⑥⑦⑧⑨⑩'
 
 PLACEHOLDER = re.compile(r'〔[^〕]*〕')
 REF_DATA = re.compile(r'(?<![A-Za-z0-9_])P(\d+)-(\d+)(?![\d])')
 REF_SEG = re.compile(r'(?<![A-Za-z0-9_])P(\d+)(?![\d-])')
 REF_GAP = re.compile(r'(?<![A-Za-z0-9_])Q(\d+)(?![\d])')
+REF_V = re.compile(r'(?<![A-Za-z0-9_])V(\d+)(?![\d])')
+REF_M = re.compile(r'(?<![A-Za-z0-9_])M(\d+)(?![\d])')
+REF_K = re.compile(r'(?<![A-Za-z0-9_])K(\d+)(?![\d])')
+SEG_POINTS = re.compile(r'(?<![A-Za-z0-9_])P(\d+)(?![\d-])\s*([a-z](?:\s*[、,，]\s*[a-z])*)?')
 POINT = re.compile(r'([a-z])\.\s*(.*)', re.S)
 SHARED = re.compile(r'[（(]([^（）()]*?)\s*也用[）)]')
 SHARED_REF = re.compile(r'P(\d+)\s*([a-z](?:\s*[、,，]\s*[a-z])*)?')
-CONFIRM_LINE = re.compile(r'\s*[-*]\s.*?(需求|框架|局部)(?:[（(][^）)]*[）)])?[：:]')
+CONFIRM_LINE = re.compile(r'\s*[-*]\s.*?(效果|框架|局部)(?:[（(][^）)]*[）)])?[：:]')
 NUM = r'\d+(?:\.\d+)?'
 UNITS = {'秒': ('时间', 1), 's': ('时间', 1), '分钟': ('时间', 60), '分': ('时间', 60), 'min': ('时间', 60),
          '页': ('页', 1), '千字': ('字', 1000), '万字': ('字', 10000), '字': ('字', 1)}
@@ -163,32 +186,77 @@ class Report:
         self.notes.append(f'{where}: {msg}')
 
 
-def check_rows(r, pmap, sec, names):
-    """需求、立意表：项要正好是 names → 行列表"""
-    t = find_table(pmap.get(sec, []), ['项', '内容'])
+def check_rows(r, pmap, sec, names, head):
+    """需求、效果、形式表：表头含 head，项要正好是 names → 行列表"""
+    t = find_table(pmap.get(sec, []), head)
     if sec in pmap and not t:
-        r.err(f'plan.md:{sec}', f'找不到{sec}表（表头：项 | 内容 | 来源）')
+        r.err(f'plan.md:{sec}', f'找不到{sec}表（表头：' + ' | '.join(head) + '）')
         return []
     if t and [row['项'] for row in t[1]] != names:
         r.err(f'plan.md:{sec}', f'{sec}要正好是这{len(names)}项：' + '、'.join(names) + '；现在是 ' + '、'.join(row['项'] for row in t[1]))
     return t[1] if t else []
 
 
+def circled(cell):
+    return [c for c in cell if c in CIRCLED]
+
+
+def seg_points(cell):
+    """「P1 a、b；P3 c」→ [(段号, [字母])]"""
+    return [(f'P{m.group(1)}', re.findall(r'[a-z]', m.group(2) or '')) for m in SEG_POINTS.finditer(cell)]
+
+
+def value_of(cell):
+    """「裁后用：裁掉顶部」→「裁后用」"""
+    return re.split(r'[：:]', cell, maxsplit=1)[0].strip()
+
+
+def id_table(r, where, lines, head, prefix, what):
+    """受众、素材、约束这类带编号的表 → {编号: 行}；表头错、编号格式不对、重复都报"""
+    out = {}
+    if lines is None:   # 第 1 步还没建 content.md
+        return out
+    t = find_table(lines, head)
+    if not t:
+        if tables(lines):
+            r.err(where, f'{what}表的表头要是「' + ' | '.join(head) + '」')
+        else:
+            r.err(where, f'找不到{what}表（表头：' + ' | '.join(head) + '，没有内容也留表头）')
+        return out
+    for row in t[1] if t else []:
+        i = row['#']
+        if not re.fullmatch(rf'{prefix}\d+', i):
+            r.err(where, f'编号格式不对：{i or "（空）"}（写 {prefix}1、{prefix}2）')
+            continue
+        if i in out:
+            r.err(where, f'编号重复：{i}')
+        out[i] = row
+    return out
+
+
 def check(folder, handoff=False):
     r = Report()
-    texts = {}
+    texts, stub = {}, False
     for name in ('plan.md', 'content.md'):
         p = os.path.join(folder, name)
-        if not os.path.isfile(p):
-            hint = '（格式 1 的 research.md 改名 content.md，按 CHANGELOG 转）' if name == 'content.md' and os.path.isfile(os.path.join(folder, 'research.md')) else ''
-            r.err(name, '文件不存在' + hint)
-        else:
+        if os.path.isfile(p):
             with open(p, encoding='utf-8') as f:
                 texts[name] = f.read()
+    if 'plan.md' not in texts:
+        r.err('plan.md', '文件不存在')
+    elif 'content.md' not in texts:
+        m = re.search(r'^状态[：:]\s*([^（(\n]*)', texts['plan.md'], re.M)
+        if m and m.group(1).strip().rstrip('。.') == FIRST_STEP and not handoff:
+            r.note('content.md', f'还没建：「{FIRST_STEP}」时可以先不建，第 2 步前复制模板、先填资料清单')
+            texts['content.md'] = CONTENT_STUB
+            stub = True
+        else:
+            hint = '（格式 1 的 research.md 改名 content.md，按 CHANGELOG 转）' if os.path.isfile(os.path.join(folder, 'research.md')) else ''
+            r.err('content.md', '文件不存在' + hint)
     if len(texts) < 2:
         return r
 
-    # ---------- plan.md ----------
+    # ---------- plan.md：格式、节、状态、确认记录 ----------
     ptitle, psecs = parse_md(texts['plan.md'])
     pmap = {}
     for name, lines in psecs:
@@ -199,12 +267,12 @@ def check(folder, handoff=False):
     if not m:
         r.err('plan.md', f'找不到格式行（标题下第一行写「格式：{FORMAT}」）')
     elif m.group(1) != FORMAT:
-        hint = '；这是旧格式，按本 Skill 的 CHANGELOG.md 转成格式 2' if m.group(1) in OLD_FORMATS else ''
+        hint = f'；这是旧格式，按本 Skill 的 CHANGELOG.md 转成格式 {FORMAT[-1]}' if m.group(1) in OLD_FORMATS else ''
         r.err('plan.md', f'格式是「{m.group(1)}」，本脚本只认 {FORMAT}{hint}')
         return r
-    for s in PLAN_SECTIONS:
-        if s not in pmap:
-            r.err(f'plan.md:{s}', '缺这一节')
+    for s_ in PLAN_SECTIONS:
+        if s_ not in pmap:
+            r.err(f'plan.md:{s_}', '缺这一节')
 
     m = re.search(r'^状态[：:]\s*([^（(\n]*)', texts['plan.md'], re.M)
     status = m.group(1).strip().rstrip('。.') if m else ''
@@ -220,11 +288,64 @@ def check(folder, handoff=False):
         if cm:
             confirms.append(cm.group(1))
         else:
-            r.err('plan.md:确认记录', f'这一行认不出是哪种确认（写「日期 需求：」「框架：」或「局部：」）：{line.strip()[:30]}')
+            r.err('plan.md:确认记录', f'这一行认不出是哪种确认（写「日期 效果：」「框架：」或「局部：」）：{line.strip()[:30]}')
 
-    need_rows = check_rows(r, pmap, '需求', NEED_ROWS)
-    check_rows(r, pmap, '立意', IDEA_ROWS)
+    # ---------- 需求、效果、形式 ----------
+    need_rows = check_rows(r, pmap, '需求', NEED_ROWS, ['项', '内容', '来源'])
+    effect_rows = check_rows(r, pmap, '效果', EFFECT_ROWS, ['项', '内容', '依据', '来源'])
+    form_rows = check_rows(r, pmap, '形式', FORM_ROWS, ['项', '内容', '由哪条效果推出', '来源'])
+    effect = {row['项']: row for row in effect_rows}
+    form = {row['项']: row for row in form_rows}
+    blocks = []   # 阻力编号
+    if '阻力' in effect and not is_placeholder(effect['阻力']['内容']):
+        blocks = circled(effect['阻力']['内容'])
+        if not blocks:
+            r.err('plan.md:效果', '阻力要按强弱编号：① ……<br>② ……')
+        elif len(set(blocks)) != len(blocks):
+            r.err('plan.md:效果', '阻力的编号重复：' + ''.join(blocks))
+    for row in effect_rows:
+        hit = [w for w in EMPTY_WORDS if w in row['内容']]
+        if hit:
+            r.note('plan.md:效果', f'「{row["项"]}」写了「{hit[0]}」：效果要写成具体的念头或能看见的动作')
+    for name in FORM_NEED_BASIS:
+        if name in form and not form[name]['由哪条效果推出'].strip() and not is_placeholder(form[name]['内容']):
+            r.err('plan.md:形式', f'「{name}」的「由哪条效果推出」空着：形式要从效果推出来')
+    spin_form = form.get('衍生', {}).get('内容', '')
+    spin_none = spin_form.strip() == NONE
+    spin_known = bool(spin_form.strip()) and not is_placeholder(spin_form)
 
+    def bad_blocks(cell, where, what):
+        for c in circled(cell):
+            if blocks and c not in blocks:
+                r.err(where, f'{what}写了「{c}」，效果的阻力里没有这一条')
+
+    # ---------- 立意：主线、打法 ----------
+    sec = '立意'
+    if sec in pmap:
+        if not any(re.match(r'\s*一句话主线[：:]', line) for line in pmap[sec]):
+            r.err(f'plan.md:{sec}', '缺「一句话主线：」一行')
+        t = find_table(pmap[sec], ['打法'])
+        if not t:
+            r.err(f'plan.md:{sec}', '找不到打法表（表头：' + ' | '.join(PLAY_HEAD) + '）')
+        elif t[0] != PLAY_HEAD:
+            r.err(f'plan.md:{sec}', '打法表表头要正好是「' + ' | '.join(PLAY_HEAD) + f'」，现在是「{" | ".join(t[0])}」')
+        else:
+            rows = t[1]
+            if not 1 <= len(rows) <= 3:
+                r.err(f'plan.md:{sec}', f'打法要有 1–3 个，现在 {len(rows)} 个')
+            picks = [row for row in rows if row['选'] == '选']
+            if not all(is_placeholder(row['选']) for row in rows):
+                if len(picks) != 1:
+                    r.err(f'plan.md:{sec}', f'打法表要正好一行「选」写「选」，现在 {len(picks)} 行')
+                bad = [row['选'] for row in rows if row['选'] not in ('选', '')]
+                if bad:
+                    r.err(f'plan.md:{sec}', f'「选」一列只写「选」或空着：{bad[0]}')
+            if len(rows) == 1:
+                r.note(f'plan.md:{sec}', '只有一个打法：用户给了结构时可以，否则给 2–3 个让用户选')
+            for row in rows:
+                bad_blocks(row['抓哪条阻力'], f'plan.md:{sec}', f'打法「{row["打法"]}」')
+
+    # ---------- 框架 ----------
     segs, seg_rows, points = set(), [], {}   # points: 'P1' → {'a': 这一点}
     sec = '框架'
     if sec in pmap:
@@ -258,7 +379,100 @@ def check(folder, handoff=False):
                     elif letters != [chr(ord('a') + i) for i in range(len(letters))]:
                         r.err(f'plan.md:{sec}', f'{p} 的要讲的点要从 a 起按顺序编：现在是 ' + '、'.join(letters))
                     points[p] = dict(pts or [])
+            for row in seg_rows:
+                p, aud = row['段'], row['受众：从 → 到']
+                if not is_placeholder(aud):
+                    if '→' not in aud:
+                        r.err(f'plan.md:{sec}', f'{p} 的受众要写「原来的念头 → 看完这段的念头或动作」，现在没有「→」')
+                    else:
+                        to = aud.rsplit('→', 1)[1].strip().lstrip('「“"\'')
+                        if to.startswith(INFO_TO):
+                            r.note(f'plan.md:{sec}', f'{p} 的受众「到」以「{to[:3]}」开头：写成具体的念头或动作，别停在知道了什么')
+                    hit = [w for w in EMPTY_WORDS if w in aud]
+                    if hit:
+                        r.note(f'plan.md:{sec}', f'{p} 的受众写了「{hit[0]}」：写成具体的念头或动作')
+                if not row['怎么证明'].strip():
+                    r.err(f'plan.md:{sec}', f'{p} 的「怎么证明」空着：写用什么让人信或有感受')
 
+    def bad_points(where, cell, what):
+        """「P1 a、b」里的段和字母要在框架里"""
+        found = seg_points(cell)
+        if not found:
+            r.err(where, f'{what}「{cell}」要写成「P1 a」「P1 a、b」')
+        for sp, sl in found:
+            if segs and sp not in segs:
+                r.err(where, f'{what}「{cell}」的段 {sp} 在框架里没有')
+            for x in sl:
+                if sp in points and x not in points[sp]:
+                    r.err(where, f'{what}「{cell}」的「{x}」不在 {sp} 的要讲的点里')
+        return found
+
+    # ---------- 效果自查 ----------
+    self_rows = []
+    sec = '效果自查'
+    if sec in pmap:
+        t = find_table(pmap[sec], ['查什么', '结果'])
+        if not t:
+            r.err(f'plan.md:{sec}', '找不到效果自查表（表头：查什么 | 结果）')
+        else:
+            self_rows = t[1]
+            if [row['查什么'] for row in self_rows] != SELF_ROWS:
+                r.err(f'plan.md:{sec}', '效果自查要正好是这5项：' + '、'.join(SELF_ROWS) + '；现在是 ' + '、'.join(row['查什么'] for row in self_rows))
+            got = {row['查什么']: row['结果'] for row in self_rows}
+            res = got.get('阻力', '')
+            if res and not is_placeholder(res):
+                miss = [c for c in blocks if c not in res]
+                if miss:
+                    r.err(f'plan.md:{sec}', '阻力' + ''.join(miss) + ' 没写由哪段回应')
+                bad_blocks(res, f'plan.md:{sec}', '阻力一行')
+            end_ = got.get('终点', '')
+            if end_ and not is_placeholder(end_) and not REF_SEG.search(end_):
+                r.err(f'plan.md:{sec}', '终点一行要写落在哪段（段号）')
+
+    # ---------- 说法 ----------
+    say_rows = []
+    sec = '说法'
+    if sec in pmap:
+        t = find_table(pmap[sec], ['点'])
+        if not t:
+            r.err(f'plan.md:{sec}', '找不到说法表（表头：' + ' | '.join(SAY_HEAD) + '）')
+        elif t[0] != SAY_HEAD:
+            r.err(f'plan.md:{sec}', '说法表表头要正好是「' + ' | '.join(SAY_HEAD) + f'」，现在是「{" | ".join(t[0])}」')
+        else:
+            say_rows = t[1]
+            for row in say_rows:
+                if not is_placeholder(row['点']):
+                    bad_points(f'plan.md:{sec}', row['点'], '点')
+
+    # ---------- 衍生 ----------
+    spin_rows = []
+    sec = '衍生'
+    if sec in pmap:
+        t = find_table(pmap[sec], ['条'])
+        body = [x.strip() for x in pmap[sec] if x.strip() and not x.strip().startswith('>')]
+        if t:
+            if t[0] != SPIN_HEAD:
+                r.err(f'plan.md:{sec}', '衍生表表头要正好是「' + ' | '.join(SPIN_HEAD) + f'」，现在是「{" | ".join(t[0])}」')
+            else:
+                spin_rows = t[1]
+                seen = set()
+                for row in spin_rows:
+                    i = row['条']
+                    if not re.fullmatch(r'D\d+', i):
+                        r.err(f'plan.md:{sec}', f'编号格式不对：{i or "（空）"}（写 D1、D2）')
+                    elif i in seen:
+                        r.err(f'plan.md:{sec}', f'编号重复：{i}')
+                    seen.add(i)
+                    if not is_placeholder(row['用哪些点']):
+                        bad_points(f'plan.md:{sec}', row['用哪些点'], f'{i} 的用哪些点')
+            if spin_none and spin_rows:
+                r.err(f'plan.md:{sec}', '形式的衍生写了「无」，这一节就只写「无」')
+        elif body != [NONE]:
+            r.err(f'plan.md:{sec}', f'没有衍生就只写一行「{NONE}」；有就用表（表头：' + ' | '.join(SPIN_HEAD) + '）')
+        elif spin_known and not spin_none:
+            r.err(f'plan.md:{sec}', f'形式的衍生是「{spin_form[:20]}」，这一节不能写「无」')
+
+    # ---------- 缺口 ----------
     gaps, gap_rows = set(), []
     sec = '缺口'
     if sec in pmap:
@@ -288,9 +502,30 @@ def check(folder, handoff=False):
     cmap = {}
     for name, lines in csecs:
         cmap.setdefault(name, lines)
-    for s in CONTENT_SECTIONS:
-        if s not in cmap:
-            r.err(f'content.md:{s}', '缺这一节')
+    for s_ in CONTENT_SECTIONS:
+        if s_ not in cmap:
+            r.err(f'content.md:{s_}', '缺这一节')
+
+    voices = id_table(r, 'content.md:受众', None if stub else cmap.get('受众'), VOICE_HEAD, 'V', '受众') if '受众' in cmap else {}
+    assets = id_table(r, 'content.md:素材', None if stub else cmap.get('素材'), ASSET_HEAD, 'M', '素材') if '素材' in cmap else {}
+    rules = id_table(r, 'content.md:约束', None if stub else cmap.get('约束'), RULE_HEAD, 'K', '约束') if '约束' in cmap else {}
+    for i, row in voices.items():
+        if not is_placeholder(row['内容']):
+            if row['状态'] not in DATA_STATES:
+                r.err('content.md:受众', f'{i} 的状态「{row["状态"]}」不在 ' + ' / '.join(sorted(DATA_STATES)) + ' 里')
+            if row['对应哪条阻力'] != NONE and not is_placeholder(row['对应哪条阻力']):
+                if not circled(row['对应哪条阻力']):
+                    r.err('content.md:受众', f'{i} 的「对应哪条阻力」写阻力的编号（①），不对应写「{NONE}」')
+                bad_blocks(row['对应哪条阻力'], 'content.md:受众', f'{i} 的对应哪条阻力')
+    for i, row in assets.items():
+        for col, allowed in (('能怎么用', ASSET_USES), ('能不能送生成', ASSET_GEN)):
+            v = row[col]
+            if not is_placeholder(v) or v.startswith('〔待核实〕'):
+                if value_of(v) not in allowed:
+                    r.err('content.md:素材', f'{i} 的{col}「{v}」要取 ' + ' / '.join(sorted(allowed)) + '（后面可以加「：说明」）')
+    for i, row in rules.items():
+        if not is_placeholder(row['必须守的样子']) and row['状态'] not in RULE_STATES:
+            r.err('content.md:约束', f'{i} 的状态「{row["状态"]}」要取 ' + ' / '.join(sorted(RULE_STATES)))
 
     data = {}            # 'P1-1' → 行
     covered = {}         # ('P1', 'a') → [编号]
@@ -356,32 +591,46 @@ def check(folder, handoff=False):
                     continue
                 bad = [u for u in re.split(r'、', use) if u.strip() not in USES]
                 if not use or bad:
-                    r.err(f'content.md:{sec}', f'「{row["资料"]}」的用途「{use}」要取 ' + ' / '.join(sorted(USES)) + '，多个用「、」隔开')
+                    r.err(f'content.md:{sec}', f'「{row["资料"]}」的用途「{use}」要取 ' + ' / '.join(sorted(USES)) + '，多个用「、」隔开；补充说明写进「读到哪」或「能不能公开」')
 
     # 引用都要存在：只查规定写编号的那几格，别处的「华为 P40」「2026 年 Q1」是正文
+    pools = {'P': (REF_SEG, segs, '引用的段 {} 在框架里没有'), 'D': (REF_DATA, data, '引用的 {} 在 content.md 里没有'),
+             'M': (REF_M, assets, '引用的 {} 在 content.md 的素材表里没有'), 'K': (REF_K, rules, '引用的 {} 在 content.md 的约束表里没有'),
+             'Q': (REF_GAP, gaps, '引用的 {} 在缺口表里没有')}
     cells = []   # (位置, 格子内容, 查哪几种编号)
     for row in seg_rows:
-        cells.append(('框架', row['作用'], 'P'))
+        cells += [('plan.md:框架', row['作用'], 'P'), ('plan.md:框架', row['怎么证明'], 'MK')]
+    for row in self_rows:
+        cells.append(('plan.md:效果自查', row['结果'], 'P'))
+    for row in say_rows:
+        cells.append(('plan.md:说法', row['不能丢的'], 'PDMKQ'))
     for row in gap_rows:
-        cells += [('缺口', row['段'], 'P'), ('缺口', row['怎么解决的'], 'D')]
+        cells += [('plan.md:缺口', row['段'], 'P'), ('plan.md:缺口', row['怎么解决的'], 'D')]
+    for row in assets.values():
+        cells.append(('content.md:素材', row['用到哪段'], 'P'))
+    for row in rules.values():
+        cells.append(('content.md:约束', row['依据'], 'DM'))
+    for row in data.values():
+        cells.append(('content.md', row['来源'], 'M'))
     reported = set()
-    for sec, cell, kinds in cells:
-        found = []
-        if 'D' in kinds:
-            found += [(x.group(0), data, '引用的 {} 在 content.md 里没有') for x in REF_DATA.finditer(cell)]
-        if 'P' in kinds:
-            found += [(x.group(0), segs, '引用的段 {} 在框架里没有') for x in REF_SEG.finditer(cell)]
-        for ref, pool, msg in found:
-            if ref not in pool and (sec, ref) not in reported:
-                reported.add((sec, ref))
-                r.err(f'plan.md:{sec}', msg.format(ref))
+    for where, cell, kinds in cells:
+        if is_placeholder(cell):
+            continue
+        for k in kinds:
+            if stub and k in 'DMK':
+                continue
+            rx, pool, msg = pools[k]
+            for x in rx.finditer(cell):
+                ref = x.group(0)
+                if ref not in pool and (where, ref) not in reported:
+                    reported.add((where, ref))
+                    r.err(where, msg.format(ref))
 
     # 篇幅合计和目标比：单位一致才比
     target = None
-    for row in need_rows:
-        if row['项'] == '篇幅与规格':
-            m = EXT_FIND.search(PLACEHOLDER.sub('', row['内容']))
-            target = parse_extent(m.group(0)) if m else None
+    if '篇幅和注意力' in form:
+        m = EXT_FIND.search(PLACEHOLDER.sub('', form['篇幅和注意力']['内容']))
+        target = parse_extent(m.group(0)) if m else None
     exts = [parse_extent(row['篇幅']) for row in seg_rows]
     if exts and all(exts):
         kinds = {e[0] for e in exts} - {'不限'}
@@ -397,7 +646,7 @@ def check(folder, handoff=False):
 
     # 占位（〔待核实〕是状态，不算）
     count = lambda t: sum(1 for x in PLACEHOLDER.finditer(t) if x.group(0) != '〔待核实〕')
-    for fname in ('plan.md', 'content.md'):
+    for fname in ('plan.md',) + (() if stub else ('content.md',)):
         title, secs = parse_md(texts[fname])
         for name, lines in [('标题', [title])] + secs:
             n = count('\n'.join([name] + lines))
@@ -407,21 +656,31 @@ def check(folder, handoff=False):
     if not handoff:
         return r
 
-    # ---------- 交接（SKILL.md「交接」1–4、6 条） ----------
-    for kind in ('需求', '框架'):
+    # ---------- 交接（SKILL.md「交接」1–4、6、7 条） ----------
+    for kind in ('效果', '框架'):
         if kind not in confirms:
             r.err('plan.md:确认记录', f'没有「{kind}」一行：{kind}还没确认（或没写「自动，未问用户」），不能交接')
-    for row in need_rows:
-        if TBD in row['内容'] or TBD in row.get('来源', ''):
-            r.err('plan.md:需求', f'「{row["项"]}」还是「{TBD}」，用户定了才能交接')
+    for sec, rows in (('需求', need_rows), ('效果', effect_rows), ('形式', form_rows)):
+        for row in rows:
+            if TBD in row['内容'] or TBD in row.get('来源', ''):
+                r.err(f'plan.md:{sec}', f'「{row["项"]}」还是「{TBD}」，用户定了才能交接')
     for row in gap_rows:
         if row['归谁'] == '策划' and row['状态'] == '待补':
             r.err('plan.md:缺口', f'{row["编号"]} 归策划、还待补，补完或改内容关闭后才能交接')
         if row['归谁'] == '下游':
             if not row['缺什么'] or not (REF_SEG.search(row['段']) or row['段'] == '全部'):
                 r.err('plan.md:缺口', f'{row["编号"]} 归下游，要写清缺什么、哪段（段号，或「全部」）')
+    said = set()
+    for row in say_rows:
+        for sp, _ in seg_points(row['点']):
+            said.add(sp)
+        for col in ('要的效果', '参考说法', '不能丢的'):
+            if not row[col].strip():
+                r.err('plan.md:说法', f'「{row["点"]}」的{col}空着（不能丢的没有就写「{NONE}」）')
     for row in seg_rows:
         p = row['段']
+        if p not in said:
+            r.err('plan.md:说法', f'{p} 没有说法：每段至少一行')
         for x in points.get(p, {}):
             ids = covered.get((p, x), [])
             if not ids:
@@ -430,6 +689,14 @@ def check(folder, handoff=False):
                 st = data[d]['状态']
                 if st in ('〔待核实〕', '有冲突'):
                     r.err(f'content.md:{p}', f'{p} 的「{x}」用了 {d}，它还是「{st}」')
+    for i, row in rules.items():
+        if row['状态'] not in ('已核实', '设定'):
+            r.err('content.md:约束', f'{i} 还是「{row["状态"]}」：约束要已核实或是设定才能交接')
+    for i, row in assets.items():
+        if row['能不能送生成'].startswith('〔待核实〕'):
+            r.note('content.md:素材', f'{i} 能不能送生成还没核实，下游按「不能」处理')
+    if spin_known and not spin_none and not spin_rows:
+        r.err('plan.md:衍生', '形式写了衍生，衍生节还没有行')
     if status not in HANDOFF_STATES:
         r.note('plan.md', f'状态是「{status}」，交接时改成「已交接」')
     return r

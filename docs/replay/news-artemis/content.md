@@ -22,6 +22,21 @@
 | NASA 录像：任务后发布会（2026-04-16，约 59 分钟） | https://images.nasa.gov/details/art002m1501061829_Artemis_II_Crew_Discusses_Historic_Moon_Mission_at_Post-Flight_News_Conference_250416 | 元数据全文；录像本身没读成：本次回放没重听，NASA 附带的 .srt 只有一行「[Ambient sounds]」 | 内容依据、素材 | 能 | P7-4、P7-5 |
 | NIST SP 811 附录 B.9（换算系数） | https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9 | mile → kilometer 一行 | 内容依据 | 能 | P1-4 |
 
+## 受众
+
+| # | 内容 | 种类 | 来源 | 对应哪条阻力 | 状态 |
+|---|---|---|---|---|---|
+
+## 素材
+
+| # | 文件 | 内容 | 字、标志、水印、人脸 | 能怎么用 | 能不能送生成 | 用到哪段 |
+|---|---|---|---|---|---|---|
+
+## 约束
+
+| # | 必须守的样子 | 依据 | 状态 |
+|---|---|---|---|
+
 ## P1 冷开场：用一个最大的数字抓住人，一句话说清新闻
 
 | # | 讲哪一点 | 内容 | 种类 | 来源 | 必须写清的 | 状态 |

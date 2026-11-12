@@ -12,6 +12,22 @@
 | NASA 图片 S70-36485（阿波罗 13 号主乘组） | https://images.nasa.gov/details/S70-36485 | 网页没读成：页面靠脚本渲染；改读同一编号的元数据 https://images-api.nasa.gov/search?nasa_id=S70-36485 | 素材 | 能 |  |
 | NIST SP 811 附录 B.9（换算系数） | https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9 | mile → kilometer 一行 | 内容依据 | 能 | P1-3 |
 
+## 受众
+
+| # | 内容 | 种类 | 来源 | 对应哪条阻力 | 状态 |
+|---|---|---|---|---|---|
+
+## 素材
+
+| # | 文件 | 内容 | 字、标志、水印、人脸 | 能怎么用 | 能不能送生成 | 用到哪段 |
+|---|---|---|---|---|---|---|
+| M1 | https://images.nasa.gov/details/S70-36485 | 阿波罗 13 号主乘组三人的档案合影 | 真人的脸；NASA 编号 | 原样 | 不能：真人的脸 | P3 |
+
+## 约束
+
+| # | 必须守的样子 | 依据 | 状态 |
+|---|---|---|---|
+
 ## P1 开场：用最大的数字说清新闻
 
 | # | 讲哪一点 | 内容 | 种类 | 来源 | 必须写清的 | 状态 |
