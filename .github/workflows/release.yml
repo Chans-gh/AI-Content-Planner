@@ -1,0 +1,39 @@
+# 推送版本标签（v0.6.1 这样）时：自检、核对标签和 SKILL.md 的 version、用 install.sh zip 打包，发 Release 并附上 zip
+name: release
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "要发布的标签（已推送的，如 v0.6.1）"
+        required: true
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ inputs.tag || github.ref_name }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.tag || github.ref }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 scripts/selfcheck.py
+      - name: 标签要和 SKILL.md 的 version 一致
+        run: |
+          v="$(sed -n 's/^version: *//p' skills/ai-content-planner/SKILL.md | head -1)"
+          [ "v$v" = "$TAG" ] || { echo "标签 $TAG 和 SKILL.md 的 version $v 不一致"; exit 1; }
+      - run: scripts/install.sh zip
+      - name: 发 Release（已有就替换 zip）
+        run: |
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" dist/ai-content-planner.zip --clobber
+          else
+            gh release create "$TAG" dist/ai-content-planner.zip --title "$TAG" \
+              --notes "内容策划 Skill ${TAG#v}。更新内容见 skills/ai-content-planner/CHANGELOG.md。下载 ai-content-planner.zip，解压后把 ai-content-planner/ 放进助手的 Skill 目录（Claude Code 另把 agents/ 放进 .claude/agents/），或上传到 WorkBuddy 等上传技能包的助手。"
+          fi
