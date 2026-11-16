@@ -1,0 +1,46 @@
+# 发布介绍页到 GitHub Pages：合并到 main 后把 site/ 整个目录传上去
+name: pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 检查页面是自包含的（没有外部 http(s) 资源）
+        run: |
+          if grep -nE 'src="https?://|href="https?://[^"]*\.(css|js)' site/index.html; then
+            echo "页面里引用了外部资源，介绍页必须自包含" >&2
+            exit 1
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 1800000
