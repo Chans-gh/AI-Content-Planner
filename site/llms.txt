@@ -1,0 +1,27 @@
+# AI-Content-Planner
+
+> 做内容之前的策划 Skill。三步：挖效果和形式 → 打法和框架 → 补齐内容；每步要用户确认，交接前用脚本拦错。产出 `plan.md` 和 `content.md`，下游（视频、PPT、报告、课件）直接接。
+
+- 介绍页：https://chans-gh.github.io/AI-Content-Planner/
+- 仓库：https://github.com/Chans-gh/AI-Content-Planner
+- 技能目录：`skills/ai-content-planner/`
+- 交接格式：`ai-content-planner/3`（`plan.md` 第二行写「格式：ai-content-planner/3」，状态「已交接」下游才读）
+
+## 三步
+
+1. 挖效果和形式：逐句读用户给的，读出效果六问（接触时刻、起点、阻力、终点、衡量、杠杆）和形式七项；读不出的才问，最多 5 问、每问附默认。产出 `plan.md` 的需求、效果、形式，和 `content.md` 的资料清单。结束条件：用户确认效果和形式。
+2. 打法和框架：给 2–3 个打法（区别在抓哪条阻力、用哪个杠杆）让用户选；按选定的排段，每段写受众「从 → 到」、要讲的点、怎么证明、篇幅；做效果自查，还缺的进缺口表。结束条件：用户确认打法和框架。
+3. 补齐内容：每条信息写全内容、种类（`types.md` 的小类代号）、来源、必须写清的，再标状态（已核实 / 待核实 / 有冲突 / 已过期）；另写受众原话、素材、画面约束、每段说法。结束条件：交接条件 8 条全满足。
+
+交接前跑 `python3 -I skills/ai-content-planner/scripts/check.py plans/<短名> --handoff`。只用 Python 标准库，不要 API Key。
+
+## 安装
+
+- Codex：`codex plugin marketplace add chans-gh/AI-content-planner` → `codex plugin add ai-content-planner@ai-content-planner`
+- DeepSeek Harness：`scripts/install.sh dsh`（→ `~/.dsh/skills/`），或 `scripts/install.sh dsh ~/my-project`（→ 该项目的 `.dsh/skills/`）
+- WorkBuddy：从 Releases 下 `ai-content-planner.zip` 当技能包上传，或 `scripts/install.sh zip` 自己打包
+- Claude Code：`claude plugin marketplace add chans-gh/AI-content-planner` → `claude plugin install ai-content-planner@ai-content-planner`
+
+## 示例
+
+`docs/replay/news-artemis/`：一份 8 段、38 条信息的完整稿子（格式 3），介绍页里的原文都出自这里。
