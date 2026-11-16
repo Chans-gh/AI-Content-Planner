@@ -368,3 +368,58 @@ footer .row { display: flex; flex-wrap: wrap; gap: 14px 24px; }
   .hero { padding: 48px 0 40px; }
   .wrap, .top-inner { padding-left: 18px; padding-right: 18px; }
 }
+
+/* ---------- 首屏配图与节内示意图 ---------- */
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.22fr) minmax(0, 1fr);
+  gap: 44px;
+  align-items: center;
+}
+
+.hero-copy h1 { font-size: clamp(26px, 3.2vw, 36px); max-width: 24em; }
+.hero-copy h1 { line-height: 1.16; }
+html[data-lang="en"] .hero-copy h1 { font-size: clamp(25px, 2.7vw, 34px); }
+
+.hero-fig { margin: 0; }
+.hero-fig img { display: block; width: 100%; height: auto; }
+
+.fig { margin: 26px 0 8px; }
+.fig img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+.fig figcaption {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 900px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 28px; }
+  .hero-fig { order: 2; }
+}
+
+/* ---------- 窄屏：代码块自己横滚，别把整页撑破 ---------- */
+.card,
+.installs,
+.fig,
+.ex { min-width: 0; }
+
+pre {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+code { overflow-wrap: anywhere; }
+
+/* 窄屏：两张表自己横滚，别把字挤成一列 */
+@media (max-width: 620px) {
+  .ex-body { overflow-x: auto; }
+  .ex-body > table { min-width: 560px; }
+  table.plain { display: block; overflow-x: auto; }
+}

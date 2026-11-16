@@ -34,24 +34,36 @@
 <!-- ============ P1 首屏 ============ -->
 <section class="hero">
   <div class="wrap">
-    <span class="eyebrow l-zh">AI 内容策划 · Skill</span>
-    <span class="eyebrow l-en">Content planning · Skill</span>
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow l-zh">AI 内容策划 · Skill</span>
+        <span class="eyebrow l-en">Content planning · Skill</span>
 
-    <h1 class="l-zh">做内容之前，先把三件事定下来：<br>讲什么、凭什么、缺什么。</h1>
-    <h1 class="l-en">Before you make anything, settle three things:<br>what you're saying, why it holds, what's missing.</h1>
+        <h1 class="l-zh">做内容之前，<br>先把三件事定下来：<br>讲什么、凭什么、缺什么。</h1>
+        <h1 class="l-en">Before you make anything, settle three things:<br>what you're saying, why it holds, what's missing.</h1>
 
-    <p class="lede l-zh">这个 Skill 用三步做完：定效果、定框架、补齐内容。每一步都有产物，都要你点头；交接前还有脚本把没核实的东西拦下来。</p>
-    <p class="lede l-en">This skill does it in three steps: decide the effect, lay out the frame, fill in the content. Every step leaves an artifact and waits for your nod — and a script blocks unverified claims before handoff.</p>
+        <p class="lede l-zh">这个 Skill 用三步做完：定效果、定框架、补齐内容。每一步都有产物，都要你点头；交接前还有脚本把没核实的东西拦下来。</p>
+        <p class="lede l-en">This skill does it in three steps: decide the effect, lay out the frame, fill in the content. Every step leaves an artifact and waits for your nod — and a script blocks unverified claims before handoff.</p>
 
-    <p class="lede-sub l-zh">它交出去的不是大纲，是一份带来源和核实状态的策划稿：下面是其中两条。</p>
-    <p class="lede-sub l-en">What comes out isn't an outline. It's a planning document where every fact carries a source and a verification state — here are two entries from one.</p>
+        <p class="lede-sub l-zh">它交出去的不是大纲，是一份带来源和核实状态的策划稿：下面是其中两条。</p>
+        <p class="lede-sub l-en">What comes out isn't an outline. It's a planning document where every fact carries a source and a verification state — here are two entries from one.</p>
 
-    <div class="flow">
-      <div class="flow-item"><b class="l-zh">定效果</b><b class="l-en">Effect</b><span class="l-zh">plan.md 的效果、形式</span><span class="l-en">effect + form</span></div>
-      <div class="flow-item"><b class="l-zh">定框架</b><b class="l-en">Frame</b><span class="l-zh">主线、打法、分段</span><span class="l-en">throughline, angle, segments</span></div>
-      <div class="flow-item"><b class="l-zh">补齐内容</b><b class="l-en">Content</b><span class="l-zh">每条信息带来源和状态</span><span class="l-en">every fact sourced + verified</span></div>
-      <div class="flow-item"><b class="l-zh">过检查</b><b class="l-en">Checks</b><span class="l-zh">你确认；脚本拦错</span><span class="l-en">your sign-off, then the script</span></div>
-      <div class="flow-item"><b class="l-zh">交下游</b><b class="l-en">Handoff</b><span class="l-zh">格式固定，出片接着排</span><span class="l-en">a format the next step can read</span></div>
+        <div class="cta">
+          <a class="btn btn-primary" href="https://github.com/Chans-gh/AI-Content-Planner">
+            <span class="l-zh">去仓库看看</span><span class="l-en">Open the repo</span>
+          </a>
+          <a class="btn btn-ghost" href="#install">
+            <span class="l-zh">直接看安装</span><span class="l-en">Jump to install</span>
+          </a>
+        </div>
+      </div>
+
+      <figure class="hero-fig">
+        <img class="l-zh" src="./assets/diagrams/zh/hero-flow.svg" width="520" height="452"
+             alt="示意图：三步流水线——定效果（plan.md 的效果和形式）、定框架（立意、打法、分段）、补齐内容（content.md 每条带来源），每步都等你确认；然后过 check.py --handoff，状态改成已交接，交给下游选风格、写分镜、出片。">
+        <img class="l-en" src="./assets/diagrams/en/hero-flow.svg" width="520" height="452"
+             alt="Diagram: a three-step pipeline — effect (plan.md effect and form), frame (throughline, angle, segments), content (content.md, every fact sourced). Each step waits for your nod, then check.py --handoff runs and the status becomes handed off.">
+      </figure>
     </div>
 
     <div class="ex">
@@ -104,14 +116,6 @@
       </div>
     </div>
 
-    <div class="cta">
-      <a class="btn btn-primary" href="https://github.com/Chans-gh/AI-Content-Planner">
-        <span class="l-zh">去仓库看看</span><span class="l-en">Open the repo</span>
-      </a>
-      <a class="btn btn-ghost" href="#install">
-        <span class="l-zh">直接看安装</span><span class="l-en">Jump to install</span>
-      </a>
-    </div>
   </div>
 </section>
 
@@ -147,6 +151,15 @@
       <li><span class="l-zh"><code>plan.md</code> 里的需求、效果、形式三张表，和 <code>content.md</code> 的资料清单。</span><span class="l-en">Three tables in <code>plan.md</code> — brief, effect, form — plus the source list in <code>content.md</code>.</span></li>
       <li><span class="l-zh">状态行写「效果待确认」；你确认了才往下走。</span><span class="l-en">The status line reads "effect pending confirmation". Nothing moves until you confirm.</span></li>
     </ul>
+
+    <figure class="fig">
+      <img class="l-zh" src="./assets/diagrams/zh/six-questions.svg" width="760" height="232" loading="lazy" alt="示意图：你的一句话和给的材料，进到效果六问——接触时刻、起点、阻力、终点、衡量、杠杆——产出 plan.md 和 content.md。">
+      <img class="l-en" src="./assets/diagrams/en/six-questions.svg" width="760" height="232" loading="lazy" alt="Diagram: your one line and your materials go through six questions — moment, starting point, resistance, end state, measure, leverage — and come out as plan.md and content.md.">
+      <figcaption>
+        <span class="l-zh">第 1 步：六问 → 三张表 + 资料清单</span>
+        <span class="l-en">Step 1: six questions → three tables + a source list</span>
+      </figcaption>
+    </figure>
 
     <div class="ex">
       <div class="ex-head"><b class="l-zh">示例原文</b><b class="l-en">From the case</b><code>news-artemis/plan.md · 效果表</code></div>
@@ -193,6 +206,15 @@
 
     <p class="l-zh">这一步写进 <code>plan.md</code> 的立意、框架、效果自查、取舍、缺口，状态改成「框架待确认」，再等你确认。</p>
     <p class="l-en">This step writes the angle, the frame, the self-check, what was cut, and the open gaps into <code>plan.md</code>; the status becomes "frame pending confirmation" and waits for you again.</p>
+
+    <figure class="fig">
+      <img class="l-zh" src="./assets/diagrams/zh/angle-frame.svg" width="760" height="268" loading="lazy" alt="示意图：三个打法，区别在抓哪条阻力、用哪个杠杆；你挑一个，然后按段排框架——每段写受众从哪到哪、要讲的点、怎么证明、篇幅。">
+      <img class="l-en" src="./assets/diagrams/en/angle-frame.svg" width="760" height="268" loading="lazy" alt="Diagram: three angles that differ in which resistance they answer and which leverage they use; you pick one, then the frame is laid out segment by segment with from → to, points, proof and length.">
+      <figcaption>
+        <span class="l-zh">第 2 步：2–3 个打法 → 你挑一个 → 每段四件事</span>
+        <span class="l-en">Step 2: two or three angles → you pick one → four things per segment</span>
+      </figcaption>
+    </figure>
 
     <div class="ex">
       <div class="ex-head"><b class="l-zh">示例原文</b><b class="l-en">From the case</b><code>news-artemis/plan.md · 框架 P1 行</code></div>
@@ -274,6 +296,15 @@
     <p class="l-zh">读不到的资料就照实写「没读成：原因」，同时在缺口表记一行——不编。找不到替代时也可以改内容关闭（删掉相关的话），但要你确认，因为删的是你要的东西。</p>
     <p class="l-en">If a source can't be read, it says so — "not read: reason" — and logs a row in the gaps table. Nothing gets invented. When no substitute exists it can close the gap by cutting the content instead, but only with your confirmation, since what gets cut is something you asked for.</p>
 
+    <figure class="fig">
+      <img class="l-zh" src="./assets/diagrams/zh/fact-anatomy.svg" width="760" height="252" loading="lazy" alt="示意图：一条信息的解剖——内容、种类（B1）、来源、必须写清的；状态只有四种：已核实、待核实、有冲突、已过期。">
+      <img class="l-en" src="./assets/diagrams/en/fact-anatomy.svg" width="760" height="252" loading="lazy" alt="Diagram: the anatomy of one fact — the fact, its type (B1), its source, and what must be clear; the state is one of four: verified, unverified, conflicting, expired.">
+      <figcaption>
+        <span class="l-zh">第 3 步：一条信息写全四样，状态只有四种</span>
+        <span class="l-en">Step 3: four fields per fact, four possible states</span>
+      </figcaption>
+    </figure>
+
     <div class="ex">
       <div class="ex-head"><b class="l-zh">示例原文</b><b class="l-en">From the case</b><code>news-artemis/content.md · P1-2</code></div>
       <div class="ex-body">
@@ -330,6 +361,15 @@
       </tbody>
     </table>
 
+    <figure class="fig">
+      <img class="l-zh" src="./assets/diagrams/zh/handoff-gate.svg" width="760" height="252" loading="lazy" alt="示意图：plan.md 和 content.md 进到 check.py --handoff 这道关口，交接条件一共 8 条；过了写已交接，没过就拦下不许交接。">
+      <img class="l-en" src="./assets/diagrams/en/handoff-gate.svg" width="760" height="252" loading="lazy" alt="Diagram: plan.md and content.md pass through the check.py --handoff gate with eight conditions; pass and the status becomes handed off, fail and the handoff is blocked.">
+      <figcaption>
+        <span class="l-zh">交接前的那道关口：过了才写「已交接」</span>
+        <span class="l-en">The gate before handoff: pass it or the status stays put</span>
+      </figcaption>
+    </figure>
+
     <h3 class="l-zh">交接要过 8 条</h3>
     <h3 class="l-en">Handoff has to clear eight conditions</h3>
     <ol class="steps">
@@ -379,6 +419,15 @@ python3 -I skills/ai-content-planner/scripts/check.py "$D" --handoff</code></pre
     <p class="l-zh">下游读效果、形式、说法、素材、约束这几节；引用的时候用 <code>seg</code>（段）、<code>ref</code>（信息编号）、<code>rule</code>（约束编号）对回来，不靠猜。</p>
     <p class="l-en">The next step reads the effect, form, wording, assets and constraints sections. References come back as <code>seg</code> (segment), <code>ref</code> (fact ID) and <code>rule</code> (constraint ID) — nothing is guessed.</p>
 
+    <figure class="fig">
+      <img class="l-zh" src="./assets/diagrams/zh/handoff-loop.svg" width="760" height="240" loading="lazy" alt="示意图：稿子交出去之后，下游出片时发现内容不够，就在缺口表加一行、状态改成回流中，回到第 3 步补齐，再改回已交接。">
+      <img class="l-en" src="./assets/diagrams/en/handoff-loop.svg" width="760" height="240" loading="lazy" alt="Diagram: after handoff, if production finds a gap it adds a row, the status becomes flowing back, the gap is filled in step 3, and the status returns to handed off.">
+      <figcaption>
+        <span class="l-zh">交出去不是结束：缺内容会回流到第 3 步</span>
+        <span class="l-en">Handoff is not the end: gaps flow back to step 3</span>
+      </figcaption>
+    </figure>
+
     <h3 class="l-zh">出片时发现内容不够，就回流</h3>
     <h3 class="l-en">If production finds a hole, it flows back</h3>
     <ol class="steps">
@@ -405,6 +454,16 @@ python3 -I skills/ai-content-planner/scripts/check.py "$D" --handoff</code></pre
     <div class="step-no"><span class="l-zh">安装</span><span class="l-en">Install</span></div>
     <h2 class="l-zh">三条路装上它</h2>
     <h2 class="l-en">Three ways to install it</h2>
+
+    <figure class="fig">
+      <img class="l-zh" src="./assets/diagrams/zh/install-paths.svg" width="760" height="236" loading="lazy" alt="示意图：三条安装路径——Codex 的插件市场、WorkBuddy 的 zip 技能包、DeepSeek Harness 的 install.sh dsh——都装进你的助手，只用 Python 标准库，不要 API Key。">
+      <img class="l-en" src="./assets/diagrams/en/install-paths.svg" width="760" height="236" loading="lazy" alt="Diagram: three install paths — the Codex plugin marketplace, the WorkBuddy zip skill pack, and install.sh dsh for DeepSeek Harness — all landing in your assistant, standard library only, no API key.">
+      <figcaption>
+        <span class="l-zh">三条路，挑你用哪个助手</span>
+        <span class="l-en">Three paths, pick your assistant</span>
+      </figcaption>
+    </figure>
+
 
     <div class="installs">
       <div class="card">
