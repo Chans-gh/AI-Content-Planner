@@ -11,21 +11,25 @@
 <meta property="og:description" content="定效果 → 定框架 → 补齐内容 → 过检查 → 交下游。每一步都有产物，都要你点头。">
 <meta property="og:url" content="https://chans-gh.github.io/AI-Content-Planner/">
 <meta name="twitter:card" content="summary">
+<link rel="alternate" type="text/plain" href="llms.txt" title="llms.txt">
 <link rel="stylesheet" href="./assets/site.css">
 </head>
 <body id="top">
 
-<header class="top">
-  <div class="top-inner">
-    <a class="brand" href="#top">AI-Content-Planner <em class="l-zh">· 介绍页</em><em class="l-en">· overview</em></a>
-    <nav class="top-nav">
-      <a href="#step1"><span class="l-zh">第 1 步</span><span class="l-en">Step 1</span></a>
-      <a href="#step2"><span class="l-zh">第 2 步</span><span class="l-en">Step 2</span></a>
-      <a href="#step3"><span class="l-zh">第 3 步</span><span class="l-en">Step 3</span></a>
-      <a href="#check"><span class="l-zh">检查</span><span class="l-en">Checks</span></a>
-      <a href="#install"><span class="l-zh">安装</span><span class="l-en">Install</span></a>
+<header class="bar">
+  <div class="wrap bar-in">
+    <a class="mark" href="#top">AI Content Planner</a>
+    <nav class="nav" aria-label="目录">
+      <a href="#step1"><span lang="zh">第 1 步</span><span lang="en">Step 1</span></a>
+      <a href="#step2"><span lang="zh">第 2 步</span><span lang="en">Step 2</span></a>
+      <a href="#step3"><span lang="zh">第 3 步</span><span lang="en">Step 3</span></a>
+      <a href="#check"><span lang="zh">检查</span><span lang="en">Checks</span></a>
+      <a href="#handoff"><span lang="zh">交接</span><span lang="en">Handoff</span></a>
+      <a href="#install"><span lang="zh">安装</span><span lang="en">Install</span></a>
     </nav>
-    <button class="lang" id="lang" type="button" aria-label="切换语言 / Switch language">EN</button>
+    <div class="bar-end">
+      <button class="lang" id="lang-toggle" type="button" aria-label="切换语言 / Switch language"><span lang="zh">EN</span><span lang="en">中文</span></button>
+    </div>
   </div>
 </header>
 
@@ -33,83 +37,95 @@
 
 <!-- ============ P1 首屏 ============ -->
 <section class="hero">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <span class="eyebrow l-zh">AI 内容策划 · Skill</span>
-        <span class="eyebrow l-en">Content planning · Skill</span>
+  <div class="wrap hero-grid">
+    <div class="hero-text">
+        <span class="kicker" lang="zh">AI 内容策划 · Skill</span>
+        <span class="kicker" lang="en">Content planning · Skill</span>
 
-        <h1 class="l-zh">做内容之前，<br>先把三件事定下来：<br>讲什么、凭什么、缺什么。</h1>
-        <h1 class="l-en">Before you make anything, settle three things:<br>what you're saying, why it holds, what's missing.</h1>
+        <h1 lang="zh">做内容之前，<br>先把三件事定下来：<br>讲什么、凭什么、缺什么。</h1>
+        <h1 lang="en">Before you make anything, settle three things:<br>what you're saying, why it holds, what's missing.</h1>
 
-        <p class="lede l-zh">这个 Skill 用三步做完：定效果、定框架、补齐内容。每一步都有产物，都要你点头；交接前还有脚本把没核实的东西拦下来。</p>
-        <p class="lede l-en">This skill does it in three steps: decide the effect, lay out the frame, fill in the content. Every step leaves an artifact and waits for your nod — and a script blocks unverified claims before handoff.</p>
+        <p class="lede" lang="zh">这个 Skill 用三步做完：定效果、定框架、补齐内容。每一步都有产物，都要你点头；交接前还有脚本把没核实的东西拦下来。</p>
+        <p class="lede" lang="en">This skill does it in three steps: decide the effect, lay out the frame, fill in the content. Every step leaves an artifact and waits for your nod — and a script blocks unverified claims before handoff.</p>
 
-        <p class="lede-sub l-zh">它交出去的不是大纲，是一份带来源和核实状态的策划稿：下面是其中两条。</p>
-        <p class="lede-sub l-en">What comes out isn't an outline. It's a planning document where every fact carries a source and a verification state — here are two entries from one.</p>
+        <p class="lede-sub" lang="zh">它交出去的不是大纲，是一份带来源和核实状态的策划稿：下面是其中两条。</p>
+        <p class="lede-sub" lang="en">What comes out isn't an outline. It's a planning document where every fact carries a source and a verification state — here are two entries from one.</p>
+
+        <ul class="hero-tags">
+          <li><b>3</b><span lang="zh">步</span><span lang="en">steps</span></li>
+          <li><b>38</b><span lang="zh">条信息</span><span lang="en">facts</span></li>
+          <li><b>8</b><span lang="zh">段</span><span lang="en">segments</span></li>
+        </ul>
 
         <div class="cta">
-          <a class="btn btn-primary" href="https://github.com/Chans-gh/AI-Content-Planner">
-            <span class="l-zh">去仓库看看</span><span class="l-en">Open the repo</span>
+          <a class="btn primary" href="https://github.com/Chans-gh/AI-Content-Planner">
+            <span lang="zh">去仓库看看</span><span lang="en">Open the repo</span>
           </a>
-          <a class="btn btn-ghost" href="#install">
-            <span class="l-zh">直接看安装</span><span class="l-en">Jump to install</span>
+          <a class="btn ghost" href="#install">
+            <span lang="zh">直接看安装</span><span lang="en">Jump to install</span>
           </a>
         </div>
       </div>
 
       <figure class="hero-fig">
-        <img class="l-zh" src="./assets/diagrams/zh/hero-flow.svg" width="520" height="452"
+        <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/zh-dark/hero-flow.svg">
+        <img lang="zh" src="./assets/diagrams/zh/hero-flow.svg" width="520" height="452"
              alt="示意图：三步流水线——定效果（plan.md 的效果和形式）、定框架（立意、打法、分段）、补齐内容（content.md 每条带来源），每步都等你确认；然后过 check.py --handoff，状态改成已交接，交给下游选风格、写分镜、出片。">
-        <img class="l-en" src="./assets/diagrams/en/hero-flow.svg" width="520" height="452"
+      </picture>
+        <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/en-dark/hero-flow.svg">
+        <img lang="en" src="./assets/diagrams/en/hero-flow.svg" width="520" height="452"
              alt="Diagram: a three-step pipeline — effect (plan.md effect and form), frame (throughline, angle, segments), content (content.md, every fact sourced). Each step waits for your nod, then check.py --handoff runs and the status becomes handed off.">
+      </picture>
       </figure>
     </div>
 
+  <div class="wrap">
     <div class="ex">
       <div class="ex-head">
-        <b class="l-zh">示例原文</b><b class="l-en">From a real case</b>
+        <b lang="zh">示例原文</b><b lang="en">From a real case</b>
         <code>docs/replay/news-artemis/content.md</code>
-        <span class="l-zh">8 段 · 38 条信息</span>
-        <span class="l-en">8 segments · 38 facts</span>
+        <span lang="zh">8 段 · 38 条信息</span>
+        <span lang="en">8 segments · 38 facts</span>
       </div>
       <div class="ex-body">
         <table>
           <thead>
             <tr>
-              <th><span class="l-zh">编号</span><span class="l-en">ID</span></th>
-              <th><span class="l-zh">这条信息</span><span class="l-en">The fact</span></th>
-              <th><span class="l-zh">种类</span><span class="l-en">Type</span></th>
-              <th><span class="l-zh">来源</span><span class="l-en">Source</span></th>
-              <th><span class="l-zh">状态</span><span class="l-en">State</span></th>
+              <th><span lang="zh">编号</span><span lang="en">ID</span></th>
+              <th><span lang="zh">这条信息</span><span lang="en">The fact</span></th>
+              <th><span lang="zh">种类</span><span lang="en">Type</span></th>
+              <th><span lang="zh">来源</span><span lang="en">Source</span></th>
+              <th><span lang="zh">状态</span><span lang="en">State</span></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td class="id">P1-1</td>
               <td>
-                <span class="l-zh">美东 4 月 6 日 19:02 到达离地球最远处 252,756 英里（约 406,771 公里），载人航天离地球最远的纪录</span>
-                <span class="l-en">At 19:02 EDT on April 6 the crew reached 252,756 mi (about 406,771 km) from Earth — the farthest humans have ever been.</span>
+                <span lang="zh">美东 4 月 6 日 19:02 到达离地球最远处 252,756 英里（约 406,771 公里），载人航天离地球最远的纪录</span>
+                <span lang="en">At 19:02 EDT on April 6 the crew reached 252,756 mi (about 406,771 km) from Earth — the farthest humans have ever been.</span>
               </td>
               <td class="kind">B1</td>
               <td>
-                <span class="l-zh">NASA 返回新闻稿 · 导语；飞掠博客 · 19:02 条 · 2026-11-08 · 一手</span>
-                <span class="l-en">NASA return release · lede; flyby blog · 19:02 entry · 2026-11-08 · primary</span>
+                <span lang="zh">NASA 返回新闻稿 · 导语；飞掠博客 · 19:02 条 · 2026-11-08 · 一手</span>
+                <span lang="en">NASA return release · lede; flyby blog · 19:02 entry · 2026-11-08 · primary</span>
               </td>
-              <td><span class="tag tag-ok l-zh">已核实</span><span class="tag tag-ok l-en">verified</span></td>
+              <td><span class="tag tag-ok" lang="zh">已核实</span><span class="tag tag-ok" lang="en">verified</span></td>
             </tr>
             <tr>
               <td class="id">P6-7</td>
               <td>
-                <span class="l-zh">博客写：新纪录比阿波罗 13 号远 4,111 英里（必须写清里标了：和 P1-1、P6-1 相减的 4,101 英里对不上）</span>
-                <span class="l-en">The blog says the new record is 4,111 mi farther than Apollo 13 (the note says it doesn't match the 4,101 mi you get from P1-1 and P6-1).</span>
+                <span lang="zh">博客写：新纪录比阿波罗 13 号远 4,111 英里（必须写清里标了：和 P1-1、P6-1 相减的 4,101 英里对不上）</span>
+                <span lang="en">The blog says the new record is 4,111 mi farther than Apollo 13 (the note says it doesn't match the 4,101 mi you get from P1-1 and P6-1).</span>
               </td>
               <td class="kind">B1</td>
               <td>
-                <span class="l-zh">飞掠博客 · 7:02 p.m. 条 · 2026-11-08 · 一手</span>
-                <span class="l-en">Flyby blog · 7:02 p.m. entry · 2026-11-08 · primary</span>
+                <span lang="zh">飞掠博客 · 7:02 p.m. 条 · 2026-11-08 · 一手</span>
+                <span lang="en">Flyby blog · 7:02 p.m. entry · 2026-11-08 · primary</span>
               </td>
-              <td><span class="tag tag-warn l-zh">有冲突</span><span class="tag tag-warn l-en">conflicting</span></td>
+              <td><span class="tag tag-warn" lang="zh">有冲突</span><span class="tag tag-warn" lang="en">conflicting</span></td>
             </tr>
           </tbody>
         </table>
@@ -120,66 +136,71 @@
 </section>
 
 <!-- ============ P2 第 1 步 ============ -->
-<section id="step1">
-  <div class="wrap sec-head">
-    <div class="step-no"><span class="l-zh">第 1 步</span><span class="l-en">Step 1</span></div>
-    <h2 class="l-zh">先定效果和形式：给谁看，做成什么样</h2>
-    <h2 class="l-en">First, decide the effect and the form: who sees it, in what shape</h2>
-    <p class="l-zh">这一步不写正文，只定两件事：给谁看、做成什么形式。效果要回答六个问题——答不上来的，它才问你，而且每个问题都带一个默认答案。</p>
-    <p class="l-en">No prose yet. This step settles two things: who it's for and what shape it takes. The effect has to answer six questions — only the ones you can't answer get asked back to you, each with a default you can accept with one word.</p>
+<section class="sec" id="step1">
+  <div class="wrap">
+    <h2 lang="zh">先定效果和形式：给谁看，做成什么样</h2>
+    <h2 lang="en">First, decide the effect and the form: who sees it, in what shape</h2>
+    <p lang="zh">这一步不写正文，只定两件事：给谁看、做成什么形式。效果要回答六个问题——答不上来的，它才问你，而且每个问题都带一个默认答案。</p>
+    <p lang="en">No prose yet. This step settles two things: who it's for and what shape it takes. The effect has to answer six questions — only the ones you can't answer get asked back to you, each with a default you can accept with one word.</p>
 
     <div class="grid2">
-      <div class="q"><b class="l-zh">接触时刻</b><b class="l-en">The moment</b><span class="l-zh">在哪、怎么遇到，当时在干嘛，能分多少注意力。</span><span class="l-en">Where and how they meet it, what they're doing, how much attention they'll give.</span></div>
-      <div class="q"><b class="l-zh">起点</b><b class="l-en">Starting point</b><span class="l-zh">遇到时知道什么、信什么、感觉什么。</span><span class="l-en">What they already know, trust, feel.</span></div>
-      <div class="q"><b class="l-zh">阻力</b><b class="l-en">Resistance</b><span class="l-zh">什么让他不往终点走——写成他心里那句话。</span><span class="l-en">What keeps them from the goal, written as the sentence in their head.</span></div>
-      <div class="q"><b class="l-zh">终点</b><b class="l-en">End state</b><span class="l-zh">看完的状态，加一个能看见的动作。</span><span class="l-en">Where they land, plus one action you can see.</span></div>
-      <div class="q"><b class="l-zh">衡量</b><b class="l-en">Measure</b><span class="l-zh">怎么判断成没成；没有就写「无」。</span><span class="l-en">How you'd know it worked; "none" is a valid answer.</span></div>
-      <div class="q"><b class="l-zh">杠杆</b><b class="l-en">Leverage</b><span class="l-zh">只有这个题才有的东西：独有的事实、素材、身份、时机。</span><span class="l-en">What only this topic has: a fact, a source, a person, a moment.</span></div>
+      <div class="q"><b lang="zh">接触时刻</b><b lang="en">The moment</b><span lang="zh">在哪、怎么遇到，当时在干嘛，能分多少注意力。</span><span lang="en">Where and how they meet it, what they're doing, how much attention they'll give.</span></div>
+      <div class="q"><b lang="zh">起点</b><b lang="en">Starting point</b><span lang="zh">遇到时知道什么、信什么、感觉什么。</span><span lang="en">What they already know, trust, feel.</span></div>
+      <div class="q"><b lang="zh">阻力</b><b lang="en">Resistance</b><span lang="zh">什么让他不往终点走——写成他心里那句话。</span><span lang="en">What keeps them from the goal, written as the sentence in their head.</span></div>
+      <div class="q"><b lang="zh">终点</b><b lang="en">End state</b><span lang="zh">看完的状态，加一个能看见的动作。</span><span lang="en">Where they land, plus one action you can see.</span></div>
+      <div class="q"><b lang="zh">衡量</b><b lang="en">Measure</b><span lang="zh">怎么判断成没成；没有就写「无」。</span><span lang="en">How you'd know it worked; "none" is a valid answer.</span></div>
+      <div class="q"><b lang="zh">杠杆</b><b lang="en">Leverage</b><span lang="zh">只有这个题才有的东西：独有的事实、素材、身份、时机。</span><span lang="en">What only this topic has: a fact, a source, a person, a moment.</span></div>
     </div>
 
-    <h3 class="l-zh">问的规矩</h3>
-    <h3 class="l-en">How it asks</h3>
+    <h3 lang="zh">问的规矩</h3>
+    <h3 lang="en">How it asks</h3>
     <ul class="clean">
-      <li><span class="l-zh">读得出的不问；读不出的才问，先问终点、阻力、接触时刻。</span><span class="l-en">It doesn't ask what it can read off your words. Only the gaps get questions, starting with the end state, the resistance, the moment.</span></li>
-      <li><span class="l-zh">一次最多 5 个问题。</span><span class="l-en">At most five questions at a time.</span></li>
-      <li><span class="l-zh">每个问题附一个默认答案，你可以只回「按默认」。</span><span class="l-en">Every question comes with a default; "use the default" is a complete answer.</span></li>
+      <li><span lang="zh">读得出的不问；读不出的才问，先问终点、阻力、接触时刻。</span><span lang="en">It doesn't ask what it can read off your words. Only the gaps get questions, starting with the end state, the resistance, the moment.</span></li>
+      <li><span lang="zh">一次最多 5 个问题。</span><span lang="en">At most five questions at a time.</span></li>
+      <li><span lang="zh">每个问题附一个默认答案，你可以只回「按默认」。</span><span lang="en">Every question comes with a default; "use the default" is a complete answer.</span></li>
     </ul>
 
-    <h3 class="l-zh">这一步的产出</h3>
-    <h3 class="l-en">What this step leaves behind</h3>
+    <h3 lang="zh">这一步的产出</h3>
+    <h3 lang="en">What this step leaves behind</h3>
     <ul class="clean">
-      <li><span class="l-zh"><code>plan.md</code> 里的需求、效果、形式三张表，和 <code>content.md</code> 的资料清单。</span><span class="l-en">Three tables in <code>plan.md</code> — brief, effect, form — plus the source list in <code>content.md</code>.</span></li>
-      <li><span class="l-zh">状态行写「效果待确认」；你确认了才往下走。</span><span class="l-en">The status line reads "effect pending confirmation". Nothing moves until you confirm.</span></li>
+      <li><span lang="zh"><code>plan.md</code> 里的需求、效果、形式三张表，和 <code>content.md</code> 的资料清单。</span><span lang="en">Three tables in <code>plan.md</code> — brief, effect, form — plus the source list in <code>content.md</code>.</span></li>
+      <li><span lang="zh">状态行写「效果待确认」；你确认了才往下走。</span><span lang="en">The status line reads "effect pending confirmation". Nothing moves until you confirm.</span></li>
     </ul>
 
     <figure class="fig">
-      <img class="l-zh" src="./assets/diagrams/zh/six-questions.svg" width="760" height="232" loading="lazy" alt="示意图：你的一句话和给的材料，进到效果六问——接触时刻、起点、阻力、终点、衡量、杠杆——产出 plan.md 和 content.md。">
-      <img class="l-en" src="./assets/diagrams/en/six-questions.svg" width="760" height="232" loading="lazy" alt="Diagram: your one line and your materials go through six questions — moment, starting point, resistance, end state, measure, leverage — and come out as plan.md and content.md.">
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/zh-dark/six-questions.svg">
+        <img lang="zh" src="./assets/diagrams/zh/six-questions.svg" width="760" height="232" loading="lazy" alt="示意图：你的一句话和给的材料，进到效果六问——接触时刻、起点、阻力、终点、衡量、杠杆——产出 plan.md 和 content.md。">
+      </picture>
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/en-dark/six-questions.svg">
+        <img lang="en" src="./assets/diagrams/en/six-questions.svg" width="760" height="232" loading="lazy" alt="Diagram: your one line and your materials go through six questions — moment, starting point, resistance, end state, measure, leverage — and come out as plan.md and content.md.">
+      </picture>
       <figcaption>
-        <span class="l-zh">第 1 步：六问 → 三张表 + 资料清单</span>
-        <span class="l-en">Step 1: six questions → three tables + a source list</span>
+        <span lang="zh">第 1 步：六问 → 三张表 + 资料清单</span>
+        <span lang="en">Step 1: six questions → three tables + a source list</span>
       </figcaption>
     </figure>
 
     <div class="ex">
-      <div class="ex-head"><b class="l-zh">示例原文</b><b class="l-en">From the case</b><code>news-artemis/plan.md · 效果表</code></div>
+      <div class="ex-head"><b lang="zh">示例原文</b><b lang="en">From the case</b><code>news-artemis/plan.md · 效果表</code></div>
       <div class="ex-body">
         <table>
           <tbody>
             <tr>
-              <th><span class="l-zh">接触时刻</span><span class="l-en">Moment</span></th>
-              <td><span class="l-zh">视频号、抖音的推荐流里刷到，前 3 秒决定看不看；留下来的会看几分钟</span><span class="l-en">Scrolled past in a feed; the first 3 seconds decide it; whoever stays watches for minutes</span></td>
+              <th><span lang="zh">接触时刻</span><span lang="en">Moment</span></th>
+              <td><span lang="zh">视频号、抖音的推荐流里刷到，前 3 秒决定看不看；留下来的会看几分钟</span><span lang="en">Scrolled past in a feed; the first 3 seconds decide it; whoever stays watches for minutes</span></td>
             </tr>
             <tr>
-              <th><span class="l-zh">阻力</span><span class="l-en">Resistance</span></th>
+              <th><span lang="zh">阻力</span><span lang="en">Resistance</span></th>
               <td>
-                <span class="l-zh">① 又一条航天新闻，阿波罗早就去过了<br>② 轨道、引力这些听不懂<br>③ 几十万公里只是个数字，没感觉</span>
-                <span class="l-en">① Another space story — Apollo already did this<br>② Orbits and gravity go over my head<br>③ A few hundred thousand kilometres is just a number</span>
+                <span lang="zh">① 又一条航天新闻，阿波罗早就去过了<br>② 轨道、引力这些听不懂<br>③ 几十万公里只是个数字，没感觉</span>
+                <span lang="en">① Another space story — Apollo already did this<br>② Orbits and gravity go over my head<br>③ A few hundred thousand kilometres is just a number</span>
               </td>
             </tr>
             <tr>
-              <th><span class="l-zh">终点</span><span class="l-en">End state</span></th>
-              <td><span class="l-zh">能对别人说出「这次比阿波罗还远，56 年来第一次」，记住下一次在 2027 年；不要导流动作</span><span class="l-en">Can tell someone "this went farther than Apollo, first time in 56 years"; remembers the next one is in 2027; no call to action</span></td>
+              <th><span lang="zh">终点</span><span lang="en">End state</span></th>
+              <td><span lang="zh">能对别人说出「这次比阿波罗还远，56 年来第一次」，记住下一次在 2027 年；不要导流动作</span><span lang="en">Can tell someone "this went farther than Apollo, first time in 56 years"; remembers the next one is in 2027; no call to action</span></td>
             </tr>
           </tbody>
         </table>
@@ -189,56 +210,61 @@
 </section>
 
 <!-- ============ P3 第 2 步 ============ -->
-<section id="step2">
-  <div class="wrap sec-head">
-    <div class="step-no"><span class="l-zh">第 2 步</span><span class="l-en">Step 2</span></div>
-    <h2 class="l-zh">再定打法和框架：每段把人从哪个念头带到哪个念头</h2>
-    <h2 class="l-en">Then the angle and the frame: each segment moves a reader from one thought to the next</h2>
-    <p class="l-zh">先给你 2–3 个打法让你选。两个打法之间的区别必须在于抓哪条阻力、用哪个杠杆——只是换句话说的，不算两个。选定之后按段排，每段写四件事。</p>
-    <p class="l-en">You get two or three angles to choose from. They have to differ in which resistance they answer and which piece of leverage they use; a rephrasing isn't a second angle. Once you pick one, the segments get laid out, each with four things written down.</p>
+<section class="sec" id="step2">
+  <div class="wrap">
+    <h2 lang="zh">再定打法和框架：每段把人从哪个念头带到哪个念头</h2>
+    <h2 lang="en">Then the angle and the frame: each segment moves a reader from one thought to the next</h2>
+    <p lang="zh">先给你 2–3 个打法让你选。两个打法之间的区别必须在于抓哪条阻力、用哪个杠杆——只是换句话说的，不算两个。选定之后按段排，每段写四件事。</p>
+    <p lang="en">You get two or three angles to choose from. They have to differ in which resistance they answer and which piece of leverage they use; a rephrasing isn't a second angle. Once you pick one, the segments get laid out, each with four things written down.</p>
 
     <ol class="steps">
-      <li><b class="l-zh">受众：从 → 到</b><b class="l-en">Reader: from → to</b><br><span class="muted small l-zh">原来的念头 → 看完这段的念头或动作。「到」不写「知道 X」。</span><span class="muted small l-en">The thought they arrive with → the thought or action they leave with. "Knows X" doesn't count.</span></li>
-      <li><b class="l-zh">要讲的点</b><b class="l-en">The points</b><br><span class="muted small l-zh">一点一句，写内容不写动作。</span><span class="muted small l-en">One sentence per point; content, not instructions.</span></li>
-      <li><b class="l-zh">怎么证明</b><b class="l-en">How it's proven</b><br><span class="muted small l-zh">用什么让人信：事实、原文、演示、数据。</span><span class="muted small l-en">What makes it credible: a fact, a source, a demo, a number.</span></li>
-      <li><b class="l-zh">篇幅</b><b class="l-en">Length</b><br><span class="muted small l-zh">这一段给多少字（或多少秒）。</span><span class="muted small l-en">How much room it gets — words or seconds.</span></li>
+      <li><b lang="zh">受众：从 → 到</b><b lang="en">Reader: from → to</b><br><span class="muted small" lang="zh">原来的念头 → 看完这段的念头或动作。「到」不写「知道 X」。</span><span class="muted small" lang="en">The thought they arrive with → the thought or action they leave with. "Knows X" doesn't count.</span></li>
+      <li><b lang="zh">要讲的点</b><b lang="en">The points</b><br><span class="muted small" lang="zh">一点一句，写内容不写动作。</span><span class="muted small" lang="en">One sentence per point; content, not instructions.</span></li>
+      <li><b lang="zh">怎么证明</b><b lang="en">How it's proven</b><br><span class="muted small" lang="zh">用什么让人信：事实、原文、演示、数据。</span><span class="muted small" lang="en">What makes it credible: a fact, a source, a demo, a number.</span></li>
+      <li><b lang="zh">篇幅</b><b lang="en">Length</b><br><span class="muted small" lang="zh">这一段给多少字（或多少秒）。</span><span class="muted small" lang="en">How much room it gets — words or seconds.</span></li>
     </ol>
 
-    <p class="l-zh">这一步写进 <code>plan.md</code> 的立意、框架、效果自查、取舍、缺口，状态改成「框架待确认」，再等你确认。</p>
-    <p class="l-en">This step writes the angle, the frame, the self-check, what was cut, and the open gaps into <code>plan.md</code>; the status becomes "frame pending confirmation" and waits for you again.</p>
+    <p lang="zh">这一步写进 <code>plan.md</code> 的立意、框架、效果自查、取舍、缺口，状态改成「框架待确认」，再等你确认。</p>
+    <p lang="en">This step writes the angle, the frame, the self-check, what was cut, and the open gaps into <code>plan.md</code>; the status becomes "frame pending confirmation" and waits for you again.</p>
 
     <figure class="fig">
-      <img class="l-zh" src="./assets/diagrams/zh/angle-frame.svg" width="760" height="268" loading="lazy" alt="示意图：三个打法，区别在抓哪条阻力、用哪个杠杆；你挑一个，然后按段排框架——每段写受众从哪到哪、要讲的点、怎么证明、篇幅。">
-      <img class="l-en" src="./assets/diagrams/en/angle-frame.svg" width="760" height="268" loading="lazy" alt="Diagram: three angles that differ in which resistance they answer and which leverage they use; you pick one, then the frame is laid out segment by segment with from → to, points, proof and length.">
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/zh-dark/angle-frame.svg">
+        <img lang="zh" src="./assets/diagrams/zh/angle-frame.svg" width="760" height="268" loading="lazy" alt="示意图：三个打法，区别在抓哪条阻力、用哪个杠杆；你挑一个，然后按段排框架——每段写受众从哪到哪、要讲的点、怎么证明、篇幅。">
+      </picture>
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/en-dark/angle-frame.svg">
+        <img lang="en" src="./assets/diagrams/en/angle-frame.svg" width="760" height="268" loading="lazy" alt="Diagram: three angles that differ in which resistance they answer and which leverage they use; you pick one, then the frame is laid out segment by segment with from → to, points, proof and length.">
+      </picture>
       <figcaption>
-        <span class="l-zh">第 2 步：2–3 个打法 → 你挑一个 → 每段四件事</span>
-        <span class="l-en">Step 2: two or three angles → you pick one → four things per segment</span>
+        <span lang="zh">第 2 步：2–3 个打法 → 你挑一个 → 每段四件事</span>
+        <span lang="en">Step 2: two or three angles → you pick one → four things per segment</span>
       </figcaption>
     </figure>
 
     <div class="ex">
-      <div class="ex-head"><b class="l-zh">示例原文</b><b class="l-en">From the case</b><code>news-artemis/plan.md · 框架 P1 行</code></div>
+      <div class="ex-head"><b lang="zh">示例原文</b><b lang="en">From the case</b><code>news-artemis/plan.md · 框架 P1 行</code></div>
       <div class="ex-body">
         <table>
           <tbody>
             <tr>
-              <th><span class="l-zh">受众</span><span class="l-en">Reader</span></th>
-              <td><span class="l-zh">「又一条航天新闻」→「人类飞得最远的一次？」</span><span class="l-en">"Another space story" → "The farthest humans have ever gone?"</span></td>
+              <th><span lang="zh">受众</span><span lang="en">Reader</span></th>
+              <td><span lang="zh">「又一条航天新闻」→「人类飞得最远的一次？」</span><span lang="en">"Another space story" → "The farthest humans have ever gone?"</span></td>
             </tr>
             <tr>
-              <th><span class="l-zh">要讲的点</span><span class="l-en">Points</span></th>
+              <th><span lang="zh">要讲的点</span><span lang="en">Points</span></th>
               <td>
-                <span class="l-zh">a. 离地球最远 252,756 英里，约 406,771 公里，人类飞得最远的一次<br>b. 2026 年 4 月，四名宇航员绕到月球背面又平安回来</span>
-                <span class="l-en">a. 252,756 mi (about 406,771 km) from Earth — the farthest humans have flown<br>b. In April 2026, four astronauts went behind the Moon and came back safely</span>
+                <span lang="zh">a. 离地球最远 252,756 英里，约 406,771 公里，人类飞得最远的一次<br>b. 2026 年 4 月，四名宇航员绕到月球背面又平安回来</span>
+                <span lang="en">a. 252,756 mi (about 406,771 km) from Earth — the farthest humans have flown<br>b. In April 2026, four astronauts went behind the Moon and came back safely</span>
               </td>
             </tr>
             <tr>
-              <th><span class="l-zh">怎么证明</span><span class="l-en">Proof</span></th>
-              <td><span class="l-zh">NASA 返回新闻稿的纪录数字</span><span class="l-en">The record figure in NASA's return press release</span></td>
+              <th><span lang="zh">怎么证明</span><span lang="en">Proof</span></th>
+              <td><span lang="zh">NASA 返回新闻稿的纪录数字</span><span lang="en">The record figure in NASA's return press release</span></td>
             </tr>
             <tr>
-              <th><span class="l-zh">篇幅</span><span class="l-en">Length</span></th>
-              <td><span class="l-zh">15 秒</span><span class="l-en">15 seconds</span></td>
+              <th><span lang="zh">篇幅</span><span lang="en">Length</span></th>
+              <td><span lang="zh">15 秒</span><span lang="en">15 seconds</span></td>
             </tr>
           </tbody>
         </table>
@@ -248,87 +274,92 @@
 </section>
 
 <!-- ============ P4 第 3 步 ============ -->
-<section id="step3">
-  <div class="wrap sec-head">
-    <div class="step-no"><span class="l-zh">第 3 步</span><span class="l-en">Step 3</span></div>
-    <h2 class="l-zh">最后补齐内容：每条信息带来源和状态</h2>
-    <h2 class="l-en">Finally, fill it in: every fact carries a source and a state</h2>
-    <p class="l-zh">第三步最重。每一段要讲的东西，都要落成一条条信息，每条写全四样。</p>
-    <p class="l-en">This is the heaviest step. Everything a segment wants to say becomes individual facts, and each fact is written out in four parts.</p>
+<section class="sec" id="step3">
+  <div class="wrap">
+    <h2 lang="zh">最后补齐内容：每条信息带来源和状态</h2>
+    <h2 lang="en">Finally, fill it in: every fact carries a source and a state</h2>
+    <p lang="zh">第三步最重。每一段要讲的东西，都要落成一条条信息，每条写全四样。</p>
+    <p lang="en">This is the heaviest step. Everything a segment wants to say becomes individual facts, and each fact is written out in four parts.</p>
 
     <table class="plain">
       <thead>
         <tr>
-          <th><span class="l-zh">写什么</span><span class="l-en">Field</span></th>
-          <th><span class="l-zh">拿 P1-1 举例</span><span class="l-en">P1-1, as an example</span></th>
+          <th><span lang="zh">写什么</span><span lang="en">Field</span></th>
+          <th><span lang="zh">拿 P1-1 举例</span><span lang="en">P1-1, as an example</span></th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><b class="l-zh">内容</b><b class="l-en">The fact</b></td>
-          <td><span class="l-zh">美东 4 月 6 日 19:02 到达离地球最远处 252,756 英里（约 406,771 公里）</span><span class="l-en">19:02 EDT, April 6: 252,756 mi (about 406,771 km) from Earth</span></td>
+          <td><b lang="zh">内容</b><b lang="en">The fact</b></td>
+          <td><span lang="zh">美东 4 月 6 日 19:02 到达离地球最远处 252,756 英里（约 406,771 公里）</span><span lang="en">19:02 EDT, April 6: 252,756 mi (about 406,771 km) from Earth</span></td>
         </tr>
         <tr>
-          <td><b class="l-zh">种类</b><b class="l-en">Type</b></td>
-          <td><span class="l-zh"><code>B1</code>——数量里的一条数字；自己统计的写 <code>G1</code>，只有公司自己说的写 <code>C4</code></span><span class="l-en"><code>B1</code>, a single figure; your own measurement is <code>G1</code>; something only the maker claims is <code>C4</code></span></td>
+          <td><b lang="zh">种类</b><b lang="en">Type</b></td>
+          <td><span lang="zh"><code>B1</code>——数量里的一条数字；自己统计的写 <code>G1</code>，只有公司自己说的写 <code>C4</code></span><span lang="en"><code>B1</code>, a single figure; your own measurement is <code>G1</code>; something only the maker claims is <code>C4</code></span></td>
         </tr>
         <tr>
-          <td><b class="l-zh">来源</b><b class="l-en">Source</b></td>
-          <td><span class="l-zh">NASA 返回新闻稿 · 导语；飞掠博客 · 19:02 条 · 2026-11-08 · 一手</span><span class="l-en">NASA return release · lede; flyby blog · 19:02 entry · 2026-11-08 · primary</span></td>
+          <td><b lang="zh">来源</b><b lang="en">Source</b></td>
+          <td><span lang="zh">NASA 返回新闻稿 · 导语；飞掠博客 · 19:02 条 · 2026-11-08 · 一手</span><span lang="en">NASA return release · lede; flyby blog · 19:02 entry · 2026-11-08 · primary</span></td>
         </tr>
         <tr>
-          <td><b class="l-zh">必须写清的</b><b class="l-en">Must be clear</b></td>
-          <td><span class="l-zh">口径：离地球的最远距离；NASA 统计；2026-04-06；英里</span><span class="l-en">Basis: farthest distance from Earth; counted by NASA; 2026-04-06; miles</span></td>
+          <td><b lang="zh">必须写清的</b><b lang="en">Must be clear</b></td>
+          <td><span lang="zh">口径：离地球的最远距离；NASA 统计；2026-04-06；英里</span><span lang="en">Basis: farthest distance from Earth; counted by NASA; 2026-04-06; miles</span></td>
         </tr>
       </tbody>
     </table>
 
-    <h3 class="l-zh">状态只有四种</h3>
-    <h3 class="l-en">Four states, no more</h3>
+    <h3 lang="zh">状态只有四种</h3>
+    <h3 lang="en">Four states, no more</h3>
     <p>
-      <span class="tag tag-ok l-zh">已核实</span><span class="tag tag-ok l-en">verified</span>
-      <span class="tag l-zh" style="background:#f1ede4">待核实</span><span class="tag l-en" style="background:#f1ede4">unverified</span>
-      <span class="tag tag-warn l-zh">有冲突</span><span class="tag tag-warn l-en">conflicting</span>
-      <span class="tag l-zh" style="background:#f1ede4">已过期</span><span class="tag l-en" style="background:#f1ede4">expired</span>
+      <span class="tag tag-ok" lang="zh">已核实</span><span class="tag tag-ok" lang="en">verified</span>
+      <span class="tag tag-plain" lang="zh">待核实</span><span class="tag tag-plain" lang="en">unverified</span>
+      <span class="tag tag-warn" lang="zh">有冲突</span><span class="tag tag-warn" lang="en">conflicting</span>
+      <span class="tag tag-plain" lang="zh">已过期</span><span class="tag tag-plain" lang="en">expired</span>
     </p>
-    <p class="l-zh">创作里编出来的东西写「设定」，不核实。除了正文，这一步还要写：受众原话（照录不改写）、素材逐张（画面上有什么字、标志、人脸）、画面约束（一条一件事）、每段要的效果和参考说法。</p>
-    <p class="l-en">Invented material is marked "fictional" and isn't verified. Besides the facts, this step also writes down: the audience's own words (quoted, not paraphrased), each asset (what text, marks and faces are in it), the constraints any visual must obey, and the intended effect plus reference wording for each segment.</p>
-    <p class="l-zh">读不到的资料就照实写「没读成：原因」，同时在缺口表记一行——不编。找不到替代时也可以改内容关闭（删掉相关的话），但要你确认，因为删的是你要的东西。</p>
-    <p class="l-en">If a source can't be read, it says so — "not read: reason" — and logs a row in the gaps table. Nothing gets invented. When no substitute exists it can close the gap by cutting the content instead, but only with your confirmation, since what gets cut is something you asked for.</p>
+    <p lang="zh">创作里编出来的东西写「设定」，不核实。除了正文，这一步还要写：受众原话（照录不改写）、素材逐张（画面上有什么字、标志、人脸）、画面约束（一条一件事）、每段要的效果和参考说法。</p>
+    <p lang="en">Invented material is marked "fictional" and isn't verified. Besides the facts, this step also writes down: the audience's own words (quoted, not paraphrased), each asset (what text, marks and faces are in it), the constraints any visual must obey, and the intended effect plus reference wording for each segment.</p>
+    <p lang="zh">读不到的资料就照实写「没读成：原因」，同时在缺口表记一行——不编。找不到替代时也可以改内容关闭（删掉相关的话），但要你确认，因为删的是你要的东西。</p>
+    <p lang="en">If a source can't be read, it says so — "not read: reason" — and logs a row in the gaps table. Nothing gets invented. When no substitute exists it can close the gap by cutting the content instead, but only with your confirmation, since what gets cut is something you asked for.</p>
 
     <figure class="fig">
-      <img class="l-zh" src="./assets/diagrams/zh/fact-anatomy.svg" width="760" height="252" loading="lazy" alt="示意图：一条信息的解剖——内容、种类（B1）、来源、必须写清的；状态只有四种：已核实、待核实、有冲突、已过期。">
-      <img class="l-en" src="./assets/diagrams/en/fact-anatomy.svg" width="760" height="252" loading="lazy" alt="Diagram: the anatomy of one fact — the fact, its type (B1), its source, and what must be clear; the state is one of four: verified, unverified, conflicting, expired.">
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/zh-dark/fact-anatomy.svg">
+        <img lang="zh" src="./assets/diagrams/zh/fact-anatomy.svg" width="760" height="252" loading="lazy" alt="示意图：一条信息的解剖——内容、种类（B1）、来源、必须写清的；状态只有四种：已核实、待核实、有冲突、已过期。">
+      </picture>
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/en-dark/fact-anatomy.svg">
+        <img lang="en" src="./assets/diagrams/en/fact-anatomy.svg" width="760" height="252" loading="lazy" alt="Diagram: the anatomy of one fact — the fact, its type (B1), its source, and what must be clear; the state is one of four: verified, unverified, conflicting, expired.">
+      </picture>
       <figcaption>
-        <span class="l-zh">第 3 步：一条信息写全四样，状态只有四种</span>
-        <span class="l-en">Step 3: four fields per fact, four possible states</span>
+        <span lang="zh">第 3 步：一条信息写全四样，状态只有四种</span>
+        <span lang="en">Step 3: four fields per fact, four possible states</span>
       </figcaption>
     </figure>
 
     <div class="ex">
-      <div class="ex-head"><b class="l-zh">示例原文</b><b class="l-en">From the case</b><code>news-artemis/content.md · P1-2</code></div>
+      <div class="ex-head"><b lang="zh">示例原文</b><b lang="en">From the case</b><code>news-artemis/content.md · P1-2</code></div>
       <div class="ex-body">
         <table>
           <tbody>
             <tr>
-              <th><span class="l-zh">内容</span><span class="l-en">Fact</span></th>
-              <td><span class="l-zh">2026 年 4 月，NASA 宇航员 Reid Wiseman、Victor Glover、Christina Koch 和加拿大航天局宇航员 Jeremy Hansen 乘 Orion 绕月后返回地球</span><span class="l-en">In April 2026, NASA astronauts Reid Wiseman, Victor Glover and Christina Koch, with CSA astronaut Jeremy Hansen, flew Orion around the Moon and returned</span></td>
+              <th><span lang="zh">内容</span><span lang="en">Fact</span></th>
+              <td><span lang="zh">2026 年 4 月，NASA 宇航员 Reid Wiseman、Victor Glover、Christina Koch 和加拿大航天局宇航员 Jeremy Hansen 乘 Orion 绕月后返回地球</span><span lang="en">In April 2026, NASA astronauts Reid Wiseman, Victor Glover and Christina Koch, with CSA astronaut Jeremy Hansen, flew Orion around the Moon and returned</span></td>
             </tr>
             <tr>
-              <th><span class="l-zh">种类</span><span class="l-en">Type</span></th>
+              <th><span lang="zh">种类</span><span lang="en">Type</span></th>
               <td class="kind">A1</td>
             </tr>
             <tr>
-              <th><span class="l-zh">来源</span><span class="l-en">Source</span></th>
-              <td><span class="l-zh">NASA 返回新闻稿 · 题图说明和导语 · 2026-11-08 · 一手</span><span class="l-en">NASA return release · caption and lede · 2026-11-08 · primary</span></td>
+              <th><span lang="zh">来源</span><span lang="en">Source</span></th>
+              <td><span lang="zh">NASA 返回新闻稿 · 题图说明和导语 · 2026-11-08 · 一手</span><span lang="en">NASA return release · caption and lede · 2026-11-08 · primary</span></td>
             </tr>
             <tr>
-              <th><span class="l-zh">必须写清的</span><span class="l-en">Must be clear</span></th>
-              <td><span class="l-zh">时间、主体、原始出处</span><span class="l-en">Time, subjects, original source</span></td>
+              <th><span lang="zh">必须写清的</span><span lang="en">Must be clear</span></th>
+              <td><span lang="zh">时间、主体、原始出处</span><span lang="en">Time, subjects, original source</span></td>
             </tr>
             <tr>
-              <th><span class="l-zh">状态</span><span class="l-en">State</span></th>
-              <td><span class="tag tag-ok l-zh">已核实</span><span class="tag tag-ok l-en">verified</span></td>
+              <th><span lang="zh">状态</span><span lang="en">State</span></th>
+              <td><span class="tag tag-ok" lang="zh">已核实</span><span class="tag tag-ok" lang="en">verified</span></td>
             </tr>
           </tbody>
         </table>
@@ -338,129 +369,144 @@
 </section>
 
 <!-- ============ P5 确认与检查 ============ -->
-<section id="check">
-  <div class="wrap sec-head">
-    <div class="step-no"><span class="l-zh">检查</span><span class="l-en">Checks</span></div>
-    <h2 class="l-zh">每一步都要你确认，交接前还有脚本拦错</h2>
-    <h2 class="l-en">Every step waits for you — and a script blocks the rest</h2>
-    <p class="l-zh">三步表里每一步都有一列「结束条件」。它不是建议，是这一步能不能往下走的条件。</p>
-    <p class="l-en">Each step in the skill's table has a column called "exit condition". It isn't advice; it's what has to be true before the next step starts.</p>
+<section class="sec" id="check">
+  <div class="wrap">
+    <h2 lang="zh">每一步都要你确认，交接前还有脚本拦错</h2>
+    <h2 lang="en">Every step waits for you — and a script blocks the rest</h2>
+    <p lang="zh">三步表里每一步都有一列「结束条件」。它不是建议，是这一步能不能往下走的条件。</p>
+    <p lang="en">Each step in the skill's table has a column called "exit condition". It isn't advice; it's what has to be true before the next step starts.</p>
 
     <table class="plain">
       <thead>
         <tr>
-          <th><span class="l-zh">步</span><span class="l-en">Step</span></th>
-          <th><span class="l-zh">结束条件</span><span class="l-en">Exit condition</span></th>
-          <th><span class="l-zh">状态行</span><span class="l-en">Status</span></th>
+          <th><span lang="zh">步</span><span lang="en">Step</span></th>
+          <th><span lang="zh">结束条件</span><span lang="en">Exit condition</span></th>
+          <th><span lang="zh">状态行</span><span lang="en">Status</span></th>
         </tr>
       </thead>
       <tbody>
-        <tr><td class="n">1</td><td><span class="l-zh">用户确认效果和形式</span><span class="l-en">You confirm the effect and form</span></td><td class="mono small"><span class="l-zh">效果待确认</span><span class="l-en">effect pending</span></td></tr>
-        <tr><td class="n">2</td><td><span class="l-zh">用户确认打法和框架</span><span class="l-en">You confirm the angle and frame</span></td><td class="mono small"><span class="l-zh">框架待确认</span><span class="l-en">frame pending</span></td></tr>
-        <tr><td class="n">3</td><td><span class="l-zh">交接的条件全满足</span><span class="l-en">All handoff conditions hold</span></td><td class="mono small"><span class="l-zh">补齐中 → 已交接</span><span class="l-en">filling in → handed off</span></td></tr>
+        <tr><td class="n">1</td><td><span lang="zh">用户确认效果和形式</span><span lang="en">You confirm the effect and form</span></td><td class="mono small"><span lang="zh">效果待确认</span><span lang="en">effect pending</span></td></tr>
+        <tr><td class="n">2</td><td><span lang="zh">用户确认打法和框架</span><span lang="en">You confirm the angle and frame</span></td><td class="mono small"><span lang="zh">框架待确认</span><span lang="en">frame pending</span></td></tr>
+        <tr><td class="n">3</td><td><span lang="zh">交接的条件全满足</span><span lang="en">All handoff conditions hold</span></td><td class="mono small"><span lang="zh">补齐中 → 已交接</span><span lang="en">filling in → handed off</span></td></tr>
       </tbody>
     </table>
 
     <figure class="fig">
-      <img class="l-zh" src="./assets/diagrams/zh/handoff-gate.svg" width="760" height="252" loading="lazy" alt="示意图：plan.md 和 content.md 进到 check.py --handoff 这道关口，交接条件一共 8 条；过了写已交接，没过就拦下不许交接。">
-      <img class="l-en" src="./assets/diagrams/en/handoff-gate.svg" width="760" height="252" loading="lazy" alt="Diagram: plan.md and content.md pass through the check.py --handoff gate with eight conditions; pass and the status becomes handed off, fail and the handoff is blocked.">
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/zh-dark/handoff-gate.svg">
+        <img lang="zh" src="./assets/diagrams/zh/handoff-gate.svg" width="760" height="252" loading="lazy" alt="示意图：plan.md 和 content.md 进到 check.py --handoff 这道关口，交接条件一共 8 条；过了写已交接，没过就拦下不许交接。">
+      </picture>
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/en-dark/handoff-gate.svg">
+        <img lang="en" src="./assets/diagrams/en/handoff-gate.svg" width="760" height="252" loading="lazy" alt="Diagram: plan.md and content.md pass through the check.py --handoff gate with eight conditions; pass and the status becomes handed off, fail and the handoff is blocked.">
+      </picture>
       <figcaption>
-        <span class="l-zh">交接前的那道关口：过了才写「已交接」</span>
-        <span class="l-en">The gate before handoff: pass it or the status stays put</span>
+        <span lang="zh">交接前的那道关口：过了才写「已交接」</span>
+        <span lang="en">The gate before handoff: pass it or the status stays put</span>
       </figcaption>
     </figure>
 
-    <h3 class="l-zh">交接要过 8 条</h3>
-    <h3 class="l-en">Handoff has to clear eight conditions</h3>
+    <h3 lang="zh">交接要过 8 条</h3>
+    <h3 lang="en">Handoff has to clear eight conditions</h3>
     <ol class="steps">
-      <li><span class="l-zh">确认记录里有「效果」「框架」两行。</span><span class="l-en">The confirmation log has both an effect and a frame line.</span></li>
-      <li><span class="l-zh">缺口表里没有归「策划」还「待补」的行。</span><span class="l-en">No gap row is still owned by planning and marked open.</span></li>
-      <li><span class="l-zh">每个要讲的点，内容表里至少有一条信息对应。</span><span class="l-en">Every talking point maps to at least one fact in the content table.</span></li>
-      <li><span class="l-zh">这些信息没有「待核实」，也没有「有冲突」。</span><span class="l-en">No fact is unverified or conflicting.</span></li>
-      <li><span class="l-zh">要讲的点和信息写的是内容，不是动作。</span><span class="l-en">Points and facts state content, not instructions.</span></li>
-      <li><span class="l-zh">归「下游」的行写清了缺什么、哪一段。</span><span class="l-en">Rows owned by the next step say what's missing and for which segment.</span></li>
-      <li><span class="l-zh">每段至少一行说法；约束都已核实或是设定。</span><span class="l-en">Every segment has wording; every constraint is verified or declared as design.</span></li>
-      <li><span class="l-zh"><code>check.py --handoff</code> 通过。</span><span class="l-en"><code>check.py --handoff</code> passes.</span></li>
+      <li><span lang="zh">确认记录里有「效果」「框架」两行。</span><span lang="en">The confirmation log has both an effect and a frame line.</span></li>
+      <li><span lang="zh">缺口表里没有归「策划」还「待补」的行。</span><span lang="en">No gap row is still owned by planning and marked open.</span></li>
+      <li><span lang="zh">每个要讲的点，内容表里至少有一条信息对应。</span><span lang="en">Every talking point maps to at least one fact in the content table.</span></li>
+      <li><span lang="zh">这些信息没有「待核实」，也没有「有冲突」。</span><span lang="en">No fact is unverified or conflicting.</span></li>
+      <li><span lang="zh">要讲的点和信息写的是内容，不是动作。</span><span lang="en">Points and facts state content, not instructions.</span></li>
+      <li><span lang="zh">归「下游」的行写清了缺什么、哪一段。</span><span lang="en">Rows owned by the next step say what's missing and for which segment.</span></li>
+      <li><span lang="zh">每段至少一行说法；约束都已核实或是设定。</span><span lang="en">Every segment has wording; every constraint is verified or declared as design.</span></li>
+      <li><span lang="zh"><code>check.py --handoff</code> 通过。</span><span lang="en"><code>check.py --handoff</code> passes.</span></li>
     </ol>
 
-    <h3 class="l-zh">真实的拦错输出</h3>
-    <h3 class="l-en">What it actually says when it blocks you</h3>
-    <p class="l-zh">把仓库里那两个空模板原样拷出来跑一次，它拦下 24 处。下面是其中三行，和最后那行结论：</p>
-    <p class="l-en">Copy the two empty templates out of the repo and run it: it stops on 24 things. Three of the lines, plus the verdict:</p>
+    <h3 lang="zh">真实的拦错输出</h3>
+    <h3 lang="en">What it actually says when it blocks you</h3>
+    <p lang="zh">把仓库里那两个空模板原样拷出来跑一次，它拦下 24 处。下面是其中三行，和最后那行结论：</p>
+    <p lang="en">Copy the two empty templates out of the repo and run it: it stops on 24 things. Three of the lines, plus the verdict:</p>
 
 <pre><code><span class="e">plan.md:需求:</span> 「用途和场景」还是「待你定」，用户定了才能交接
 <span class="e">content.md:</span> P1 的「a」在 content.md 里没有对应的信息
 <span class="e">content.md:约束:</span> K1 还是「〔待核实〕」：约束要已核实或是设定才能交接
 <span class="k">24 个错、2 个提示</span></code></pre>
 
-    <p class="l-zh">自己复现一遍：</p>
-    <p class="l-en">Reproduce it yourself:</p>
+    <p lang="zh">自己复现一遍：</p>
+    <p lang="en">Reproduce it yourself:</p>
 
 <pre><code><span class="c"># 从仓库根目录</span>
 D=$(mktemp -d)
 cp skills/ai-content-planner/templates/*.md "$D"/
 python3 -I skills/ai-content-planner/scripts/check.py "$D" --handoff</code></pre>
 
-    <p class="small muted"><span class="l-zh">检查脚本只用 Python 标准库（要 Python 3），不联网，不要 API Key——谁都能在本地跑出同样的结果。</span><span class="l-en">The checker uses only the Python standard library (Python 3), makes no network calls and needs no API key, so anyone gets the same result locally.</span></p>
+    <p class="small muted"><span lang="zh">检查脚本只用 Python 标准库（要 Python 3），不联网，不要 API Key——谁都能在本地跑出同样的结果。</span><span lang="en">The checker uses only the Python standard library (Python 3), makes no network calls and needs no API key, so anyone gets the same result locally.</span></p>
   </div>
 </section>
 
 <!-- ============ P6 交给下游 ============ -->
-<section id="handoff">
-  <div class="wrap sec-head">
-    <div class="step-no"><span class="l-zh">交接</span><span class="l-en">Handoff</span></div>
-    <h2 class="l-zh">交给下游：格式写进第二行，下游才读</h2>
-    <h2 class="l-en">Hand it off: the format is on line two, and that's what the next step reads</h2>
+<section class="sec" id="handoff">
+  <div class="wrap">
+    <h2 lang="zh">交给下游：格式写进第二行，下游才读</h2>
+    <h2 lang="en">Hand it off: the format is on line two, and that's what the next step reads</h2>
 
 <pre><code><span class="c"># plans/&lt;短名&gt;/plan.md 的开头两行</span>
 格式：ai-content-planner/3
 状态：已交接（2026-11-16）。…</code></pre>
 
-    <p class="l-zh">下游读效果、形式、说法、素材、约束这几节；引用的时候用 <code>seg</code>（段）、<code>ref</code>（信息编号）、<code>rule</code>（约束编号）对回来，不靠猜。</p>
-    <p class="l-en">The next step reads the effect, form, wording, assets and constraints sections. References come back as <code>seg</code> (segment), <code>ref</code> (fact ID) and <code>rule</code> (constraint ID) — nothing is guessed.</p>
+    <p lang="zh">下游读效果、形式、说法、素材、约束这几节；引用的时候用 <code>seg</code>（段）、<code>ref</code>（信息编号）、<code>rule</code>（约束编号）对回来，不靠猜。</p>
+    <p lang="en">The next step reads the effect, form, wording, assets and constraints sections. References come back as <code>seg</code> (segment), <code>ref</code> (fact ID) and <code>rule</code> (constraint ID) — nothing is guessed.</p>
 
     <figure class="fig">
-      <img class="l-zh" src="./assets/diagrams/zh/handoff-loop.svg" width="760" height="240" loading="lazy" alt="示意图：稿子交出去之后，下游出片时发现内容不够，就在缺口表加一行、状态改成回流中，回到第 3 步补齐，再改回已交接。">
-      <img class="l-en" src="./assets/diagrams/en/handoff-loop.svg" width="760" height="240" loading="lazy" alt="Diagram: after handoff, if production finds a gap it adds a row, the status becomes flowing back, the gap is filled in step 3, and the status returns to handed off.">
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/zh-dark/handoff-loop.svg">
+        <img lang="zh" src="./assets/diagrams/zh/handoff-loop.svg" width="760" height="240" loading="lazy" alt="示意图：稿子交出去之后，下游出片时发现内容不够，就在缺口表加一行、状态改成回流中，回到第 3 步补齐，再改回已交接。">
+      </picture>
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/en-dark/handoff-loop.svg">
+        <img lang="en" src="./assets/diagrams/en/handoff-loop.svg" width="760" height="240" loading="lazy" alt="Diagram: after handoff, if production finds a gap it adds a row, the status becomes flowing back, the gap is filled in step 3, and the status returns to handed off.">
+      </picture>
       <figcaption>
-        <span class="l-zh">交出去不是结束：缺内容会回流到第 3 步</span>
-        <span class="l-en">Handoff is not the end: gaps flow back to step 3</span>
+        <span lang="zh">交出去不是结束：缺内容会回流到第 3 步</span>
+        <span lang="en">Handoff is not the end: gaps flow back to step 3</span>
       </figcaption>
     </figure>
 
-    <h3 class="l-zh">出片时发现内容不够，就回流</h3>
-    <h3 class="l-en">If production finds a hole, it flows back</h3>
+    <h3 lang="zh">出片时发现内容不够，就回流</h3>
+    <h3 lang="en">If production finds a hole, it flows back</h3>
     <ol class="steps">
-      <li><span class="l-zh">下游在缺口表加一行，写清缺什么、哪一段。</span><span class="l-en">The next step adds a row saying what's missing and for which segment.</span></li>
-      <li><span class="l-zh">状态改成「回流中」，回到第 3 步补；要是推翻了效果或框架，就回到更早的步。</span><span class="l-en">Status becomes "flowing back" and it returns to step 3; if the effect or frame itself is wrong, it goes further back.</span></li>
-      <li><span class="l-zh">补完重跑检查，状态改回「已交接」。</span><span class="l-en">When it's filled, the check runs again and the status goes back to "handed off".</span></li>
+      <li><span lang="zh">下游在缺口表加一行，写清缺什么、哪一段。</span><span lang="en">The next step adds a row saying what's missing and for which segment.</span></li>
+      <li><span lang="zh">状态改成「回流中」，回到第 3 步补；要是推翻了效果或框架，就回到更早的步。</span><span lang="en">Status becomes "flowing back" and it returns to step 3; if the effect or frame itself is wrong, it goes further back.</span></li>
+      <li><span lang="zh">补完重跑检查，状态改回「已交接」。</span><span lang="en">When it's filled, the check runs again and the status goes back to "handed off".</span></li>
     </ol>
 
     <div class="ex">
-      <div class="ex-head"><b class="l-zh">示例原文</b><b class="l-en">From the case</b><code>news-artemis/plan.md · 状态行</code></div>
+      <div class="ex-head"><b lang="zh">示例原文</b><b lang="en">From the case</b><code>news-artemis/plan.md · 状态行</code></div>
       <div class="ex-body">
-        <p class="mono small"><span class="l-zh">已交接（2026-11-08）。下一步转 ai-coding-video 的 <code>storyboard.md</code> 选风格、写分镜。</span><span class="l-en">Handed off (2026-11-08). Next: pick a style and write the storyboard in ai-coding-video's <code>storyboard.md</code>.</span></p>
+        <p class="mono small"><span lang="zh">已交接（2026-11-08）。下一步转 ai-coding-video 的 <code>storyboard.md</code> 选风格、写分镜。</span><span lang="en">Handed off (2026-11-08). Next: pick a style and write the storyboard in ai-coding-video's <code>storyboard.md</code>.</span></p>
       </div>
     </div>
 
-    <p class="l-zh">做视频那条线是 <a href="https://chans-gh.github.io/AI-Coding-Video/">AI-Coding-Video</a>：它从 <code>plans/&lt;短名&gt;/</code> 接着选风格、写分镜、出片。</p>
-    <p class="l-en">The video line is <a href="https://chans-gh.github.io/AI-Coding-Video/">AI-Coding-Video</a>: it picks up from <code>plans/&lt;short-name&gt;/</code> to choose a style, write the storyboard and render.</p>
+    <p lang="zh">做视频那条线是 <a href="https://chans-gh.github.io/AI-Coding-Video/">AI-Coding-Video</a>：它从 <code>plans/&lt;短名&gt;/</code> 接着选风格、写分镜、出片。</p>
+    <p lang="en">The video line is <a href="https://chans-gh.github.io/AI-Coding-Video/">AI-Coding-Video</a>: it picks up from <code>plans/&lt;short-name&gt;/</code> to choose a style, write the storyboard and render.</p>
   </div>
 </section>
 
 <!-- ============ P7 怎么装 ============ -->
-<section id="install">
-  <div class="wrap sec-head">
-    <div class="step-no"><span class="l-zh">安装</span><span class="l-en">Install</span></div>
-    <h2 class="l-zh">三条路装上它</h2>
-    <h2 class="l-en">Three ways to install it</h2>
+<section class="sec" id="install">
+  <div class="wrap">
+    <h2 lang="zh">三条路装上它</h2>
+    <h2 lang="en">Three ways to install it</h2>
 
     <figure class="fig">
-      <img class="l-zh" src="./assets/diagrams/zh/install-paths.svg" width="760" height="236" loading="lazy" alt="示意图：三条安装路径——Codex 的插件市场、WorkBuddy 的 zip 技能包、DeepSeek Harness 的 install.sh dsh——都装进你的助手，只用 Python 标准库，不要 API Key。">
-      <img class="l-en" src="./assets/diagrams/en/install-paths.svg" width="760" height="236" loading="lazy" alt="Diagram: three install paths — the Codex plugin marketplace, the WorkBuddy zip skill pack, and install.sh dsh for DeepSeek Harness — all landing in your assistant, standard library only, no API key.">
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/zh-dark/install-paths.svg">
+        <img lang="zh" src="./assets/diagrams/zh/install-paths.svg" width="760" height="236" loading="lazy" alt="示意图：三条安装路径——Codex 的插件市场、WorkBuddy 的 zip 技能包、DeepSeek Harness 的 install.sh dsh——都装进你的助手，只用 Python 标准库，不要 API Key。">
+      </picture>
+            <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="./assets/diagrams/en-dark/install-paths.svg">
+        <img lang="en" src="./assets/diagrams/en/install-paths.svg" width="760" height="236" loading="lazy" alt="Diagram: three install paths — the Codex plugin marketplace, the WorkBuddy zip skill pack, and install.sh dsh for DeepSeek Harness — all landing in your assistant, standard library only, no API key.">
+      </picture>
       <figcaption>
-        <span class="l-zh">三条路，挑你用哪个助手</span>
-        <span class="l-en">Three paths, pick your assistant</span>
+        <span lang="zh">三条路，挑你用哪个助手</span>
+        <span lang="en">Three paths, pick your assistant</span>
       </figcaption>
     </figure>
 
@@ -468,16 +514,16 @@ python3 -I skills/ai-content-planner/scripts/check.py "$D" --handoff</code></pre
     <div class="installs">
       <div class="card">
         <h3>Codex</h3>
-        <p class="sub l-zh">插件市场，两条命令。</p>
-        <p class="sub l-en">From the plugin marketplace, two commands.</p>
+        <p class="sub" lang="zh">插件市场，两条命令。</p>
+        <p class="sub" lang="en">From the plugin marketplace, two commands.</p>
 <pre><code>codex plugin marketplace add chans-gh/AI-content-planner
 codex plugin add ai-content-planner@ai-content-planner</code></pre>
       </div>
 
       <div class="card">
         <h3>DeepSeek Harness</h3>
-        <p class="sub l-zh">用仓库里的安装脚本，装到用户级或某个项目。</p>
-        <p class="sub l-en">With the repo's install script, user-wide or per project.</p>
+        <p class="sub" lang="zh">用仓库里的安装脚本，装到用户级或某个项目。</p>
+        <p class="sub" lang="en">With the repo's install script, user-wide or per project.</p>
 <pre><code><span class="c"># 用户级 → ~/.dsh/skills/</span>
 scripts/install.sh dsh
 <span class="c"># 只装进某个项目 → 该项目的 .dsh/skills/</span>
@@ -486,40 +532,40 @@ scripts/install.sh dsh ~/my-project</code></pre>
 
       <div class="card wide">
         <h3>WorkBuddy</h3>
-        <p class="sub l-zh">当技能包上传：到 Releases 下 <code>ai-content-planner.zip</code>（含子代理 <code>agents/</code>），解压后放进助手的 Skill 目录，或直接上传到 WorkBuddy 等「上传技能包」的助手。也可以自己打包。</p>
-        <p class="sub l-en">Upload it as a skill pack: grab <code>ai-content-planner.zip</code> from Releases (it includes the <code>agents/</code> subagents), unzip it into your assistant's skill folder, or upload it straight into WorkBuddy and similar "upload a skill pack" assistants. You can also build the zip yourself.</p>
+        <p class="sub" lang="zh">当技能包上传：到 Releases 下 <code>ai-content-planner.zip</code>（含子代理 <code>agents/</code>），解压后放进助手的 Skill 目录，或直接上传到 WorkBuddy 等「上传技能包」的助手。也可以自己打包。</p>
+        <p class="sub" lang="en">Upload it as a skill pack: grab <code>ai-content-planner.zip</code> from Releases (it includes the <code>agents/</code> subagents), unzip it into your assistant's skill folder, or upload it straight into WorkBuddy and similar "upload a skill pack" assistants. You can also build the zip yourself.</p>
 <pre><code>scripts/install.sh zip   <span class="c"># → dist/ai-content-planner.zip</span></code></pre>
       </div>
 
       <div class="card wide">
-        <h3><span class="l-zh">也能装在 Claude Code 上</span><span class="l-en">Also works with Claude Code</span></h3>
-        <p class="sub l-zh">同样的插件市场，两条命令；也可以 <code>scripts/install.sh claude</code> 装到 <code>~/.claude/skills/</code>。</p>
-        <p class="sub l-en">Same marketplace, two commands — or <code>scripts/install.sh claude</code> into <code>~/.claude/skills/</code>.</p>
+        <h3><span lang="zh">也能装在 Claude Code 上</span><span lang="en">Also works with Claude Code</span></h3>
+        <p class="sub" lang="zh">同样的插件市场，两条命令；也可以 <code>scripts/install.sh claude</code> 装到 <code>~/.claude/skills/</code>。</p>
+        <p class="sub" lang="en">Same marketplace, two commands — or <code>scripts/install.sh claude</code> into <code>~/.claude/skills/</code>.</p>
 <pre><code>claude plugin marketplace add chans-gh/AI-content-planner
 claude plugin install ai-content-planner@ai-content-planner</code></pre>
       </div>
     </div>
 
-    <p class="small muted l-zh">装完不用配 Key：只用 Python 标准库（检查脚本要 Python 3），读网页、读文档用你助手自带的工具。</p>
-    <p class="small muted l-en">Nothing to configure afterwards: no API key, only the Python standard library (Python 3 for the checker), and it reads pages and documents with the tools your assistant already has.</p>
+    <p class="small muted" lang="zh">装完不用配 Key：只用 Python 标准库（检查脚本要 Python 3），读网页、读文档用你助手自带的工具。</p>
+    <p class="small muted" lang="en">Nothing to configure afterwards: no API key, only the Python standard library (Python 3 for the checker), and it reads pages and documents with the tools your assistant already has.</p>
   </div>
 </section>
 
 <!-- ============ P8 收口 ============ -->
 <section class="end">
   <div class="wrap">
-    <h2 class="l-zh">三步：定效果、定框架、补齐</h2>
-    <h2 class="l-en">Three steps: effect, frame, content</h2>
-    <p class="l-zh">交出去的是一份稿子，不是几句话。上面那个示例是 8 段、38 条信息，每条都带种类、来源和状态——下游拿到的就是这些。</p>
-    <p class="l-en">What comes out is a document, not a few sentences. The example above is 8 segments and 38 facts, each with a type, a source and a state — that's what the next step receives.</p>
-    <p class="l-zh">你要是在做视频那条线，这份稿子就是它的上一环：先在这里把内容定下来，再交给 AI-Coding-Video 选风格、写分镜、出片。</p>
-    <p class="l-en">If you're on the video line, this document is the step before it: settle the content here, then hand it to AI-Coding-Video for style, storyboard and render.</p>
+    <h2 lang="zh">三步：定效果、定框架、补齐</h2>
+    <h2 lang="en">Three steps: effect, frame, content</h2>
+    <p lang="zh">交出去的是一份稿子，不是几句话。上面那个示例是 8 段、38 条信息，每条都带种类、来源和状态——下游拿到的就是这些。</p>
+    <p lang="en">What comes out is a document, not a few sentences. The example above is 8 segments and 38 facts, each with a type, a source and a state — that's what the next step receives.</p>
+    <p lang="zh">你要是在做视频那条线，这份稿子就是它的上一环：先在这里把内容定下来，再交给 AI-Coding-Video 选风格、写分镜、出片。</p>
+    <p lang="en">If you're on the video line, this document is the step before it: settle the content here, then hand it to AI-Coding-Video for style, storyboard and render.</p>
     <div class="cta">
-      <a class="btn btn-primary" href="https://github.com/Chans-gh/AI-Content-Planner">
-        <span class="l-zh">github.com/Chans-gh/AI-Content-Planner</span><span class="l-en">github.com/Chans-gh/AI-Content-Planner</span>
+      <a class="btn primary" href="https://github.com/Chans-gh/AI-Content-Planner">
+        <span lang="zh">github.com/Chans-gh/AI-Content-Planner</span><span lang="en">github.com/Chans-gh/AI-Content-Planner</span>
       </a>
-      <a class="btn btn-ghost" href="https://github.com/Chans-gh/AI-Content-Planner/blob/main/README.md">
-        <span class="l-zh">看 README</span><span class="l-en">Read the README</span>
+      <a class="btn ghost" href="https://github.com/Chans-gh/AI-Content-Planner/blob/main/README.md">
+        <span lang="zh">看 README</span><span lang="en">Read the README</span>
       </a>
     </div>
   </div>
@@ -527,12 +573,14 @@ claude plugin install ai-content-planner@ai-content-planner</code></pre>
 
 </main>
 
-<footer>
-  <div class="wrap row">
-    <span>MIT · <span class="l-zh">内容策划 Skill</span><span class="l-en">a content planning skill</span></span>
-    <a href="https://github.com/Chans-gh/AI-Content-Planner"><span class="l-zh">仓库</span><span class="l-en">Repository</span></a>
-    <a href="https://github.com/Chans-gh/AI-Content-Planner/tree/main/site"><span class="l-zh">这一页的源码</span><span class="l-en">Source of this page</span></a>
-    <a href="https://github.com/Chans-gh/AI-Content-Planner/tree/main/docs/replay/news-artemis"><span class="l-zh">示例案例原文</span><span class="l-en">The case quoted above</span></a>
+<footer class="foot">
+  <div class="wrap foot-in">
+    <p>MIT · <span lang="zh">内容策划 Skill</span><span lang="en">a content planning skill</span></p>
+    <p>
+      <a href="https://github.com/Chans-gh/AI-Content-Planner"><span lang="zh">仓库</span><span lang="en">Repository</span></a> ·
+      <a href="https://github.com/Chans-gh/AI-Content-Planner/tree/main/site"><span lang="zh">这一页的源码</span><span lang="en">Page source</span></a> ·
+      <a href="https://github.com/Chans-gh/AI-Content-Planner/tree/main/docs/replay/news-artemis"><span lang="zh">示例案例原文</span><span lang="en">The quoted case</span></a>
+    </p>
   </div>
 </footer>
 

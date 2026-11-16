@@ -28,6 +28,19 @@ MONO = 'ui-monospace,SFMono-Regular,Menlo,monospace'
 
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "diagrams")
 
+# 和 site.css 的 token 对齐：纸色、墨色、蓝主色、绿（已核实）、橙（有冲突）
+LIGHT = dict(INK="#131922", MUTED="#566170", LINE="#CDD4DC", CARD="#FFFFFF", PANEL="#F8FAFB",
+             ACCENT="#2A41C9", ACCENT_SOFT="#EAF0FF", OK="#0E8A72", OK_SOFT="#E7F4F1",
+             WARN="#B8650A", WARN_SOFT="#FDF1E2", SOFT="#EEF1F4")
+DARK = dict(INK="#E6EAF0", MUTED="#94A0AE", LINE="#2A333F", CARD="#1A2029", PANEL="#161B23",
+            ACCENT="#8C9CFF", ACCENT_SOFT="#20263A", OK="#4FD1B5", OK_SOFT="#16302C",
+            WARN="#F2B04B", WARN_SOFT="#33281A", SOFT="#232B36")
+
+
+def use(palette):
+    """切换调色板：改模块全局，builder 在调用时才读它们"""
+    globals().update(palette)
+
 
 def esc(s):
     return (s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;"))
@@ -46,21 +59,25 @@ class Svg:
             f'<path d="M0 0 L10 5 L0 10 z" fill="{ACCENT}"/></marker></defs>',
         ]
 
-    def rect(self, x, y, w, h, fill=CARD, stroke=LINE, r=10, dash=None, sw=1):
+    def rect(self, x, y, w, h, fill=None, stroke=None, r=10, dash=None, sw=1):
+        fill = CARD if fill is None else fill
+        stroke = LINE if stroke is None else stroke
         d = f' stroke-dasharray="{dash}"' if dash else ""
         self.parts.append(
             f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="{r}" '
             f'fill="{fill}" stroke="{stroke}" stroke-width="{sw}"{d}/>'
         )
 
-    def text(self, x, y, s, size=13, fill=INK, anchor="start", weight=400, mono=False):
+    def text(self, x, y, s, size=13, fill=None, anchor="start", weight=400, mono=False):
+        fill = INK if fill is None else fill
         fam = MONO if mono else FONT
         self.parts.append(
             f'<text x="{x}" y="{y}" font-family="{fam}" font-size="{size}" fill="{fill}" '
             f'text-anchor="{anchor}" font-weight="{weight}">{esc(s)}</text>'
         )
 
-    def line(self, x1, y1, x2, y2, stroke=LINE, sw=1, arrow=False, accent=False, dash=None):
+    def line(self, x1, y1, x2, y2, stroke=None, sw=1, arrow=False, accent=False, dash=None):
+        stroke = LINE if stroke is None else stroke
         if arrow:
             stroke = ACCENT if accent else MUTED
             m = ' marker-end="url(#ag)"' if accent else ' marker-end="url(#a)"'
@@ -72,7 +89,8 @@ class Svg:
             f'stroke-width="{sw}"{m}{d}/>'
         )
 
-    def path(self, d, stroke=MUTED, sw=1.4, arrow=True, accent=False, dash=None):
+    def path(self, d, stroke=None, sw=1.4, arrow=True, accent=False, dash=None):
+        stroke = MUTED if stroke is None else stroke
         m = ""
         if arrow:
             m = ' marker-end="url(#ag)"' if accent else ' marker-end="url(#a)"'
@@ -82,7 +100,10 @@ class Svg:
             f'stroke-width="{sw}"{m}{ds}/>'
         )
 
-    def pill(self, x, y, w, h, label, fill=ACCENT_SOFT, stroke=ACCENT, color=ACCENT, size=12.5, mono=False):
+    def pill(self, x, y, w, h, label, fill=None, stroke=None, color=None, size=12.5, mono=False):
+        fill = OK_SOFT if fill is None else fill
+        stroke = OK if stroke is None else stroke
+        color = OK if color is None else color
         self.rect(x, y, w, h, fill=fill, stroke=stroke, r=h / 2, sw=1)
         self.text(x + w / 2, y + h / 2 + size * 0.36, label, size=size, fill=color,
                   anchor="middle", weight=600, mono=mono)
@@ -181,7 +202,9 @@ def fact(L):
         y = 84 + i * 34
         s.text(44, y, k, size=12, fill=MUTED)
         s.text(150, y, v, size=12, mono=(i == 1))
-    for i, (label, fill, color) in enumerate(L["states"]):
+    theme = {"ok": (OK_SOFT, OK), "soft": (SOFT, MUTED), "warn": (WARN_SOFT, WARN)}
+    for i, (label, kind) in enumerate(L["states"]):
+        fill, color = theme[kind]
         y = 44 + i * 44
         s.rect(504, y, 228, 36, fill=fill, stroke=fill, r=18)
         s.text(618, y + 23, label, size=12.5, fill=color, anchor="middle", weight=600)
@@ -277,8 +300,8 @@ LABELS = {
                 ("来源", "NASA 返回新闻稿 · 导语 · 一手"),
                 ("必须写清的", "口径、统计方、日期、单位"),
             ],
-            "states": [("已核实", ACCENT_SOFT, ACCENT), ("待核实", SOFT, MUTED),
-                       ("有冲突", WARN_SOFT, WARN), ("已过期", SOFT, MUTED)],
+            "states": [("已核实", "ok"), ("待核实", "soft"),
+                       ("有冲突", "warn"), ("已过期", "soft")],
         },
         "gate": {
             "conds": ["有「效果」「框架」两行", "缺口表没有待补的行", "每个点都有信息对应", "没有待核实和冲突"],
@@ -320,8 +343,8 @@ LABELS = {
                 ("Source", "NASA return release · lede · primary"),
                 ("Must be clear", "basis, who counted, date, unit"),
             ],
-            "states": [("verified", ACCENT_SOFT, ACCENT), ("unverified", SOFT, MUTED),
-                       ("conflicting", WARN_SOFT, WARN), ("expired", SOFT, MUTED)],
+            "states": [("verified", "ok"), ("unverified", "soft"),
+                       ("conflicting", "warn"), ("expired", "soft")],
         },
         "gate": {
             "conds": ["effect + frame logged", "no open planning gaps", "every point has a fact", "nothing unverified"],
@@ -354,10 +377,12 @@ BUILDERS = [
 def main():
     made = []
     for lang, labels in LABELS.items():
-        for name, key, fn in BUILDERS:
-            path = os.path.join(OUT, lang, name + ".svg")
-            fn(labels[key]).save(path)
-            made.append(os.path.relpath(path, os.path.dirname(OUT)))
+        for suffix, palette in (("", LIGHT), ("-dark", DARK)):
+            use(palette)
+            for name, key, fn in BUILDERS:
+                path = os.path.join(OUT, lang + suffix, name + ".svg")
+                fn(labels[key]).save(path)
+                made.append(os.path.relpath(path, os.path.dirname(OUT)))
     print(f"生成 {len(made)} 个 SVG：")
     for m in made:
         print(" ", m)
