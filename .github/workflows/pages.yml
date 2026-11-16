@@ -34,6 +34,25 @@ jobs:
             exit 1
           fi
 
+      # 裁字体：只装 page 用到的几个 @fontsource 包（版本写在 site/build-fonts.py 里），装在仓库外面
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - id: font-cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ runner.temp }}/fontsrc/node_modules
+          key: fontsrc-${{ hashFiles('site/build-fonts.py') }}
+      - name: 装原字体
+        if: steps.font-cache.outputs.cache-hit != 'true'
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund \
+            --prefix "$RUNNER_TEMP/fontsrc" $(python3 site/build-fonts.py --packages)
+      - name: 按页面用到的字裁成 woff2
+        run: |
+          pip install -q fonttools brotli
+          FONTSRC="$RUNNER_TEMP/fontsrc/node_modules/@fontsource" python3 site/build-fonts.py
+
       - uses: actions/configure-pages@v5
 
       - uses: actions/upload-pages-artifact@v3
