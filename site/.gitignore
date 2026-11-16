@@ -1,0 +1,4 @@
+# 发布时由 site/build-fonts.py 生成（本地想用就自己跑一次，见 site/README.md）
+fonts/
+fonts.css
+.fontsrc/

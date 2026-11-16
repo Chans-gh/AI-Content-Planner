@@ -11,9 +11,18 @@
   python3 site/build-diagrams.py
   ```
 
+- `build-fonts.py`：字体子集化。按 `index.html`（连 CSS 里 `content:` 的字）实际用到的 550 个字，把 `@fontsource` 的 Noto Sans SC 400/700、Noto Serif SC 900、JetBrains Mono 400/700 裁成 5 个 woff2（共约 260 KB），并写出 `fonts.css`。这两个产物不进仓库，发布时由 `pages.yml` 生成：
+
+  ```bash
+  npm install --no-save --no-package-lock --prefix /tmp/fontsrc $(python3 site/build-fonts.py --packages)
+  FONTSRC=/tmp/fontsrc/node_modules/@fontsource python3 site/build-fonts.py
+  ```
+
+  需要 `fontTools`、`brotli`（`pip install fonttools brotli`）。本地不跑也能预览：`fonts.css` 取不到，页面整段回退到系统字体栈（Songti / PingFang / JetBrains Mono），字号行高不变。字重变化大（标题 900）时视觉差别明显，这是有意为之——线上用裁好的字体，本机不留二进制。
+
 - `llms.txt`：给 AI 检索用的摘要。
 
-版式（配色 token、1180px 容器、字号、分节编号、顶栏和页脚）和 AI-Coding-Video 的介绍页是同一套，但**页面里没有任何一处引用它**：字体走系统栈，图是本仓库自己画的 SVG。
+版式（配色 token、1180px 容器、字号、分节编号、顶栏和页脚）和 AI-Coding-Video 的介绍页是同一套。字体和它用的是同一批上游包（Noto Sans SC / Noto Serif SC / JetBrains Mono），所以字形一致；但**页面里没有任何一处引用那个仓库**：字是这里自己裁的，图是本仓库自己画的 SVG。
 
 改文案只改 `index.html`；改图改 `build-diagrams.py` 再重跑。页面里的案例原文来自 `docs/replay/news-artemis/`，改案例时记得同步。本地预览：
 
