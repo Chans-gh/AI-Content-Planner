@@ -1,23 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 252" width="760" height="252">
-<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5f6570"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0f5f4e"/></marker></defs>
-<rect x="0" y="0" width="760" height="252" rx="16" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
-<rect x="24" y="30" width="452" height="192" rx="12" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
-<text x="44" y="58" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#0f5f4e" text-anchor="start" font-weight="600">P1-1</text>
-<text x="110" y="58" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#15171b" text-anchor="start" font-weight="600">这条信息</text>
-<text x="44" y="84" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">内容</text>
-<text x="150" y="84" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">美东 4 月 6 日 19:02 到达离地球最远处 252,756 英里</text>
-<text x="44" y="118" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">种类</text>
-<text x="150" y="118" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">B1</text>
-<text x="44" y="152" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">来源</text>
-<text x="150" y="152" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">NASA 返回新闻稿 · 导语 · 一手</text>
-<text x="44" y="186" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">必须写清的</text>
-<text x="150" y="186" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">口径、统计方、日期、单位</text>
-<rect x="504" y="44" width="228" height="36" rx="18" fill="#eaf3ef" stroke="#eaf3ef" stroke-width="1"/>
-<text x="618" y="67" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#0f5f4e" text-anchor="middle" font-weight="600">已核实</text>
-<rect x="504" y="88" width="228" height="36" rx="18" fill="#f1ede4" stroke="#f1ede4" stroke-width="1"/>
-<text x="618" y="111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#5f6570" text-anchor="middle" font-weight="600">待核实</text>
-<rect x="504" y="132" width="228" height="36" rx="18" fill="#fdf3e3" stroke="#fdf3e3" stroke-width="1"/>
-<text x="618" y="155" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#8a4b00" text-anchor="middle" font-weight="600">有冲突</text>
-<rect x="504" y="176" width="228" height="36" rx="18" fill="#f1ede4" stroke="#f1ede4" stroke-width="1"/>
-<text x="618" y="199" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#5f6570" text-anchor="middle" font-weight="600">已过期</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#566170"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2A41C9"/></marker></defs>
+<rect x="0" y="0" width="760" height="252" rx="16" fill="#FFFFFF" stroke="#CDD4DC" stroke-width="1"/>
+<rect x="24" y="30" width="452" height="192" rx="12" fill="#FFFFFF" stroke="#CDD4DC" stroke-width="1"/>
+<text x="44" y="58" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#2A41C9" text-anchor="start" font-weight="600">P1-1</text>
+<text x="110" y="58" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#131922" text-anchor="start" font-weight="600">这条信息</text>
+<text x="44" y="84" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#566170" text-anchor="start" font-weight="400">内容</text>
+<text x="150" y="84" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#131922" text-anchor="start" font-weight="400">美东 4 月 6 日 19:02 到达离地球最远处 252,756 英里</text>
+<text x="44" y="118" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#566170" text-anchor="start" font-weight="400">种类</text>
+<text x="150" y="118" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="12" fill="#131922" text-anchor="start" font-weight="400">B1</text>
+<text x="44" y="152" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#566170" text-anchor="start" font-weight="400">来源</text>
+<text x="150" y="152" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#131922" text-anchor="start" font-weight="400">NASA 返回新闻稿 · 导语 · 一手</text>
+<text x="44" y="186" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#566170" text-anchor="start" font-weight="400">必须写清的</text>
+<text x="150" y="186" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#131922" text-anchor="start" font-weight="400">口径、统计方、日期、单位</text>
+<rect x="504" y="44" width="228" height="36" rx="18" fill="#E7F4F1" stroke="#E7F4F1" stroke-width="1"/>
+<text x="618" y="67" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#0E8A72" text-anchor="middle" font-weight="600">已核实</text>
+<rect x="504" y="88" width="228" height="36" rx="18" fill="#EEF1F4" stroke="#EEF1F4" stroke-width="1"/>
+<text x="618" y="111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#566170" text-anchor="middle" font-weight="600">待核实</text>
+<rect x="504" y="132" width="228" height="36" rx="18" fill="#FDF1E2" stroke="#FDF1E2" stroke-width="1"/>
+<text x="618" y="155" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#B8650A" text-anchor="middle" font-weight="600">有冲突</text>
+<rect x="504" y="176" width="228" height="36" rx="18" fill="#EEF1F4" stroke="#EEF1F4" stroke-width="1"/>
+<text x="618" y="199" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#566170" text-anchor="middle" font-weight="600">已过期</text>
 </svg>

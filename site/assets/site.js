@@ -1,7 +1,8 @@
-/* 语言切换：默认中文，选择存在 localStorage；地址栏 ?lang=en 可以直接进英文 */
+/* 语言切换：默认中文，选择存在 localStorage；地址栏 ?lang=en 可以直接进英文。
+   按钮上的两段文字由 CSS 按 html[data-lang] 切换，这里只改属性。 */
 (function () {
   var root = document.documentElement;
-  var btn = document.getElementById('lang');
+  var btn = document.getElementById('lang-toggle');
   var KEY = 'acp-lang';
 
   function read() {
@@ -18,10 +19,6 @@
   function apply(lang) {
     root.setAttribute('data-lang', lang);
     root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
-    if (btn) {
-      btn.textContent = lang === 'zh' ? 'EN' : '中文';
-      btn.setAttribute('title', lang === 'zh' ? 'Switch to English' : '切换到中文');
-    }
     try { localStorage.setItem(KEY, lang); } catch (e) {}
   }
 

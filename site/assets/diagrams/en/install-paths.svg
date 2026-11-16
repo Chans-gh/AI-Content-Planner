@@ -1,19 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 236" width="760" height="236">
-<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5f6570"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0f5f4e"/></marker></defs>
-<rect x="0" y="0" width="760" height="236" rx="16" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
-<rect x="30" y="30" width="220" height="74" rx="12" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
-<text x="48" y="60" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13.5" fill="#15171b" text-anchor="start" font-weight="600">Codex</text>
-<text x="48" y="82" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#5f6570" text-anchor="start" font-weight="400">plugin marketplace</text>
-<line x1="140" y1="106" x2="140" y2="138" stroke="#5f6570" stroke-width="1" marker-end="url(#a)"/>
-<rect x="270" y="30" width="220" height="74" rx="12" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
-<text x="288" y="60" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13.5" fill="#15171b" text-anchor="start" font-weight="600">WorkBuddy</text>
-<text x="288" y="82" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#5f6570" text-anchor="start" font-weight="400">ai-content-planner.zip</text>
-<line x1="380" y1="106" x2="380" y2="138" stroke="#5f6570" stroke-width="1" marker-end="url(#a)"/>
-<rect x="510" y="30" width="220" height="74" rx="12" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
-<text x="528" y="60" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13.5" fill="#15171b" text-anchor="start" font-weight="600">DeepSeek Harness</text>
-<text x="528" y="82" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#5f6570" text-anchor="start" font-weight="400">install.sh dsh</text>
-<line x1="620" y1="106" x2="620" y2="138" stroke="#5f6570" stroke-width="1" marker-end="url(#a)"/>
-<rect x="30" y="142" width="700" height="54" rx="12" fill="#f6f3ec" stroke="#e5e0d6" stroke-width="1"/>
-<text x="380" y="176" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#15171b" text-anchor="middle" font-weight="600">into your assistant</text>
-<text x="380" y="216" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="11.5" fill="#5f6570" text-anchor="middle" font-weight="400">standard library only · no API key</text>
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#566170"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#2A41C9"/></marker></defs>
+<rect x="0" y="0" width="760" height="236" rx="16" fill="#FFFFFF" stroke="#CDD4DC" stroke-width="1"/>
+<rect x="30" y="30" width="220" height="74" rx="12" fill="#FFFFFF" stroke="#CDD4DC" stroke-width="1"/>
+<text x="48" y="60" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13.5" fill="#131922" text-anchor="start" font-weight="600">Codex</text>
+<text x="48" y="82" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#566170" text-anchor="start" font-weight="400">plugin marketplace</text>
+<line x1="140" y1="106" x2="140" y2="138" stroke="#566170" stroke-width="1" marker-end="url(#a)"/>
+<rect x="270" y="30" width="220" height="74" rx="12" fill="#FFFFFF" stroke="#CDD4DC" stroke-width="1"/>
+<text x="288" y="60" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13.5" fill="#131922" text-anchor="start" font-weight="600">WorkBuddy</text>
+<text x="288" y="82" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#566170" text-anchor="start" font-weight="400">ai-content-planner.zip</text>
+<line x1="380" y1="106" x2="380" y2="138" stroke="#566170" stroke-width="1" marker-end="url(#a)"/>
+<rect x="510" y="30" width="220" height="74" rx="12" fill="#FFFFFF" stroke="#CDD4DC" stroke-width="1"/>
+<text x="528" y="60" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13.5" fill="#131922" text-anchor="start" font-weight="600">DeepSeek Harness</text>
+<text x="528" y="82" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="11" fill="#566170" text-anchor="start" font-weight="400">install.sh dsh</text>
+<line x1="620" y1="106" x2="620" y2="138" stroke="#566170" stroke-width="1" marker-end="url(#a)"/>
+<rect x="30" y="142" width="700" height="54" rx="12" fill="#F8FAFB" stroke="#CDD4DC" stroke-width="1"/>
+<text x="380" y="176" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#131922" text-anchor="middle" font-weight="600">into your assistant</text>
+<text x="380" y="216" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="11.5" fill="#566170" text-anchor="middle" font-weight="400">standard library only · no API key</text>
 </svg>
