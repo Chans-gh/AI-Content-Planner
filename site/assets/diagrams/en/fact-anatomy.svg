@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 252" width="760" height="252">
+<defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#5f6570"/></marker><marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#0f5f4e"/></marker></defs>
+<rect x="0" y="0" width="760" height="252" rx="16" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
+<rect x="24" y="30" width="452" height="192" rx="12" fill="#ffffff" stroke="#e5e0d6" stroke-width="1"/>
+<text x="44" y="58" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="14" fill="#0f5f4e" text-anchor="start" font-weight="600">P1-1</text>
+<text x="110" y="58" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="13" fill="#15171b" text-anchor="start" font-weight="600">the fact</text>
+<text x="44" y="84" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">Fact</text>
+<text x="150" y="84" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">19:02 EDT, April 6: 252,756 mi from Earth</text>
+<text x="44" y="118" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">Type</text>
+<text x="150" y="118" font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">B1</text>
+<text x="44" y="152" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">Source</text>
+<text x="150" y="152" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">NASA return release · lede · primary</text>
+<text x="44" y="186" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#5f6570" text-anchor="start" font-weight="400">Must be clear</text>
+<text x="150" y="186" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12" fill="#15171b" text-anchor="start" font-weight="400">basis, who counted, date, unit</text>
+<rect x="504" y="44" width="228" height="36" rx="18" fill="#eaf3ef" stroke="#eaf3ef" stroke-width="1"/>
+<text x="618" y="67" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#0f5f4e" text-anchor="middle" font-weight="600">verified</text>
+<rect x="504" y="88" width="228" height="36" rx="18" fill="#f1ede4" stroke="#f1ede4" stroke-width="1"/>
+<text x="618" y="111" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#5f6570" text-anchor="middle" font-weight="600">unverified</text>
+<rect x="504" y="132" width="228" height="36" rx="18" fill="#fdf3e3" stroke="#fdf3e3" stroke-width="1"/>
+<text x="618" y="155" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#8a4b00" text-anchor="middle" font-weight="600">conflicting</text>
+<rect x="504" y="176" width="228" height="36" rx="18" fill="#f1ede4" stroke="#f1ede4" stroke-width="1"/>
+<text x="618" y="199" font-family="-apple-system,BlinkMacSystemFont,Segoe UI,PingFang SC,Microsoft YaHei,sans-serif" font-size="12.5" fill="#5f6570" text-anchor="middle" font-weight="600">expired</text>
+</svg>
