@@ -87,7 +87,7 @@ class FetchArticle(unittest.TestCase):
         cls.base = f"http://127.0.0.1:{cls.server.server_port}"
         cls.url = cls.base + "/article"
         cls.tmp = tempfile.TemporaryDirectory()
-        cls.dir = Path(cls.tmp.name)
+        cls.dir = Path(cls.tmp.name).resolve()          # macOS 的 /var 是指向 /private/var 的链接，脚本给的是真实路径
         with contextlib.redirect_stdout(io.StringIO()):
             cls.out = fetch_article.main([cls.url, str(cls.dir), "--name", "report"])
             cls.with_images = fetch_article.main([cls.url, str(cls.dir), "--name", "report-img", "--images"])
