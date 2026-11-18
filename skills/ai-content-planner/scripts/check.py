@@ -62,7 +62,7 @@ EMPTY_WORDS = ('引发共鸣', '提升好感', '增强信任', '提升认知', '
 CIRCLED = '①②③④⑤⑥⑦⑧⑨⑩'
 ORIGINAL = '原句'
 NO_NARRATION = re.compile(r'(无|没有|不要|不用|不说话)旁白|不说话')
-EXTREME = re.compile(r'最(?![后终近初])|第一(?![次步帧条句天页段行张眼])|顶级|全网|绝对|100\s*%')   # 「最后」「第一步」这类序数不算
+PAREN = re.compile(r'（[^（）]*(?:（[^（）]*）[^（）]*)*）|\([^()]*\)')   # 括号连同里面的字，括号里可以再套一层
 SENTENCE_END = re.compile(r'[。！？!?；;…]+|<br\s*/?>|——')
 PER_SECOND = (2.5, 5)   # 有旁白的视频，每段说法每秒 2.5–5 字（约 4 字）
 LONG_SENTENCE = 40
@@ -158,7 +158,7 @@ def make_terms(cell):
     m = re.fullmatch(r'\s*能用[：:](.*?)[；;]\s*不能用[：:](.*?)[。.]?\s*', cell, re.S)
     if not m:
         return None
-    names = lambda part: {value_of(x) for x in re.split(r'[、，,]', part) if x.strip()}
+    names = lambda part: {value_of(x) for x in re.split(r'[、，,]', PAREN.sub('', part)) if x.strip()}   # 限制写在括号里，括号里能有逗号
     return names(m.group(1)), names(m.group(2))
 
 
@@ -354,6 +354,9 @@ def check(folder, handoff=False):
         make = make_terms(form['制作条件']['内容'])
         if make is None:
             r.err('plan.md:形式', '「制作条件」要写成「能用：……；不能用：……」，用画面来源的名字（' + '、'.join(SOURCES) + '）')
+        else:
+            for name in sorted((make[0] | make[1]) - set(SOURCES) - {'无'}):
+                r.note('plan.md:形式', f'「制作条件」里的「{name}」不是画面来源的名字（' + '、'.join(SOURCES) + '）：限制写进括号，如「生图（只出手）」')
     out_form = form.get('输出形式和规格', {}).get('内容', '')
     voice = form.get('声音', {}).get('内容', '')
     is_video = out_form.strip().startswith('视频')
@@ -772,7 +775,7 @@ def check(folder, handoff=False):
             if row['用到哪段'].strip() != NOT_USED and not is_placeholder(row['用到哪段']) and i not in shot_ms:
                 r.note('content.md:素材', f'{i} 要用（{row["用到哪段"]}），但画面表没有一行用到它')
 
-    # ---------- 说法：字数、长句、原句、极限词（SPEC-5 第 3 节） ----------
+    # ---------- 说法：字数、长句、原句（SPEC-5 第 3 节） ----------
     seg_ext = {row['段']: parse_extent(row['篇幅']) for row in seg_rows}
     said_chars = {}
     for row in say_rows:
@@ -786,10 +789,6 @@ def check(folder, handoff=False):
             for sent in SENTENCE_END.split(text):
                 if char_count(sent) > LONG_SENTENCE:
                     r.note('plan.md:说法', f'「{row["点"]}」有一句 {char_count(sent)} 字，口播单句不超过 {LONG_SENTENCE} 字：{sent.strip()[:12]}……')
-        for x in EXTREME.finditer(text):
-            if x.group(0) not in row['不能丢的']:
-                r.note('plan.md:说法', f'「{row["点"]}」说了「{x.group(0)}」：极限词要有依据，依据写进「不能丢的」（连这个词一起写）')
-                break
     if narrated:
         for p_, e in seg_ext.items():
             if e and e[0] == '时间' and p_ in said_chars:

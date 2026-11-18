@@ -556,18 +556,19 @@ class CheckTest(unittest.TestCase):
         d = self.edit('plan.md', ('| 原句；P2-1；Q2 |', '| P2-1；Q2 |'), ('| 视频 | 用户定 |', '| 图文 | 用户定 |'))
         self.assertNotIn('原句', run(d, True)[1])
 
-    def test_extreme(self):
-        """说法里的极限词提示；「不能丢的」写了这个词和依据就不提示；「最后」不算"""
+    def test_extreme_words_allowed(self):
+        """极限词不再提示（维护者 2026-11-18 定）：事实要有依据照「夸张不用在事实上」，靠写的人判断"""
         a = '旗是蓝色的。」'
-        code, out = run(self.edit('plan.md', (a, '旗是全网最蓝的。」')))
-        self.assertEqual(code, 0, out)
-        self.assertIn('「P1 a、b」说了「全网」', out)
-        code, out = run(self.edit('plan.md', (a, '旗是最蓝的。」'), ('| 原句；P1-1；K1 |', '| 原句；P1-1；K1；「最蓝」依据 M1 |')))
-        self.assertEqual(out, '通过\n')
-        self.assertEqual(run(self.edit('plan.md', (a, '旗最后是蓝色的。」')))[1], '通过\n')
-        self.assertEqual(run(self.edit('plan.md', (a, '旗是蓝色的，第一次公开。」')))[1], '通过\n')
-        self.assertIn('说了「第一」', run(self.edit('plan.md', (a, '旗是蓝色的，行业第一。」')))[1])
+        self.assertEqual(run(self.edit('plan.md', (a, '旗是全网最蓝的，行业第一。」')))[1], '通过\n')
 
+    def test_make_limits(self):
+        """制作条件的限制写在括号里，括号里有逗号也不拆；拆出来不是画面来源的提示"""
+        cell = '| 制作条件 | 能用：照片、代码画；不能用：生图、生视频 |'
+        out = run(self.edit('plan.md', (cell, '| 制作条件 | 能用：照片（只用公开的，标出处）、代码画；不能用：生图、生视频 |')))[1]
+        self.assertEqual(out, '通过\n')
+        code, out = run(self.edit('plan.md', (cell, '| 制作条件 | 能用：照片：只用公开的，标出处、代码画；不能用：生图、生视频 |')))
+        self.assertEqual(code, 0, out)
+        self.assertIn('「制作条件」里的「标出处」不是画面来源的名字', out)
 
 class DocsTest(unittest.TestCase):
     def test_formats_match_template(self):
