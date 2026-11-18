@@ -1,10 +1,10 @@
 ---
 name: ai-content-planner
-description: 做内容之前的策划：先从用户的一句话、要求、链接、文件、图片、音视频里挖出要的效果（谁在什么时刻遇到、卡在哪、看完做什么）和形式，再给打法、排框架（每段把受众从哪个念头带到哪个念头），补齐事实、参数、步骤、案例和素材，写好参考说法和画面约束后交给下游；每步请用户确认。任何类型（带货、获客、品牌、公益、预告、互动、课程等）用同一套问法，不套模板。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、要内容有效果、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
-version: 0.6.1
+description: 做内容之前的策划：先从用户的一句话、要求、链接、文件、图片、音视频里挖出要的效果（谁在什么时刻遇到、卡在哪、看完做什么）、形式和表达（基调、张力、钩子），再给打法、排框架（每段把受众从哪个念头带到哪个念头）、定每段的画面从哪来，补齐事实、参数、步骤、案例和素材，写好口播初稿和画面约束后交给下游；每步请用户确认。任何类型（带货、获客、品牌、公益、预告、互动、课程等）用同一套问法，不套模板。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、要内容有效果、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
+version: 0.7.0
 display_name: 内容策划
 display_name_en: AI Content Planner
-description_en: "Content planning before anything is made, in three confirmed steps: first digs out of the user's words, links, files, images, audio or video the effect the piece must have (who meets it at what moment, what holds them back, what they do afterwards) and the form that follows from it; then offers approaches and builds a framework that moves the audience from one thought to the next segment by segment; then fills in the facts, specs, steps, examples and evidence, writes reference lines and visual constraints, and hands off to a downstream skill. One set of questions for every kind of piece (sales, lead generation, brand, public-interest, teaser, interactive, courses), no genre templates. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much or too little material, needs a through-line and segments, wants the piece to work, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
+description_en: "Content planning before anything is made, in three confirmed steps: first digs out of the user's words, links, files, images, audio or video the effect the piece must have (who meets it at what moment, what holds them back, what they do afterwards) and the form that follows from it; together with how it should sound (tone, tension, hook); then offers approaches, builds a framework that moves the audience from one thought to the next segment by segment, and decides where each segment's visuals come from (drawn by code, real footage or photos, or generated); then fills in the facts, specs, steps, examples and evidence, writes the draft narration and visual constraints, and hands off to a downstream skill. One set of questions for every kind of piece (sales, lead generation, brand, public-interest, teaser, interactive, courses), no genre templates. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much or too little material, needs a through-line and segments, wants the piece to work, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
 ---
 
 # 内容策划
@@ -13,28 +13,27 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 ## 什么时候用
 
-- 只有一句想法或题目；资料太多要取舍，或不够要补事实、参数、步骤、案例；
-- 要定一句话主线、分几段、每段讲什么；要内容有效果、有差异；下游发现内容缺口，在缺口表加了行。
+- 只有一句想法或题目；资料太多要取舍，或不够要补事实、参数、步骤、案例；要定一句话主线、分几段、每段讲什么；要内容有效果、有差异；下游发现内容缺口，在缺口表加了行。
 - 不用：只做形式（选风格、排版、改构图、渲染）的，直接用对应的下游 Skill。
 
 ## 三步
 
 | 步 | 做什么 | 写进 | 结束条件 | 状态行 |
 |---|---|---|---|---|
-| 1 挖效果和形式 | 逐句读用户给的，读出效果六问、形式七项；读不出的再问；轻量摸底 | `plan.md` 需求、效果、形式；`content.md` 资料清单 | 用户确认效果和形式 | 效果待确认 |
-| 2 打法和框架 | 2–3 个打法让用户选；按选定的打法排段：每段受众从哪到哪、怎么证明、要讲的点；效果自查；还缺什么 | `plan.md` 立意、框架、效果自查、取舍、缺口 | 用户确认打法和框架 | 框架待确认 |
-| 3 补齐内容 | 按段搜集、核实，写全每段的信息和素材；写说法、受众、素材、约束、衍生；归「策划」的缺口清零 | `content.md`、`source/`、`plan.md` 说法和衍生 | 「交接」的条件全满足 | 补齐中 → 已交接 |
+| 1 挖效果和形式 | 逐句读用户给的，读出效果六问、形式七项，推出表达六项；读不出的再问；轻量摸底 | `plan.md` 需求、效果、形式、表达；`content.md` 资料清单 | 用户确认效果、形式和表达 | 效果待确认 |
+| 2 打法和框架 | 2–3 个打法让用户选；按选定的打法排段：每段受众从哪到哪、怎么证明、要讲的点；每段的画面和来源；效果自查；还缺什么 | `plan.md` 立意、框架、画面、效果自查、取舍、缺口 | 用户确认打法和框架 | 框架待确认 |
+| 3 补齐内容 | 按段搜集、核实，写全每段的信息和素材，补齐画面的着落；写说法（口播初稿）、受众、素材、约束、衍生；归「策划」的缺口清零 | `content.md`、`source/`、`plan.md` 说法和衍生 | 「交接」的条件全满足 | 补齐中 → 已交接 |
 | 回流 | 下游在缺口表加行，回到第 3 步（实质变化回到更早的步） | 同上 | 重新满足交接条件 | 回流中 → 已交接 |
 
-文件放在用户项目的 `plans/<短名>/`（短名：英文小写加连字符，取题目的关键词）：第 1 步就复制 `templates/plan.md`、`templates/content.md`（先填资料清单），照模板填，节和表头不改；抓下来的原文和用户给的文件放 `source/<名字>/`。每步确认的内容记进 `plan.md` 的确认记录。效果和形式怎么挖、打法和框架怎么排、说法和约束怎么写，看 [effect.md](effect.md)。
+文件放在用户项目的 `plans/<短名>/`（短名：英文小写加连字符，取题目的关键词）：第 1 步就复制 `templates/plan.md`、`templates/content.md`（先填资料清单），照模板填，节和表头不改；抓下来的原文和用户给的文件放 `source/<名字>/`。每步确认的内容记进 `plan.md` 的确认记录。效果和形式怎么挖、打法和框架怎么排、画面、说法和约束怎么写，看 [effect.md](effect.md)；表达的六项、14 档基调、张力、钩子、边界看 [tone.md](tone.md)。
 
 ## 每步怎么做
 
-**第 1 步**：先填需求（用户给的，原样记）。再把用户的每一句读成效果和形式上的要求，填效果六问（接触时刻、起点、阻力、终点、衡量、杠杆）和形式七项，「依据」写读自哪句，「来源」写用户给的 / 材料里的 / 建议 / 待你定。给用户看：需求、效果、形式三张表和问题。问题只问读不出、又必须用户定的，**最多 5 个，先问效果**（终点、阻力、接触时刻），每问附默认答案；用户已经给了的不问；用户就是当事方的，阻力和受众原话直接问他。「你来定」只授权创作选择（打法、顺序、语气），不授权编事实。
+**第 1 步**：先填需求（用户给的，原样记）。再把用户的每一句读成效果和形式上的要求，填效果六问（接触时刻、起点、阻力、终点、衡量、杠杆）和形式七项，「依据」写读自哪句，「来源」写用户给的 / 材料里的 / 建议 / 待你定。从效果推出表达六项（`tone.md`）：基调、张力、钩子给推荐，另给 1–2 个备选基调，不算进问题，用户改哪项就是哪项；制作条件写成「能用：……；不能用：……」（用画面来源的名字）。给用户看：需求、效果、形式、表达四张表和问题。问题只问读不出、又必须用户定的，**最多 5 个，先问效果**（终点、阻力、接触时刻），每问附默认答案；用户已经给了的不问；用户就是当事方的，阻力和受众原话直接问他。「你来定」只授权创作选择（打法、顺序、语气），不授权编事实。
 
-**第 2 步**：先写一句话主线和 2–3 个打法（区别在于抓哪条阻力、用哪个杠杆），标一个推荐，用户选定再排框架。内容流程写一句（P1 → P2 → P3 的逻辑线）；段落表每段写「受众：从 → 到」、2–4 个要讲的点（a、b、c，一点一句话，写内容不写动作，第 3 步结束时定稿）、怎么证明、用到哪些输入。写效果自查五项。还缺的进缺口表，**先排受众证据和杠杆，再排支撑事实，原理定义最后**：**策划** = 讲清楚、站得住需要的事实、参数、步骤、受众原话（挡交接）；**下游** = 做成品时才要的图、品牌资产、截图、录屏、生成素材，工序写在「缺什么」里。缺截图但连点哪个按钮都不知道的，拆两行：步骤归策划，截图归下游。给用户看：主线和打法、内容流程、段落表（段、受众从哪到哪、要讲的点、篇幅）、效果自查、还缺的、取舍里删掉和延后的。篇幅单位和交给谁看 `formats.md`。
+**第 2 步**：先写一句话主线和 2–3 个打法（区别在于抓哪条阻力、用哪个杠杆），标一个推荐，用户选定再排框架。内容流程写一句（P1 → P2 → P3 的逻辑线）；段落表每段写「受众：从 → 到」、2–4 个要讲的点（a、b、c，一点一句话，写内容不写动作，第 3 步结束时定稿）、怎么证明、用到哪些输入。写画面：每段至少一行，要看到什么、来源（只从制作条件「能用」里挑），「用到」先写能写的，缺的进缺口。写效果自查六项。还缺的进缺口表，**先排受众证据和杠杆，再排支撑事实，画面的缺口在支撑事实之后，原理定义最后**：**策划** = 讲清楚、站得住需要的事实、参数、步骤、受众原话（挡交接）；**下游** = 做成品时才要的图、品牌资产、截图、录屏、生成素材，工序写在「缺什么」里。缺截图但连点哪个按钮都不知道的，拆两行：步骤归策划，截图归下游。给用户看：主线和打法、内容流程、段落表（段、受众从哪到哪、要讲的点、篇幅）、画面、效果自查、还缺的、取舍里删掉和延后的。篇幅单位和交给谁看 `formats.md`。
 
-**第 3 步**：搜集和读长原文派给子代理（下面「子代理」）。`content.md` 每段一节，把每个要讲的点用到的信息和素材写全，标种类（`types.md`，写到小类）、来源、状态，照种类写清「必须写清的」。一条信息几段都用的，记在第一次用到的段，别的段写「（P3 b 也用）」。图片、视频逐张记进素材表（M）：字、标志、水印、人脸、能怎么用、能不能送生成；承担信息的（官方图表、界面截图、录像片段）同时在段里记成 `F1`–`F3`，「来源」写 M 编号；装饰性的不收，进缺口归「下游」。生成、重画画面要守的结构、外观、意象参照写进约束表（K）；受众原话写进受众表（V）。素材存法：公开、地址稳定的存链接加查证日期；可能失效、要截片段的，源文件放 `source/`；私密的放 `source/`、不进公开仓库；太大的存链接加时间码。每条素材写授权，不清楚的是〔待核实〕。最后写说法（每段至少一行：要的效果、参考说法、不能丢的）和衍生。
+**第 3 步**：搜集和读长原文派给子代理（下面「子代理」）。`content.md` 每段一节，把每个要讲的点用到的信息和素材写全，标种类（`types.md`，写到小类）、来源、状态，照种类写清「必须写清的」。一条信息几段都用的，记在第一次用到的段，别的段写「（P3 b 也用）」。图片、视频逐张记进素材表（M）：字、标志、水印、人脸、能怎么用、能不能送生成；承担信息的（官方图表、界面截图、录像片段）同时在段里记成 `F1`–`F3`，「来源」写 M 编号；装饰性的不收，进缺口归「下游」。画面的着落：用户给的文件逐张进 M；来源是照片、录像的，先派 finder 找官方、公共领域、开放许可的，找到记 M（出处、许可、查证日期），找不到进缺口归下游；生成、重画画面要守的结构、外观、意象参照写进约束表（K）。受众原话写进受众表（V）。素材存法：公开、地址稳定的存链接加查证日期；可能失效、要截片段的，源文件放 `source/`；私密的放 `source/`、不进公开仓库；太大的存链接加时间码。每条素材写授权，不清楚的是〔待核实〕。最后照表达写说法（每段至少一行：要的效果、参考说法、不能丢的）和衍生。有旁白或上字的视频，说法按念的顺序排，合起来就是**口播初稿**，正本在策划：每段字数照篇幅、每秒约 4 字，单句不超过 40 字；开头的钩子句和终点动作那句在「不能丢的」写「原句」，下游只改念法和断句。
 
 **合并第 1、2 步**：用户给了结构，或明确说「你来定、直接做」，且效果、形式没有「待你定」时，一次给出效果、形式、打法、框架，不等确认直接进第 3 步；确认记录照样写两行「效果：自动，未问用户（理由）」「框架：自动，未问用户（同上）」，交接说明写「效果和框架没经你确认」。
 
@@ -42,8 +41,8 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 | 变化 | 回到 |
 |---|---|
-| 接触时刻、起点、阻力、终点变了；主线被推翻；形式的结构或声音变了；删掉用户的「必须有」 | 第 1 步 |
-| 换打法；段增删、顺序变了；某段要讲的点增删 | 第 2 步 |
+| 接触时刻、起点、阻力、终点变了；主线被推翻；形式的结构或声音变了；基调、张力变了；删掉用户的「必须有」 | 第 1 步 |
+| 换打法；段增删、顺序变了；某段要讲的点增删；某段画面的来源变了（如生成改实拍） | 第 2 步 |
 | 作为核心表达的数字变了 | 第 3 步内，只确认受影响的段 |
 
 ## 读到什么程度
@@ -56,9 +55,7 @@ description_en: "Content planning before anything is made, in three confirmed st
 | 图片、音视频 | 看图；长媒体按时长、关键帧、已有字幕粗看 | 定哪些片段承担内容 | 只对这些片段转写、记时间码 |
 | 混合 | 按要讲的内容归组，不按上传顺序；先标重复和冲突 | 每段对应到哪几份 | 核对影响选定表达的冲突 |
 
-**网页先抓成本地文件再读**：`python3 -I <本 Skill 目录>/scripts/fetch_article.py <链接>... plans/<短名>`（链接多就写进清单用 `--list`），每个链接落成 `plans/<短名>/source/<名字>/`：`article.md` 是正文（图的位置标「[图 n：标题]」），`charts.md` 是图表清单（尺寸、标题、所在小节、原图链接）。原图默认不下载，要用时加 `--images`（有总量上限）；原网页和原图由自动写的 `.gitignore` 挡在仓库外。先看 `article.md` 的小节标题，只读要用的片段，不把整页读进对话；资料清单「位置」写这份文件，「读到哪」写到小节。私密原文（要登录、付费、内部的）连 `article.md` 也不进公开仓库。正文很少（要登录、靠脚本渲染）或不是网页（PDF 等）时改用宿主的读取工具。
-
-读不到的（没工具、打不开、要登录），先在同一来源找别的入口（官网附件、接口、官方转载），仍读不到就在资料清单「读到哪」写「没读成：原因」，请用户补原文，其余照常推进。
+**网页先抓成本地文件再读**：`python3 -I <本 Skill 目录>/scripts/fetch_article.py <链接>... plans/<短名>`（链接多就写进清单用 `--list`），每个链接落成 `plans/<短名>/source/<名字>/`：`article.md` 是正文（图的位置标「[图 n：标题]」），`charts.md` 是图表清单（尺寸、标题、所在小节、原图链接）。原图默认不下载，要用时加 `--images`（有总量上限）；原网页和原图由自动写的 `.gitignore` 挡在仓库外。先看 `article.md` 的小节标题，只读要用的片段，不把整页读进对话；资料清单「位置」写这份文件，「读到哪」写到小节。私密原文（要登录、付费、内部的）连 `article.md` 也不进公开仓库。正文很少（要登录、靠脚本渲染）或不是网页（PDF 等）时改用宿主的读取工具。读不到的（没工具、打不开、要登录），先在同一来源找别的入口（官网附件、接口、官方转载），仍读不到就在资料清单「读到哪」写「没读成：原因」，请用户补原文，其余照常推进。
 
 ## 核实
 
@@ -66,8 +63,7 @@ description_en: "Content planning before anything is made, in three confirmed st
 - **〔待核实〕**：只有一个二手来源、只有搜索摘要、公司自己说的没有佐证。
 - **有冲突**：来源说法不一，几种说法和出处都写出来。
 - **已过期**：有了更新的数据，或时间敏感的数据没写年份；超过一年的数据讲的时候带年份。
-- 来源往高一级找：一手（官方、原文、原始数据）＞ 媒体 ＞ 二手（百科、博客、汇总，只作线索和交叉核对）。
-- 图表逐张看：榜单名次这类数据常常只在图里。原因、对比、历史和数字一起整理，不只抽数字；几个数字之间能算的（差值、合计）自己算一遍，对不上按「有冲突」。
+- 来源往高一级找：一手（官方、原文、原始数据）＞ 媒体 ＞ 二手（百科、博客、汇总，只作线索和交叉核对）。图表逐张看：榜单名次这类数据常常只在图里。原因、对比、历史和数字一起整理，不只抽数字；几个数字之间能算的（差值、合计）自己算一遍，对不上按「有冲突」。
 
 ## 子代理
 
@@ -77,8 +73,7 @@ description_en: "Content planning before anything is made, in three confirmed st
 | `reader` | haiku | 一次读一份长原文（`source/<名字>/article.md`），对照框架写 `card.md`：出处、日期、来源等级、按段的要点，每条带行号 | 同上 |
 | 主模型 | — | 派活（给本 Skill 目录、`plans/<短名>/`、段和点）、收回报、抽查摘录对不对原文、定状态、写 `content.md` | 不自己搜、不自己整篇读长原文 |
 
-- 同时最多 2 个子代理；回报写成文件或不超过 10 行。子代理文件随插件装（Claude Code），或由 `install.sh claude` 拷到 `.claude/agents/`。
-- 宿主没有子代理、或不能指定模型时（Codex 等），主模型自己查，守同样的读取规矩（只读片段，长原文先读 `card.md`）；检索记录「谁查的」照实写。
+- 同时最多 2 个子代理；回报写成文件或不超过 10 行。子代理文件随插件装（Claude Code），或由 `install.sh claude` 拷到 `.claude/agents/`。宿主没有子代理、或不能指定模型时（Codex 等），主模型自己查，守同样的读取规矩（只读片段，长原文先读 `card.md`）；检索记录「谁查的」照实写。
 
 ## 交接
 
@@ -91,9 +86,12 @@ description_en: "Content planning before anything is made, in three confirmed st
 5. 要讲的点和信息写的是内容不是动作；受众的「到」和效果没有落进「规矩」里效果的不算数写法；
 6. 归「下游」的行写清了缺什么、哪段（段号或「全部」）；
 7. 每段至少一行说法；约束都已核实或是设定；形式写了衍生的，衍生节有行；
-8. `python3 -I <本 Skill 目录>/scripts/check.py plans/<短名> --handoff` 通过。
+8. 表达六项都写了，没有「待你定」；
+9. 框架的每段至少一行画面；每行的「用到」按来源有着落（`effect.md` 画面）；来源不在制作条件「不能用」里；
+10. 有旁白或上字的视频：开头和终点动作那两行说法写了「原句」；
+11. `python3 -I <本 Skill 目录>/scripts/check.py plans/<短名> --handoff` 通过。
 
-交接说明写这几句：一句话主线、选的打法、终点；段数和总篇幅；第 5 条的自查依据；留给下游的缺口几条；交给谁（`formats.md`）；合并过第 1、2 步的写「效果和框架没经你确认」。下游怎么读写在 `handoff.md`；要精简版给下游，跑 `python3 -I <本 Skill 目录>/scripts/brief.py plans/<短名>`。
+交接说明写这几句：一句话主线、选的打法、终点；基调和张力；段数和总篇幅；画面里代码画、真实素材、生成各几行，缺口里归下游的画面几条；第 5 条的自查依据；留给下游的缺口几条；交给谁（`formats.md`）；合并过第 1、2 步的写「效果和框架没经你确认」。下游怎么读写在 `handoff.md`；要精简版给下游，跑 `python3 -I <本 Skill 目录>/scripts/brief.py plans/<短名>`。
 
 ## 回流
 
@@ -103,6 +101,7 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 - **不算数的写法**：要讲的点和内容写的是动作，不是内容，就不能交接。「介绍这条新闻」「突出卖点」「讲解原理」「营造氛围」不算数；「哪天发射、绕月几天、哪条官方公告说的」「镜头从空教室推到窗外的雨」算数。
 - **效果也有不算数的写法**：受众的「到」写成「知道 X」「了解 X」「感受到 X」，效果写成「引发共鸣」「提升好感」「增强信任」，不算数；写成他心里的念头或能看见的动作才算数（「从『是摆件吧』到『我的日常够装』」「点预约」）。以学会为目的的写「能做到 X」算数。
+- **表达的底线**：夸张只用在比喻、感受、节奏上，不用在事实、数字、功效上（「轻得像没背」可以，「全网最轻」不行）；张力写进字里，不靠演绎：合成音喊不出来、哭不出来，不写「（激动地）」这类提示。其余见 `tone.md`。
 - **合规先查**：涉及广告用语、功效宣称、医疗、金融、未成年人等有法规或平台规则的，先查规定（`D1`、`D2`）再写，没有依据的宣称不写。
 - **不伪读**：读不到、只读了一部分，照实写；搜索摘要和模型记忆只当线索，不当来源。
 - **说法和事实分开**：用户说的、品牌官网写的、核实过的，分别标；「你来定」不授权编事实。
@@ -115,8 +114,9 @@ description_en: "Content planning before anything is made, in three confirmed st
 
 | 文件 | 是什么 |
 |---|---|
-| `effect.md` | 效果和形式：怎么挖、打法、从 → 到、效果自查、说法、素材、约束、衍生 |
-| `templates/plan.md` | 策划稿模板：状态、确认记录、需求、效果、形式、立意、框架、效果自查、说法、衍生、取舍、缺口 |
+| `effect.md` | 效果和形式：怎么挖、打法、从 → 到、效果自查、画面、说法、素材、约束、衍生 |
+| `tone.md` | 表达：六项、14 档基调、张力、钩子、句式和节奏、边界 |
+| `templates/plan.md` | 策划稿模板：状态、确认记录、需求、效果、形式、表达、立意、框架、画面、效果自查、说法、衍生、取舍、缺口 |
 | `templates/content.md` | 内容表模板：资料清单、受众、素材、约束、每段一节、待核实和有冲突、检索记录 |
 | `types.md` | 信息的种类和每类必须写清的 |
 | `formats.md` | 各输出形式的篇幅单位和交给谁 |

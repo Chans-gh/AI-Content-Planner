@@ -5,7 +5,7 @@
 
 只用标准库，读法和 check.py 一样（按标题找节、按表头找表）。两份文件先过 check.py（不加 --handoff）；
 有错就把错打到标准错误、退出码 1，不出精简版。
-内容：主线、效果、形式、每段的「从 → 到」、要讲的点、怎么证明、说法、用到的信息（内容和必须写清的）、
+内容：主线、效果、形式、表达、每段的「从 → 到」、要讲的点、怎么证明、画面、说法、用到的信息（内容和必须写清的）、
 约束、不能送生成的素材、衍生。状态不是「已交接」时，开头写一行提醒。
 """
 import argparse
@@ -78,12 +78,13 @@ def brief(folder):
         r = play[0]
         out += [f'**打法**：{r["打法"]}（抓 {r["抓哪条阻力"]}，用 {r["用哪个杠杆"]}）；开头 {r["开头"]}', '']
 
-    for name, head in (('效果', ['项', '内容']), ('形式', ['项', '内容'])):
+    for name, head in (('效果', ['项', '内容']), ('形式', ['项', '内容']), ('表达', ['项', '内容'])):
         out += [f'## {name}', '']
         out += [f'- **{k}**：{br(v)}' for k, v in kv(p.get(name), head)]
         out.append('')
 
     says = rows(p.get('说法'), c.SAY_HEAD)
+    shots = rows(p.get('画面'), c.SHOT_HEAD)
     data = segment_data(cm)
     out += ['## 每段', '']
     for r in rows(p.get('框架'), c.FRAME_HEAD):
@@ -92,6 +93,9 @@ def brief(folder):
         for letter, point in c.parse_points(r['要讲的点']) or []:
             out.append(f'- {letter}. {point}')
         out.append(f'- 怎么证明：{r["怎么证明"]}')
+        for h in shots:
+            if h['段'] == seg:
+                out.append(f'- 画面 {h["#"]}〔{h["来源"]}〕{h["要看到什么"]}（用到 {h["用到"]}）')
         for s in says:
             if any(n == seg for n, _ in c.seg_points(s['点'])):
                 out.append(f'- 说法 {s["点"]}：{s["参考说法"]}（要的效果：{s["要的效果"]}；不能丢：{s["不能丢的"]}）')

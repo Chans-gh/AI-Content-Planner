@@ -1,6 +1,6 @@
 {
   "name": "ai-content-planner",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "做内容之前的策划：先挖出要的效果和形式，再定打法和框架，补齐事实、说法和画面约束，三步各请用户确认；任何类型同一套问法，产出可交给视频、PPT、报告、课件等下游。",
   "author": { "name": "Chans" },
   "homepage": "https://github.com/chans-gh/AI-content-planner",

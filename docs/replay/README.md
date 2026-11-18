@@ -2,7 +2,7 @@
 
 [← SPEC](../SPEC.md) · [PRD 第 8 节](../PRD.md#8-验收)
 
-> 这是第 1 版（`video-content-planner`，在 [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video) 的分支上做）的回放记录。第 2 版只把各目录的 `plan.md`、`research.md` 转成了格式 `ai-content-planner/1`（加格式行、立意十项、新表头和取值），内容和结论不变，见文末「第 2 版转格式」。第 3 版再转成格式 `ai-content-planner/2`（`research.md` 改名 `content.md`，按段组织），见文末「第 3 版转格式」。第 4 版（0.6.0）再转成格式 `ai-content-planner/3`，见文末「第 4 版转格式」；正文里的 U 编号、「阶段」「方向」是第 1 版的说法。
+> 这是第 1 版（`video-content-planner`，在 [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video) 的分支上做）的回放记录。第 2 版只把各目录的 `plan.md`、`research.md` 转成了格式 `ai-content-planner/1`（加格式行、立意十项、新表头和取值），内容和结论不变，见文末「第 2 版转格式」。第 3 版再转成格式 `ai-content-planner/2`（`research.md` 改名 `content.md`，按段组织），见文末「第 3 版转格式」。第 4 版（0.6.0）再转成格式 `ai-content-planner/3`，见文末「第 4 版转格式」；第 5 版（0.7.0）再转成格式 `ai-content-planner/4`，见文末「第 5 版转格式」；正文里的 U 编号、「阶段」「方向」是第 1 版的说法。
 > 文中的 `cases/…`、`skills/ai-coding-video/…`、`README.md`、`site/` 都指 AI-Coding-Video 仓库；「风格后」「分镜后」在第 2 版合成了「下游」，`skills/video-content-planner/` 现在是本仓库的 `skills/ai-content-planner/`。
 
 2026-11-08 至 11-09 做。按 SPEC 第 10 节批 B：三支案例回放、四个边界任务、接手测试，按发现的问题修 Skill，用 `news-artemis` 的回放换掉 `example/`。
@@ -147,3 +147,20 @@
 |---|---|
 | `python3 -I skills/ai-content-planner/scripts/check.py <目录> --handoff`，`example/` 和本目录下 7 个目录 | `example/` 是「通过」；7 支 0 个错，各 1 个「只有一个打法」的提示 |
 | `python3 scripts/selfcheck.py` | 通过（含上面一项） |
+
+## 第 5 版转格式
+
+2026-11-17 做（SPEC-5 批 I1）。7 个目录和 `example/` 照 Skill 的 `handoff.md` 第 7 节从格式 3 转成 `ai-content-planner/4`。
+
+- **表达、画面照原内容补写，没有重新策划**：基调、张力、钩子从原来的效果、形式和说法倒推，「来源」都写「建议」；形式「声音」里的口吻挪进表达，「制作条件」改成「能用：……；不能用：……」；画面照框架「怎么证明」和原有的缺口拆，每段至少一行。说法只加了「原句」（第一行和终点那段），`edge-conflict` 把一个 45 字的长句拆成两句，`edge-enough` P2 补了半句「发稿的时候，还没到」，`example/` 的说法按口播初稿重写过（3 段都在字数范围里）。
+- **能找到的公开素材补进了 M**：NASA 图库按 images-api 元数据查，许可看 NASA 的媒体使用指南，缩略图逐张看过（无字、无人脸的写「能送生成」，阿波罗档案照有真人的脸写「不能」）。`example/` 加 M2、M3（飞掠时的两张地球照片）；`news-artemis` 原来素材表是空的，加 M1–M7（发射、飞掠三张、阿波罗两张、溅落前的降落伞），Q6 收窄成只缺录像；`edge-conflict` 加 M1（溅落前的降落伞）。`shop-skincare` 的植物照片去 Wikimedia Commons 找，API 返回 429（限流），没找成，照旧归下游（Q7）。`edge-enough` 用户说只用这篇新闻稿，照片照旧归下游（Q1）。
+- 生成的画面补了约束：`news-artemis` K1（未来任务示意）、`shop-skincare` K2、K3（液体样子、只出现手）、`course-first-video` K1（虚构讲师）、`edge-unreadable` K1（只出现手）。
+
+画面行数（代码画 / 真实素材 / 生成）：`example/` 7（3 / 4 / 0）、`news-artemis` 17（7 / 9 / 1）、`shop-skincare` 13（6 / 3 / 4）、`course-first-video` 13（6 / 5 / 2）、`edge-conflict` 3（1 / 2 / 0）、`edge-enough` 3（2 / 1 / 0）、`edge-thin` 3（3 / 0 / 0）、`edge-unreadable` 2（1 / 0 / 1）。真实素材含照片、录像、录屏、数据、三维模型。
+
+| 命令（在本仓库根目录） | 结果 |
+|---|---|
+| `python3 -I skills/ai-content-planner/scripts/check.py <目录> --handoff`，`example/` 和本目录下 7 个目录 | `example/` 是「通过」；7 支 0 个错。提示只有两种：「只有一个打法」（第 4 版起就有）和说法字数不够（7 支共 33 处） |
+| `python3 scripts/selfcheck.py` | 通过（含上面一项） |
+
+**说法字数的提示是这一版要解决的问题本身**：原来的参考说法每点一句，60 秒的片子合起来远不到 240 字，所以 `check.py` 按每秒 2.5–5 字逐段提示。这次只转格式、不重新策划，没把它们扩成口播初稿；照新规矩从头写一支，是批 I2 的短视频回放。边界任务的中间态这次没重跑：格式 4 只加了检查，中间态的错只会多、不会少。

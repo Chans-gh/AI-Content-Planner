@@ -1,6 +1,6 @@
 # 内容表：Artemis II 飞得比阿波罗还远
 
-> 例子：事实全部来自 NASA 公开来源，2026-11-08 读取。种类代号见 `types.md`。英里换公里按 P1-3。
+> 例子：事实全部来自 NASA 公开来源，2026-11-08 读取；M2、M3 是 2026-11-17 转格式 4 时补找的。种类代号见 `types.md`。英里换公里按 P1-3。
 
 ## 资料清单
 
@@ -10,6 +10,9 @@
 | NASA 博客：第 6 天飞掠实况（2026-04-06） | https://www.nasa.gov/blogs/missions/2026/04/06/artemis-ii-flight-day-6-lunar-flyby-updates/ | 全文 | 内容依据 | 能 | P1-2、P2-1、P2-2、P2-3、P2-4、P3-4（有冲突，不引用） |
 | NASA 新闻稿：打破最远纪录（2026-04-06） | https://www.nasa.gov/news-release/nasas-artemis-ii-crew-eclipses-record-for-farthest-human-spaceflight/ | 全文 | 内容依据 | 能 | P2-1、P2-3、P3-1 |
 | NASA 图片 S70-36485（阿波罗 13 号主乘组） | https://images.nasa.gov/details/S70-36485 | 网页没读成：页面靠脚本渲染；改读同一编号的元数据 https://images-api.nasa.gov/search?nasa_id=S70-36485 | 素材 | 能 |  |
+| NASA 图片 art002e009284（地球挂在月球边上，2026-04-06） | https://images.nasa.gov/details/art002e009284 | 元数据（images-api）：标题、日期、说明 | 素材 | 能 | P1-4 |
+| NASA 图片 art002e021278（Earthset，2026-04-06） | https://images.nasa.gov/details/art002e021278 | 元数据（images-api）：标题、日期、说明 | 素材 | 能 | P2-5 |
+| NASA Images and Media Usage Guidelines | https://www.nasa.gov/nasa-brand-center/images-and-media/ | 「NASA content … generally are not subject to copyright」一段 | 参考 | 能 | M1–M3 的许可 |
 | NIST SP 811 附录 B.9（换算系数） | https://www.nist.gov/pml/special-publication-811/nist-guide-si-appendix-b-conversion-factors/nist-guide-si-appendix-b9 | mile → kilometer 一行 | 内容依据 | 能 | P1-3 |
 
 ## 受众
@@ -21,7 +24,9 @@
 
 | # | 文件 | 内容 | 字、标志、水印、人脸 | 能怎么用 | 能不能送生成 | 用到哪段 |
 |---|---|---|---|---|---|---|
-| M1 | https://images.nasa.gov/details/S70-36485 | 阿波罗 13 号主乘组三人的档案合影 | 真人的脸；NASA 编号 | 原样 | 不能：真人的脸 | P3 |
+| M1 | https://images.nasa.gov/details/S70-36485 | 阿波罗 13 号主乘组三人的档案合影（1970-04） | 真人的脸；NASA 编号 | 原样：署「NASA」 | 不能：真人的脸 | P3 |
+| M2 | https://images.nasa.gov/details/art002e009284 | Artemis II 乘组飞掠时拍的月球，地球小小一个在月球边上，Earthset 前 36 分钟 | 无字、无人脸 | 裁后用：竖屏裁月球和地球那一块；署「NASA」 | 能：NASA 公开图，不受美国版权限制；不暗示 NASA 背书 | P1 |
+| M3 | https://images.nasa.gov/details/art002e021278 | Artemis II 乘组拍的地球落到月球后面（Earthset） | 无字、无人脸 | 原样：署「NASA」 | 能：同 M2 | P2 |
 
 ## 约束
 
@@ -35,6 +40,7 @@
 | P1-1 | a | 2026 年 4 月，NASA 宇航员 Reid Wiseman、Victor Glover、Christina Koch 和加拿大航天局宇航员 Jeremy Hansen 乘 Orion 绕月后返回地球 | A1 | NASA 返回新闻稿 · 题图说明和导语 · 2026-11-08 · 一手 | 时间、主体、原始出处 | 已核实 |
 | P1-2 | b | 美东 4 月 6 日 19:02 到达离地球最远处 252,756 英里，载人航天离地球最远的纪录 | B1 | 飞掠博客 · 7:02 p.m. 条；NASA 返回新闻稿 · 导语 · 2026-11-08 · 一手 | 口径：离地球的最远距离；NASA；2026-04-06；英里 | 已核实 |
 | P1-3 | b（P3 b 也用） | 1 英里 = 1.609344 公里；252,756 英里约 406,771 公里，4,067 英里约 6,545 公里，4,101 英里约 6,600 公里 | B6 | NIST SP 811 附录 B.9 · 2026-11-08 · 一手；用到 P1-2、P2-4、P3-2 | 公式、用到的编号 | 已核实 |
+| P1-4 | b | 乘组拍的照片：月球占满画面，地球很小，显出离得有多远 | F2 | M2 | 授权：NASA 公开图，署「NASA」；2026-04-06 | 已核实 |
 
 ## P2 承接 P1：纪录是哪天、怎么破的
 
@@ -44,6 +50,7 @@
 | P2-2 | b | 美东 18:41，乘组看到地球落到月球地平线以下（Earthset） | A1 | 飞掠博客 · 6:41 p.m. 条 · 2026-11-08 · 一手 | 时间、主体、出处 | 已核实 |
 | P2-3 | c | 计划失联时段美东 18:44–19:25，Orion 在月球背后；事前新闻稿写「约 40 分钟」 | C4 | 飞掠博客 · 失联说明；破纪录新闻稿 · 失联一段 · 2026-11-08 · 一手 | 时间、出处；是计划时段，博客没另记实际起止；讲时带「按计划」 | 已核实 |
 | P2-4 | d | 美东 19:00 离月球最近，离月面约 4,067 英里（约 6,545 公里） | A3 | 飞掠博客 · 7:00 p.m. 条 · 2026-11-08 · 一手 | 版本：本次任务；官方写的；英里 | 已核实 |
+| P2-5 | b | 乘组拍的 Earthset：地球落到月球后面 | F2 | M3 | 授权：NASA 公开图，署「NASA」；2026-04-06 | 已核实 |
 
 ## P3 收尾，回扣 P1 的数字
 
@@ -65,4 +72,5 @@
 | 查的是什么 | 关键词 / 网站 | 找到了什么 | 好不好用 | 谁查的 |
 |---|---|---|---|---|
 | 阿波罗 13 号乘组照片的说明 | images.nasa.gov 详情页 | 页面靠脚本渲染读不到；同一编号的 images-api 元数据读到标题、日期、说明 | 好用 | 主模型 |
+| 飞掠的公开照片 | images-api.nasa.gov 搜「Artemis II Earthset」（2026 年起） | art002e009284、art002e021278 等，元数据有日期和说明；许可看 NASA 的媒体使用指南 | 好用：记成 M2、M3 | 主模型 |
 | 失联多久 | 飞掠博客、破纪录新闻稿 | 时段 18:44–19:25，事前稿写「约 40 分钟」 | 好用：改讲时段 | 主模型 |

@@ -1,6 +1,6 @@
 # 内容策划
 
-做内容之前的策划：先从用户的一句话、要求、链接、文件、图片、音视频里挖出要的**效果**（看完要受众怎样）和**形式**，再按效果排框架、补齐内容、写参考说法，每步请用户确认，补齐后交给下游——做视频交给 [ai-coding-video](https://github.com/Chans-gh/AI-Coding-Video)，做 PPT、课件、报告等交给对应的 Skill。
+做内容之前的策划：先从用户的一句话、要求、链接、文件、图片、音视频里挖出要的**效果**（看完要受众怎样）、**形式**和**表达**（怎么说），再按效果排框架、定每段的**画面**从哪来、补齐内容、写口播初稿，每步请用户确认，补齐后交给下游——做视频交给 [ai-coding-video](https://github.com/Chans-gh/AI-Coding-Video)，做 PPT、课件、报告等交给对应的 Skill。
 
 给 AI 助手用时见 [SKILL.md](SKILL.md)。
 
@@ -11,16 +11,17 @@
 | 1 挖效果和形式、2 打法和框架、3 补齐内容 | 本 Skill | 用户项目的 `plans/<短名>/plan.md`、`content.md`、`source/` |
 | 之后：做成品 | 下游 Skill（视频是 ai-coding-video） | 下游自己的目录，如 `videos/<短名>/` |
 
-两边不互相调用，靠 `plans/<短名>/` 衔接，格式写在 [handoff.md](handoff.md)（格式 3）。下游发现缺内容，在 `plan.md` 的缺口表加一行，回到本 Skill。
+两边不互相调用，靠 `plans/<短名>/` 衔接，格式写在 [handoff.md](handoff.md)（格式 4）。下游发现缺内容，在 `plan.md` 的缺口表加一行，回到本 Skill。
 
 ## 里面有什么
 
 | 路径 | 内容 |
 |---|---|
 | [`SKILL.md`](SKILL.md) | 入口：什么时候用、三步、每步怎么做、读到什么程度、核实、交接、回流、规矩 |
-| [`effect.md`](effect.md) | 效果和形式怎么挖、打法和框架怎么排、说法、素材、约束、衍生怎么写；不分类型 |
+| [`effect.md`](effect.md) | 效果和形式怎么挖、打法和框架怎么排、画面、说法、素材、约束、衍生怎么写；不分类型 |
+| [`tone.md`](tone.md) | 表达怎么定：六项、14 档基调（每档一个例句）、张力三档、钩子、句式和节奏、边界 |
 | [`handoff.md`](handoff.md) | 交接说明：给下游 Skill 看的文件、编号、格式版本、能改哪里 |
-| [`formats.md`](formats.md) | 各输出形式的篇幅单位、注意力预算按什么算、交给谁（一张表） |
+| [`formats.md`](formats.md) | 各输出形式的篇幅单位、注意力预算按什么算、交给谁、说法写到多细（一张表） |
 | [`types.md`](types.md) | 信息的种类（7 大类 32 小类和「设定」）和每类必须写清的 |
 | [`templates/plan.md`](templates/plan.md) | 策划稿模板 |
 | [`templates/content.md`](templates/content.md) | 内容表模板（每段一节） |
