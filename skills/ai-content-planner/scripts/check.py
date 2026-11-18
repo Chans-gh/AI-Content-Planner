@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""检查 plans/<短名>/ 下的 plan.md、content.md 是否符合模板（格式 ai-content-planner/3），交接前加 --handoff。
+"""检查 plans/<短名>/ 下的 plan.md、content.md 是否符合模板（格式 ai-content-planner/4），交接前加 --handoff。
 
 用法：python3 -I <本 Skill 目录>/scripts/check.py <plans/短名 目录> [--handoff]
 
@@ -12,15 +12,20 @@ import os
 import re
 import sys
 
-FORMAT = 'ai-content-planner/3'
-OLD_FORMATS = {'ai-content-planner/1', 'ai-content-planner/2'}
-PLAN_SECTIONS = ['确认记录', '需求', '效果', '形式', '立意', '框架', '效果自查', '说法', '衍生', '取舍', '缺口']
+FORMAT = 'ai-content-planner/4'
+OLD_FORMATS = {'ai-content-planner/1', 'ai-content-planner/2', 'ai-content-planner/3'}
+PLAN_SECTIONS = ['确认记录', '需求', '效果', '形式', '表达', '立意', '框架', '画面', '效果自查', '说法', '衍生', '取舍', '缺口']
 CONTENT_SECTIONS = ['资料清单', '受众', '素材', '约束', '待核实和有冲突', '检索记录']
 NEED_ROWS = ['用途和场景', '必须有', '不要', '已有材料', '品牌与风格']
 EFFECT_ROWS = ['接触时刻', '起点', '阻力', '终点', '衡量', '杠杆']
 FORM_ROWS = ['输出形式和规格', '篇幅和注意力', '结构', '声音', '证明方式', '制作条件', '衍生']
 FORM_NEED_BASIS = ['篇幅和注意力', '结构', '声音', '证明方式']   # 「由哪条效果推出」不能空
-SELF_ROWS = ['阻力', '终点', '注意力预算', '换题测试', '衍生']
+TONE_ROWS = ['基调', '张力', '钩子', '句式和节奏', '情绪曲线', '边界']
+TONE_NEED_BASIS = ['基调', '张力', '钩子']
+TONES = ('冷静播报', '讲透型', '老友唠嗑', '娓娓道来', '悬念反转', '走心共鸣', '热血燃', '犀利点评', '段子手',
+         '直播间促单', '权威专家', '治愈陪伴', '童趣', '文艺诗意')   # tone.md 的 14 档；另有「自定：」
+TONE_EMPTY = ('要有张力', '口语化', '情绪饱满', '有感染力', '接地气')
+SELF_ROWS = ['阻力', '终点', '注意力预算', '换题测试', '表达', '衍生']
 PLAY_HEAD = ['打法', '抓哪条阻力', '用哪个杠杆', '开头', '代价', '选']
 FRAME_HEAD = ['段', '作用', '受众：从 → 到', '要讲的点', '怎么证明', '用到哪些输入', '篇幅']
 SAY_HEAD = ['点', '要的效果', '参考说法', '不能丢的']
@@ -31,6 +36,10 @@ VOICE_HEAD = ['#', '内容', '种类', '来源', '对应哪条阻力', '状态']
 ASSET_HEAD = ['#', '文件', '内容', '字、标志、水印、人脸', '能怎么用', '能不能送生成', '用到哪段']
 RULE_HEAD = ['#', '必须守的样子', '依据', '状态']
 DATA_HEAD = ['#', '讲哪一点', '内容', '种类', '来源', '必须写清的', '状态']
+SHOT_HEAD = ['#', '段', '要看到什么', '来源', '用到']
+SOURCES = ('代码画', '照片', '录像', '录屏', '数据', '三维模型', '生图', '生视频')
+REAL = {'照片', '录像', '录屏', '三维模型'}   # 「用到」要有 M，或归下游的 Q
+GENERATED = {'生图', '生视频'}               # 「用到」要有 K；用到的 M 要能送生成
 
 STATUSES = {'效果待确认', '框架待确认', '补齐中', '已交接', '回流中'}
 OWNERS = {'策划', '下游'}
@@ -51,6 +60,12 @@ CONTENT_STUB = ('# 内容表\n\n## 资料清单\n\n| 资料 | 位置 | 读到哪
 INFO_TO = ('知道', '了解', '感受到', '认识到')            # 「到」这样开头是信息收益，提示
 EMPTY_WORDS = ('引发共鸣', '提升好感', '增强信任', '提升认知', '加深印象')
 CIRCLED = '①②③④⑤⑥⑦⑧⑨⑩'
+ORIGINAL = '原句'
+NO_NARRATION = re.compile(r'(无|没有|不要|不用|不说话)旁白|不说话')
+EXTREME = re.compile(r'最(?![后终近初])|第一(?![次步帧条句天页段行张眼])|顶级|全网|绝对|100\s*%')   # 「最后」「第一步」这类序数不算
+SENTENCE_END = re.compile(r'[。！？!?；;…]+|<br\s*/?>|——')
+PER_SECOND = (2.5, 5)   # 有旁白的视频，每段说法每秒 2.5–5 字（约 4 字）
+LONG_SENTENCE = 40
 
 PLACEHOLDER = re.compile(r'〔[^〕]*〕')
 REF_DATA = re.compile(r'(?<![A-Za-z0-9_])P(\d+)-(\d+)(?![\d])')
@@ -125,6 +140,26 @@ def parse_which(cell):
     if rest == NOT_USED:
         return None, shared
     return [x.strip() for x in re.split(r'[、,，]', rest) if x.strip()], shared
+
+
+def spoken(cell):
+    """参考说法里要念、要上屏的字：有「」的只算「」里的，没有就算整格"""
+    quoted = re.findall(r'「(.*?)」', cell)
+    return '；'.join(quoted) if quoted else cell
+
+
+def char_count(text):
+    """按念的算：一个汉字、一个数字、一个英文词各算 1"""
+    return len(re.findall(r'[\u4e00-\u9fff]|\d|[A-Za-z]+', text))
+
+
+def make_terms(cell):
+    """制作条件「能用：……；不能用：……」→ (能用的来源名, 不能用的来源名)；写法不对返回 None"""
+    m = re.fullmatch(r'\s*能用[：:](.*?)[；;]\s*不能用[：:](.*?)[。.]?\s*', cell, re.S)
+    if not m:
+        return None
+    names = lambda part: {value_of(x) for x in re.split(r'[、，,]', part) if x.strip()}
+    return names(m.group(1)), names(m.group(2))
 
 
 def split_row(line):
@@ -267,7 +302,11 @@ def check(folder, handoff=False):
     if not m:
         r.err('plan.md', f'找不到格式行（标题下第一行写「格式：{FORMAT}」）')
     elif m.group(1) != FORMAT:
-        hint = f'；这是旧格式，按本 Skill 的 CHANGELOG.md 转成格式 {FORMAT[-1]}' if m.group(1) in OLD_FORMATS else ''
+        hint = ''
+        if m.group(1) == 'ai-content-planner/3':
+            hint = f'；这是旧格式，照本 Skill 的 handoff.md 第 7 节转成格式 {FORMAT[-1]}'
+        elif m.group(1) in OLD_FORMATS:
+            hint = f'；这是旧格式，按本 Skill 的 CHANGELOG.md 一版一版转成格式 {FORMAT[-1]}'
         r.err('plan.md', f'格式是「{m.group(1)}」，本脚本只认 {FORMAT}{hint}')
         return r
     for s_ in PLAN_SECTIONS:
@@ -310,6 +349,35 @@ def check(folder, handoff=False):
     for name in FORM_NEED_BASIS:
         if name in form and not form[name]['由哪条效果推出'].strip() and not is_placeholder(form[name]['内容']):
             r.err('plan.md:形式', f'「{name}」的「由哪条效果推出」空着：形式要从效果推出来')
+    make = None   # (能用, 不能用)
+    if '制作条件' in form and not is_placeholder(form['制作条件']['内容']):
+        make = make_terms(form['制作条件']['内容'])
+        if make is None:
+            r.err('plan.md:形式', '「制作条件」要写成「能用：……；不能用：……」，用画面来源的名字（' + '、'.join(SOURCES) + '）')
+    out_form = form.get('输出形式和规格', {}).get('内容', '')
+    voice = form.get('声音', {}).get('内容', '')
+    is_video = out_form.strip().startswith('视频')
+    narrated = is_video and '旁白' in voice and not NO_NARRATION.search(voice)
+    captioned = is_video and ('上字' in voice or '字幕' in out_form + voice)
+
+    # ---------- 表达 ----------
+    tone_rows = check_rows(r, pmap, '表达', TONE_ROWS, ['项', '内容', '由哪条效果推出', '来源'])
+    tone = {row['项']: row for row in tone_rows}
+    if '基调' in tone and not is_placeholder(tone['基调']['内容']):
+        v = tone['基调']['内容'].strip()
+        if not (v.startswith(TONES) or re.match(r'自定[：:]', v)):
+            r.err('plan.md:表达', f'基调「{v[:12]}」要以 tone.md 的一档开头（' + '、'.join(TONES) + '），或写「自定：……」')
+    if '张力' in tone and not is_placeholder(tone['张力']['内容']):
+        if not re.match(r'\s*[123](?!\d)', tone['张力']['内容']):
+            r.err('plan.md:表达', '张力要以 1、2、3 开头（1 克制、2 有起伏、3 强刺激），再写为什么')
+    for name in TONE_NEED_BASIS:
+        if name in tone and not tone[name]['由哪条效果推出'].strip() and not is_placeholder(tone[name]['内容']):
+            r.err('plan.md:表达', f'「{name}」的「由哪条效果推出」空着：表达要从效果推出来')
+    for row in tone_rows:
+        hit = [w for w in TONE_EMPTY if w in row['内容']]
+        if hit:
+            r.note('plan.md:表达', f'「{row["项"]}」写了「{hit[0]}」：写成能检查的样子（哪一档、哪种钩子、几个感叹号）')
+
     spin_form = form.get('衍生', {}).get('内容', '')
     spin_none = spin_form.strip() == NONE
     spin_known = bool(spin_form.strip()) and not is_placeholder(spin_form)
@@ -394,6 +462,40 @@ def check(folder, handoff=False):
                 if not row['怎么证明'].strip():
                     r.err(f'plan.md:{sec}', f'{p} 的「怎么证明」空着：写用什么让人信或有感受')
 
+    # ---------- 画面 ----------
+    shots = {}   # 'H1' → 行
+    sec = '画面'
+    if sec in pmap:
+        where = f'plan.md:{sec}'
+        t = find_table(pmap[sec], ['#'])
+        if not t:
+            r.err(where, '找不到画面表（表头：' + ' | '.join(SHOT_HEAD) + '）')
+        elif t[0] != SHOT_HEAD:
+            r.err(where, '画面表表头要正好是「' + ' | '.join(SHOT_HEAD) + f'」，现在是「{" | ".join(t[0])}」')
+        else:
+            for row in t[1]:
+                h = row['#']
+                if not re.fullmatch(r'H\d+', h):
+                    r.err(where, f'编号格式不对：{h or "（空）"}（写 H1、H2）')
+                    continue
+                if h in shots:
+                    r.err(where, f'编号重复：{h}')
+                shots[h] = row
+                if is_placeholder(row['要看到什么']):
+                    continue
+                if not re.fullmatch(r'P\d+', row['段']):
+                    r.err(where, f'{h} 的段「{row["段"]}」只写一个段号（P1）')
+                elif segs and row['段'] not in segs:
+                    r.err(where, f'{h} 的段 {row["段"]} 在框架里没有')
+                src = row['来源']
+                if is_placeholder(src):
+                    continue
+                if src not in SOURCES:
+                    r.err(where, f'{h} 的来源「{src}」要取 ' + ' / '.join(SOURCES))
+                elif make and src in make[1]:
+                    r.err(where, f'{h} 的来源是「{src}」，形式的制作条件写了不能用')
+    shot_segs = {row['段'] for row in shots.values()}
+
     def bad_points(where, cell, what):
         """「P1 a、b」里的段和字母要在框架里"""
         found = seg_points(cell)
@@ -417,7 +519,7 @@ def check(folder, handoff=False):
         else:
             self_rows = t[1]
             if [row['查什么'] for row in self_rows] != SELF_ROWS:
-                r.err(f'plan.md:{sec}', '效果自查要正好是这5项：' + '、'.join(SELF_ROWS) + '；现在是 ' + '、'.join(row['查什么'] for row in self_rows))
+                r.err(f'plan.md:{sec}', f'效果自查要正好是这{len(SELF_ROWS)}项：' + '、'.join(SELF_ROWS) + '；现在是 ' + '、'.join(row['查什么'] for row in self_rows))
             got = {row['查什么']: row['结果'] for row in self_rows}
             res = got.get('阻力', '')
             if res and not is_placeholder(res):
@@ -602,6 +704,10 @@ def check(folder, handoff=False):
         cells += [('plan.md:框架', row['作用'], 'P'), ('plan.md:框架', row['怎么证明'], 'MK')]
     for row in self_rows:
         cells.append(('plan.md:效果自查', row['结果'], 'P'))
+    if '基调' in tone:
+        cells.append(('plan.md:表达', tone['基调']['内容'], 'P'))
+    for row in shots.values():
+        cells.append(('plan.md:画面', row['用到'], 'PDMKQ'))
     for row in say_rows:
         cells.append(('plan.md:说法', row['不能丢的'], 'PDMKQ'))
     for row in gap_rows:
@@ -625,6 +731,86 @@ def check(folder, handoff=False):
                 if ref not in pool and (where, ref) not in reported:
                     reported.add((where, ref))
                     r.err(where, msg.format(ref))
+
+    # ---------- 画面的着落（SPEC-5 第 4.2 节） ----------
+    owner = {row['编号']: row['归谁'] for row in gap_rows}
+    shot_ms = set()
+    for h, row in shots.items():
+        use, src = row['用到'], row['来源']
+        if is_placeholder(row['要看到什么']) or is_placeholder(use):
+            continue
+        where = 'plan.md:画面'
+        found = seg_points(use)
+        for sp, sl in found:
+            for x in sl:
+                if sp in points and x not in points[sp]:
+                    r.err(where, f'{h} 用到「{sp} {x}」，「{x}」不在 {sp} 的要讲的点里')
+        ms = [x.group(0) for x in REF_M.finditer(use)]
+        shot_ms.update(ms)
+        ds = [x.group(0) for x in REF_DATA.finditer(use)]
+        qs_down = [x.group(0) for x in REF_GAP.finditer(use) if owner.get(x.group(0)) == '下游']
+        ks = [x.group(0) for x in REF_K.finditer(use)]
+        if not (ds or ms or found or ks or REF_GAP.search(use)):
+            r.err(where, f'{h} 的「用到」要写编号（P1-1、P1 a、M1、K1、Q1）')
+        elif src == '代码画' and not (ds or any(sl for _, sl in found)):
+            r.err(where, f'{h} 是代码画，「用到」要有它画的信息（P1-1）或上屏的说法点（P1 a）')
+        elif src in REAL and not (ms or qs_down):
+            r.err(where, f'{h} 是{src}，「用到」要有素材 M，或归下游的缺口 Q')
+        elif src == '数据' and not (ds or ms):
+            r.err(where, f'{h} 是数据，「用到」要有数据本身（P1-1）或数据文件（M1）')
+        elif src in GENERATED and not ks:
+            r.err(where, f'{h} 是{src}，「用到」至少要有一条约束 K')
+        if src in GENERATED:
+            for m_ in ms:
+                gen = assets.get(m_, {}).get('能不能送生成', '')
+                if value_of(gen) == '不能':
+                    r.err(where, f'{h} 是{src}，用到的 {m_} 不能送生成')
+                elif gen.startswith('〔待核实〕'):
+                    r.note(where, f'{h} 是{src}，用到的 {m_} 能不能送生成还没核实')
+    if shots and not stub:
+        for i, row in assets.items():
+            if row['用到哪段'].strip() != NOT_USED and not is_placeholder(row['用到哪段']) and i not in shot_ms:
+                r.note('content.md:素材', f'{i} 要用（{row["用到哪段"]}），但画面表没有一行用到它')
+
+    # ---------- 说法：字数、长句、原句、极限词（SPEC-5 第 3 节） ----------
+    seg_ext = {row['段']: parse_extent(row['篇幅']) for row in seg_rows}
+    said_chars = {}
+    for row in say_rows:
+        if is_placeholder(row['参考说法']):
+            continue
+        text = spoken(row['参考说法'])
+        found = seg_points(row['点'])
+        if found:
+            said_chars[found[0][0]] = said_chars.get(found[0][0], 0) + char_count(text)
+        if narrated:
+            for sent in SENTENCE_END.split(text):
+                if char_count(sent) > LONG_SENTENCE:
+                    r.note('plan.md:说法', f'「{row["点"]}」有一句 {char_count(sent)} 字，口播单句不超过 {LONG_SENTENCE} 字：{sent.strip()[:12]}……')
+        for x in EXTREME.finditer(text):
+            if x.group(0) not in row['不能丢的']:
+                r.note('plan.md:说法', f'「{row["点"]}」说了「{x.group(0)}」：极限词要有依据，依据写进「不能丢的」（连这个词一起写）')
+                break
+    if narrated:
+        for p_, e in seg_ext.items():
+            if e and e[0] == '时间' and p_ in said_chars:
+                lo, hi = e[1] * PER_SECOND[0], e[2] * PER_SECOND[1]
+                n = said_chars[p_]
+                if not lo <= n <= hi:
+                    r.note('plan.md:说法', f'{p_} 的说法 {n} 字，篇幅 {seg_ext[p_][1]:g}' + (f'–{e[2]:g}' if e[2] != e[1] else '') + f' 秒按每秒 {PER_SECOND[0]:g}–{PER_SECOND[1]:g} 字该是 {lo:g}–{hi:g} 字（约每秒 4 字）')
+    if narrated or captioned:
+        end_seg = None
+        for row in self_rows:
+            if row['查什么'] == '终点':
+                m = REF_SEG.search(row['结果'])
+                end_seg = m.group(0) if m else None
+        need = []
+        if say_rows and not is_placeholder(say_rows[0]['点']):
+            need.append(('第一行（开头的钩子句）', [say_rows[0]]))
+        if end_seg:
+            need.append((f'终点 {end_seg} 那段', [x for x in say_rows if any(sp == end_seg for sp, _ in seg_points(x['点']))]))
+        for what, rows_ in need:
+            if rows_ and not any(ORIGINAL in x['不能丢的'] for x in rows_):
+                (r.err if handoff else r.note)('plan.md:说法', f'{what}的说法要在「不能丢的」写「{ORIGINAL}」：下游只改念法和断句')
 
     # 篇幅合计和目标比：单位一致才比
     target = None
@@ -653,17 +839,24 @@ def check(folder, handoff=False):
             if n:
                 (r.err if handoff else r.note)(f'{fname}:{name or "开头"}', f'还有 {n} 处〔〕占位没填')
 
+    if shots or '画面' in pmap:
+        for row in seg_rows:
+            if row['段'] not in shot_segs:
+                (r.err if handoff else r.note)('plan.md:画面', f'{row["段"]} 没有画面：每段至少一行')
+
     if not handoff:
         return r
 
-    # ---------- 交接（SKILL.md「交接」1–4、6、7 条） ----------
+    # ---------- 交接（SKILL.md「交接」1–4、6–10 条） ----------
     for kind in ('效果', '框架'):
         if kind not in confirms:
             r.err('plan.md:确认记录', f'没有「{kind}」一行：{kind}还没确认（或没写「自动，未问用户」），不能交接')
-    for sec, rows in (('需求', need_rows), ('效果', effect_rows), ('形式', form_rows)):
+    for sec, rows in (('需求', need_rows), ('效果', effect_rows), ('形式', form_rows), ('表达', tone_rows)):
         for row in rows:
             if TBD in row['内容'] or TBD in row.get('来源', ''):
                 r.err(f'plan.md:{sec}', f'「{row["项"]}」还是「{TBD}」，用户定了才能交接')
+            elif sec == '表达' and not row['内容'].strip():
+                r.err(f'plan.md:{sec}', f'「{row["项"]}」空着：表达六项都写了才能交接')
     for row in gap_rows:
         if row['归谁'] == '策划' and row['状态'] == '待补':
             r.err('plan.md:缺口', f'{row["编号"]} 归策划、还待补，补完或改内容关闭后才能交接')

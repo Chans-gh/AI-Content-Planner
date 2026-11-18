@@ -27,9 +27,11 @@ class BriefTest(unittest.TestCase):
     def test_example(self):
         code, out, _ = run(EXAMPLE)
         self.assertEqual(code, 0)
-        for s in ('**主线**', '## 效果', '## 形式', '### P1', '### P3', '受众：「又一条航天新闻」',
-                  '说法 P1 a、b', 'P3-2〔已核实〕', '## 不能送生成的素材', 'M1'):
+        for s in ('**主线**', '## 效果', '## 形式', '## 表达', '**基调**：冷静播报', '### P1', '### P3', '受众：「又一条航天新闻」',
+                  '画面 H1〔代码画〕', '说法 P1 b', 'P3-2〔已核实〕', '## 不能送生成的素材', 'M1'):
             self.assertIn(s, out)
+        p3 = out[out.index('### P3'):]
+        self.assertLess(p3.index('画面 H6'), p3.index('说法 P3 a、b'))   # 每段先列画面再列说法
         self.assertNotIn('还没交接', out)
         self.assertNotIn('## 衍生', out)
 

@@ -5,6 +5,7 @@
 | 资料 | 位置 | 读到哪 | 用途 | 能不能公开 | 用到哪些编号 |
 |---|---|---|---|---|---|
 | NASA 新闻稿：返回（2026-04-10，05-07 更新） | https://www.nasa.gov/news-release/nasa-welcomes-record-setting-artemis-ii-moonfarers-back-to-earth/ | 全文 | 内容依据 | 能 | P1-1、P1-2 |
+| NASA 图片 KSC-20260410-PH-JNV01_0001（溅落前的降落伞） | https://images.nasa.gov/details/KSC-20260410-PH-JNV01_0001 | 元数据（images-api）：标题、日期、说明、作者 NASA/Josh Valcarcel | 素材 | 能 | P1-4 |
 | JPL Horizons：Orion（-1024）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='-1024'&OBJ_DATA=YES&MAKE_EPHEM=NO | 事件表 | 内容依据 | 能 | P1-3 |
 
 ## 受众
@@ -16,6 +17,7 @@
 
 | # | 文件 | 内容 | 字、标志、水印、人脸 | 能怎么用 | 能不能送生成 | 用到哪段 |
 |---|---|---|---|---|---|---|
+| M1 | https://images.nasa.gov/details/KSC-20260410-PH-JNV01_0001 | Orion 挂着三顶红白降落伞，溅落前，背景是天空（2026-04-10） | 无字、无人脸 | 裁后用：竖屏裁中间；署「NASA/Josh Valcarcel」 | 能：NASA 公开图，不受美国版权限制；不暗示 NASA 背书 | P1 |
 
 ## 约束
 
@@ -28,6 +30,7 @@
 |---|---|---|---|---|---|---|
 | P1-1 | a | 太平洋夏令时 4 月 10 日 17:07，在加州圣迭戈外海的太平洋溅落 | A1 | NASA 返回新闻稿 · 导语 · 2026-11-08 · 一手 | 时间（带时区）、地点、出处 | 已核实 |
 | P1-2 | b | 出舱后由直升机送到 USS John P. Murtha | A1 | NASA 返回新闻稿 · 导语后一段 · 2026-11-08 · 一手 | 时间、主体、出处 | 已核实 |
+| P1-4 | a | 溅落前 Orion 挂着降落伞的照片 | F2 | M1 | 授权：NASA 公开图，署名照 M1；2026-04-10 | 已核实 |
 | P1-3 | 不用 | Horizons 事件表：UTC 4 月 11 日 00:07 溅落，「Pacific Ocean, off Baja Cali.」 | A1 | JPL Horizons -1024 · 事件表 9/01:32 · 2026-11-08 · 一手 | 时间和新闻稿对得上（UTC 00:07 = 太平洋夏令时 17:07），地点不一致 | 有冲突 |
 
 ## 待核实和有冲突
@@ -40,3 +43,4 @@
 
 | 查的是什么 | 关键词 / 网站 | 找到了什么 | 好不好用 | 谁查的 |
 |---|---|---|---|---|
+| 溅落的公开照片（2026-11-17 转格式 4 时补） | images-api.nasa.gov 搜「Artemis II splashdown」 | KSC-20260410-PH-JNV01_0001 等，元数据有日期、说明、作者；许可看 NASA 的媒体使用指南 | 好用：记成 M1 | 主模型 |

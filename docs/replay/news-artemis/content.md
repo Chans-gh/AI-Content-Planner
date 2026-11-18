@@ -17,6 +17,10 @@
 | JPL Horizons：Orion（-1024）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='-1024'&OBJ_DATA=YES&MAKE_EPHEM=NO | 全文（对象说明和事件表） | 内容依据 | 能 | P3-2、P4-1、P4-2、P4-4、P5-5 |
 | JPL Horizons：月球（301）对象说明 | https://ssd.jpl.nasa.gov/api/horizons.api?format=text&COMMAND='301'&OBJ_DATA=YES&MAKE_EPHEM=NO | 半径一行 | 内容依据 | 能 | P5-5 |
 | NASA SVS 5632（Artemis II 轨道动画页） | https://svs.gsfc.nasa.gov/5632 | 页面开头的任务说明 | 内容依据、素材 | 能 | P4-3 |
+| NASA 图片 KSC-04012026-Artemis II_Launch-1（发射，2026-04-01） | https://images.nasa.gov/details/KSC-04012026-Artemis%20II_Launch-1 | 元数据（images-api）：标题、日期、说明、作者 | 素材 | 能 | M1 |
+| NASA 图片 art002e009284、art002e021278、art002e010232（飞掠，2026-04-06） | https://images.nasa.gov/details/art002e009284 等三张 | 元数据（images-api）：标题、日期、说明 | 素材 | 能 | M2、M3、M4 |
+| NASA 图片 KSC-20260410-PH-JNV01_0001（溅落前，2026-04-10） | https://images.nasa.gov/details/KSC-20260410-PH-JNV01_0001 | 元数据（images-api）：标题、日期、说明、作者 | 素材 | 能 | M7 |
+| NASA Images and Media Usage Guidelines | https://www.nasa.gov/nasa-brand-center/images-and-media/ | 「NASA content … generally are not subject to copyright」一段 | 参考 | 能 | M1–M7 的许可 |
 | NASA 图片 S70-34902（阿波罗 13 号故障时的控制中心） | https://images.nasa.gov/details/S70-34902 | 网页没读成：页面靠脚本渲染，只拿到空壳；改读同一编号的元数据 https://images-api.nasa.gov/search?nasa_id=S70-34902 （标题、日期、说明） | 内容依据、素材 | 能 | P6-4 |
 | NASA 图片 S70-36485（阿波罗 13 号主乘组） | https://images.nasa.gov/details/S70-36485 | 网页没读成：同上；改读 images-api 元数据 | 内容依据、素材 | 能 | P6-5 |
 | NASA 录像：任务后发布会（2026-04-16，约 59 分钟） | https://images.nasa.gov/details/art002m1501061829_Artemis_II_Crew_Discusses_Historic_Moon_Mission_at_Post-Flight_News_Conference_250416 | 元数据全文；录像本身没读成：本次回放没重听，NASA 附带的 .srt 只有一行「[Ambient sounds]」 | 内容依据、素材 | 能 | P7-4、P7-5 |
@@ -31,11 +35,19 @@
 
 | # | 文件 | 内容 | 字、标志、水印、人脸 | 能怎么用 | 能不能送生成 | 用到哪段 |
 |---|---|---|---|---|---|---|
+| M1 | https://images.nasa.gov/details/KSC-04012026-Artemis%20II_Launch-1 | SLS 载 Orion 在 39B 发射台点火离地（2026-04-01，NASA/Brandon Hancock） | 无字、无人脸 | 原样：署「NASA/Brandon Hancock」 | 能：NASA 公开图，不受美国版权限制；不暗示 NASA 背书 | P3 |
+| M2 | https://images.nasa.gov/details/art002e009284 | 乘组拍的月球，地球小小一个在月球边上，Earthset 前 36 分钟（2026-04-06） | 无字、无人脸 | 裁后用：竖屏裁月球和地球那一块；署「NASA」 | 能：NASA 公开图，不受美国版权限制；不暗示 NASA 背书 | P1 |
+| M3 | https://images.nasa.gov/details/art002e021278 | 乘组拍的地球落到月球后面（Earthset，2026-04-06） | 无字、无人脸 | 原样：署「NASA」 | 能：NASA 公开图，不受美国版权限制；不暗示 NASA 背书 | P5 |
+| M4 | https://images.nasa.gov/details/art002e010232 | 乘组拍的东方盆地（Orientale），NASA 说明写宽 600 英里（2026-04-06） | 无字、无人脸 | 原样：署「NASA」 | 能：NASA 公开图，不受美国版权限制；不暗示 NASA 背书 | P5 |
+| M5 | https://images.nasa.gov/details/S70-36485 | 阿波罗 13 号主乘组三人的档案合影（1970-04） | 真人的脸；NASA 编号 | 原样：署「NASA」 | 不能：真人的脸 | P6 |
+| M6 | https://images.nasa.gov/details/S70-34902 | 阿波罗 13 号氧气故障时的控制中心，几位宇航员坐在控制台前（1970-04-14） | 真人的脸；控制台上的字 | 原样：署「NASA」 | 不能：真人的脸 | P6 |
+| M7 | https://images.nasa.gov/details/KSC-20260410-PH-JNV01_0001 | Orion 挂着三顶红白降落伞，溅落前（2026-04-10，NASA/Josh Valcarcel） | 无字、无人脸 | 裁后用：竖屏裁中间；署「NASA/Josh Valcarcel」 | 能：NASA 公开图，不受美国版权限制；不暗示 NASA 背书 | P7 |
 
 ## 约束
 
 | # | 必须守的样子 | 依据 | 状态 |
 |---|---|---|---|
+| K1 | 未来任务的生成画面只做示意：角上标「AI 生成示意」；不画真实宇航员的脸；着陆器不照任何一家公司的外形画 | P8-1 | 设定 |
 
 ## P1 冷开场：用一个最大的数字抓住人，一句话说清新闻
 
@@ -124,6 +136,7 @@
 
 | 查的是什么 | 关键词 / 网站 | 找到了什么 | 好不好用 | 谁查的 |
 |---|---|---|---|---|
+| 发射、飞掠、溅落的公开照片（2026-11-17 转格式 4 时补） | images-api.nasa.gov 搜「Artemis II launch」「Earthset」「lunar flyby」「splashdown」（2026 年起） | 记成 M1–M4、M7；阿波罗的 S70-36485、S70-34902 原来就在资料清单，记成 M5、M6；许可看 NASA 的媒体使用指南 | 好用 | 主模型 |
 | `script.json` 里的 12 个链接 | 逐个下载，抽正文 | 9 个直接读到；images.nasa.gov 3 个页面靠脚本渲染读不到 | 好用 | 主模型 |
 | images.nasa.gov 读不到的 3 条 | images-api.nasa.gov 的 search、asset 接口（同一 nasa_id） | 标题、日期、说明；发布会录像附带的 .srt 只有一行「[Ambient sounds]」 | 好用（原话仍靠案例的核对记录） | 主模型 |
 | 英里换算系数的出处 | NIST SP 811 附录 B.9 | mile → kilometer 1.609 344 | 好用 | 主模型 |
