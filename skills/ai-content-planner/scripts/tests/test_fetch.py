@@ -139,7 +139,7 @@ class FetchArticle(unittest.TestCase):
         """短边小于 300 的略过，横长的表格图（长边 ≥ 600、短边 ≥ 100）留下"""
         self.assertTrue(fetch_article.too_small((64, 64)))
         self.assertTrue(fetch_article.too_small((1200, 40)))                           # 分隔条
-        self.assertFalse(fetch_article.too_small((900, 220)))                          # 监管文件里的比例表
+        self.assertFalse(fetch_article.too_small((900, 220)))                          # 正文里横长的表格图
         self.assertFalse(fetch_article.too_small((800, 600)))
 
     def test_images_downloaded_only_with_flag_and_within_total(self):
