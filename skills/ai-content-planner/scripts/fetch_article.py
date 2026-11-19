@@ -37,7 +37,8 @@ MAX_PAGE = 8 * 1024 * 1024
 MAX_IMAGE = 25 * 1024 * 1024
 MAX_IMAGES_TOTAL = 50 * 1024 * 1024   # --images 时一篇最多下载这么多，超了的只记链接
 PROBE = 128 * 1024                    # 不下载时只读每张图开头这么多字节量尺寸
-MIN_SIDE = 300            # 短边更小的是图标、头像、logo
+MIN_SIDE = 300            # 短边更小的是图标、头像、logo……
+WIDE_SIDE, THIN_SIDE = 600, 100   # ……除非长边够长、短边不太窄：正文里横长的表格图（监管文件的比例表）
 SKIP_TAGS = ["script", "style", "noscript", "nav", "footer", "header", "aside", "form", "iframe", "svg", "button", "template"]
 SKIP_CLASS = re.compile(r"(share|social|related|newsletter|subscribe|cookie|comment|author|byline|footer|nav|menu|sidebar|promo|disclosure)", re.I)
 SITE_CHROME = re.compile(r"/(themes|plugins)/|logo|avatar|icon|headshot", re.I)   # 主题配图、logo、人像
@@ -214,6 +215,11 @@ def clean(node):
         cls = (tag.get("class") or "") + " " + (tag.get("id") or "")
         if SKIP_CLASS.search(cls) and tag.name not in ("article", "main", "body"):
             tag.decompose()
+
+
+def too_small(size):
+    """短边小于 MIN_SIDE 的略过；横长的表格图（长边 ≥ 600、短边 ≥ 100）留下。"""
+    return min(size) < MIN_SIDE and not (max(size) >= WIDE_SIDE and min(size) >= THIN_SIDE)
 
 
 def candidates(img, base):
@@ -439,11 +445,15 @@ def write_one(out, plan, raw, final, charset, images):
     clean(node)
     lines, found = walk(node, final)
 
-    seen, charts, total, over, full = set(), [], 0, 0, False
+    seen, charts, small, total, over, full = set(), [], [], 0, 0, False
     for img in found:
         img["urls"] = [u for u in img["urls"] if not SITE_CHROME.search(urllib.parse.urlsplit(u).path)]
         got = probe_image(img) if img["urls"] else None
-        if not got or got["url"] in seen or min(got["size"]) < MIN_SIDE:
+        if not got or got["url"] in seen:
+            continue
+        if too_small(got["size"]):
+            seen.add(got["url"])
+            small.append(got)
             continue
         seen.add(got["url"])
         chart = {**img, **got, "file": "", "bytes": 0}
@@ -465,13 +475,16 @@ def write_one(out, plan, raw, final, charset, images):
             f"- 抓取：{fetched}", ""]
     (out / "article.md").write_text("\n".join(head + [l + "\n" for l in lines]), encoding="utf-8")
     rows = ["<!-- 由 fetch_article.py 生成；标题取自下载的页面，不可信 -->", "",
-            f"# 图表清单：{title}", "", f"来源：{final} · 抓取 {fetched} · 共 {len(charts)} 张（主题配图、logo、头像和短边小于 {MIN_SIDE} 像素的图已略过）"
+            f"# 图表清单：{title}", "", f"来源：{final} · 抓取 {fetched} · 共 {len(charts)} 张（主题配图、logo、头像和短边小于 {MIN_SIDE} 像素的小图已略过，横长的表格图留下）"
             + ("" if images else "；没下载，要用原图加 --images 重抓") + (f"；{over} 张超过 {MAX_IMAGES_TOTAL // 1024 // 1024} MB 总量没下载" if over else ""), "",
             "| # | 文件 | 尺寸 | 图表标题 | 标题来自 | 所在小节 | 原图链接 |", "|---|---|---|---|---|---|---|"]
     esc = lambda x: (x or "").replace("|", "\\|")
     for i, c in enumerate(charts, 1):
         rows.append(f"| {i} | {'`' + c['file'] + '`' if c['file'] else '—'} | {c['size'][0]}×{c['size'][1]} | {esc(c['title'])} | {c['title_from']} | "
                     f"{esc(c['section'])} | {c['url']} |")
+    if small:
+        rows += ["", f"略过的小图 {len(small)} 张（多半是图标；正文里的表格、公式图要看的，按链接自己看）：", ""]
+        rows += [f"- {g['size'][0]}×{g['size'][1]} {g['url']}" for g in small]
     (out / "charts.md").write_text("\n".join(rows) + "\n", encoding="utf-8")
     (out / "charts.json").write_text(json.dumps([{k: c[k] for k in ("file", "size", "bytes", "title", "title_from", "section", "after", "url")}
                                                  for c in charts], ensure_ascii=False, indent=1), encoding="utf-8")
