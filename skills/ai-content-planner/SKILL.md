@@ -1,7 +1,7 @@
 ---
 name: ai-content-planner
 description: 做内容之前的策划：先从用户的一句话、要求、链接、文件、图片、音视频里挖出要的效果（谁在什么时刻遇到、卡在哪、看完做什么）、形式和表达（基调、张力、钩子），再给打法、排框架（每段把受众从哪个念头带到哪个念头）、定每段的画面从哪来，补齐事实、参数、步骤、案例和素材，写好口播初稿和画面约束后交给下游；每步请用户确认。任何类型（带货、获客、品牌、公益、预告、互动、课程等）用同一套问法，不套模板。产出能做视频、PPT、报告、课件、图文、知识库。用户只有想法、资料太多要取舍、资料不够要补、要定主线和段落、要内容有效果、下游发现内容缺口时使用。做成成品交给对应的 Skill（视频用 ai-coding-video）。
-version: 0.8.0
+version: 0.8.1
 display_name: 内容策划
 display_name_en: AI Content Planner
 description_en: "Content planning before anything is made, in three confirmed steps: first digs out of the user's words, links, files, images, audio or video the effect the piece must have (who meets it at what moment, what holds them back, what they do afterwards) and the form that follows from it; together with how it should sound (tone, tension, hook); then offers approaches, builds a framework that moves the audience from one thought to the next segment by segment, and decides where each segment's visuals come from (drawn by code, real footage or photos, or generated); then fills in the facts, specs, steps, examples and evidence, writes the draft narration and visual constraints, and hands off to a downstream skill. One set of questions for every kind of piece (sales, lead generation, brand, public-interest, teaser, interactive, courses), no genre templates. The output can become a video, slides, a report, a course, an article or a knowledge base. Use it when the user only has an idea, has too much or too little material, needs a through-line and segments, wants the piece to work, or when a downstream skill finds a content gap. Making the finished piece belongs to the matching skill (ai-coding-video for video)."
@@ -93,7 +93,7 @@ description_en: "Content planning before anything is made, in three confirmed st
 12. 下游回报只有表头，或者全部不是「待补」；
 13. `python3 -I <本 Skill 目录>/scripts/check.py plans/<短名> --handoff` 通过。
 
-交接说明写这几句：一句话主线、选的打法、终点；基调和张力；段数和总篇幅；看什么里代码画、真实素材、生成各几行，缺口里归下游的画面几条；红线几条，其中能机检的（词、条件）几条；每段的字数（`brief.py` 打印，不手写）；第 6 条的自查依据；留给下游的缺口几条；交给谁（`formats.md`）；合并过第 1、2 步的写「效果和框架没经你确认」。下游怎么读写在 `handoff.md`；要精简版给下游，跑 `python3 -I <本 Skill 目录>/scripts/brief.py plans/<短名>`。
+交接说明写这几句：一句话主线、选的打法、终点；基调和张力；段数和总篇幅；看什么里代码画、真实素材、生成各几行，缺口里归下游的画面几条；红线几条，其中能机检的（词、条件）几条；每段的字数（`brief.py` 打印，不手写）；第 6 条的自查依据（一句话说看了什么、结论是什么，如「逐段看过要讲的点和『到』，没有写成动作或『知道 X』的；效果表没有『引发共鸣』这类话」）；留给下游的缺口几条；交给谁（`formats.md`）；合并过第 1、2 步的写「效果和框架没经你确认」。下游怎么读写在 `handoff.md`；要精简版给下游，跑 `python3 -I <本 Skill 目录>/scripts/brief.py plans/<短名>`。
 
 ## 回流
 

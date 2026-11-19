@@ -36,6 +36,7 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8"><title>Site title</ti
   <blockquote><p>We expect the list to change fast.</p></blockquote>
   <img data-src="/img/mobile-chart.png" src="data:image/gif;base64,R0lGOD" alt="Chart titled Mobile apps by MAU">
   <img src="/img/icon.png" alt="small icon">
+  <img src="/img/thumb.png" alt="thumb">
   <img src="/img/rank-1200x900.png" alt="the same chart again">
   <img src="/img/not-an-image.png" alt="broken link to a chart">
   <div class="share-buttons"><p>Share this on social</p></div>
@@ -44,7 +45,7 @@ PAGE = """<!doctype html><html><head><meta charset="utf-8"><title>Site title</ti
 </body></html>"""
 GBK_PAGE = '<html><head><meta charset="gbk"></head><body><main><h1>中文标题</h1><p>第一段正文。</p></main></body></html>'
 SIZES = {"rank-400x300.png": (400, 300), "rank-1200x900.png": (1200, 900), "rank.png": (1600, 1200),
-         "mobile-chart.png": (800, 600), "icon.png": (64, 64)}
+         "mobile-chart.png": (800, 600), "icon.png": (64, 64), "thumb.png": (120, 90)}
 
 
 def png(size, colour):
@@ -131,6 +132,15 @@ class FetchArticle(unittest.TestCase):
         self.assertIn("共 2 张", table)
         self.assertIn("没下载，要用原图加 --images 重抓", table)
         self.assertIn("| 1 | — | 1600×1200 |", table)
+        self.assertIn("略过的小图 1 张", table)                                           # 图标不进清单，但留链接
+        self.assertIn("- 120×90 ", table)
+
+    def test_wide_table_image_is_kept(self):
+        """短边小于 300 的略过，横长的表格图（长边 ≥ 600、短边 ≥ 100）留下"""
+        self.assertTrue(fetch_article.too_small((64, 64)))
+        self.assertTrue(fetch_article.too_small((1200, 40)))                           # 分隔条
+        self.assertFalse(fetch_article.too_small((900, 220)))                          # 监管文件里的比例表
+        self.assertFalse(fetch_article.too_small((800, 600)))
 
     def test_images_downloaded_only_with_flag_and_within_total(self):
         charts = json.loads((self.with_images / "charts.json").read_text(encoding="utf-8"))

@@ -312,7 +312,33 @@ class CheckTest(unittest.TestCase):
         """「词：」的词出现在念什么里：提示（引述原话可以）；「；」后面的除外说明里的「」不算词"""
         self.assertEqual(check.red_words('词：「收益」「回报」；题目里「客户原话」除外'), ['收益', '回报'])
         self.notes(self.edit('content.md', ('「记下这个月份。」', '「记下这个首次的月份。」')), 'S4 用了红线 B2 的词「首次」')
-        self.passes(self.edit('content.md', ('「记下这个月份。」', '「记下这个客户原话。」'), ('；引述公告原话除外', '；「客户原话」除外')))
+        self.notes(self.edit('content.md', ('「记下这个月份。」', '「记下这个客户原话。」'), ('；除外：题目', '；「客户原话」除外')), 'B2 的例外要写成')
+
+    def test_red_except(self):
+        """红线的例外写成「；除外：S1、题目」：写到的 S 不再提示；写成自由文字的提示；除外的 S 要存在"""
+        self.assertEqual(check.red_except('词：「收益」；除外：S1、S25、题目'), (['S1', 'S25'], True, True))
+        self.assertEqual(check.red_except('词：「收益」'), ([], False, True))
+        self.assertEqual(check.red_except('词：「收益」；引述观众原话除外')[2], False)
+        self.passes(self.edit('content.md', ('「记下这个月份。」', '「记下这个首次的月份。」'), ('；除外：题目', '；除外：S4、题目')))
+        self.notes(self.edit('content.md', ('；除外：题目', '；引述公告原话除外')), 'B2 的例外要写成「；除外：S1、题目」')
+        self.fails(self.edit('content.md', ('；除外：题目', '；除外：S99')), 'B2 的除外写了 S99，念什么里没有这句')
+
+    def test_spoken_and_count(self):
+        """要念的字只剥最外层「」；数字按念法算字数；〔2020〕这类文号不算占位"""
+        s1 = '「「前五年没收益，买它图啥？」这话不冤：头几年退保，确实拿得少。」'
+        self.assertEqual(check.char_count(check.spoken(s1)), 24)
+        self.assertEqual(check.spoken('「甲」（停顿）「乙」'), '甲；乙')
+        self.assertEqual(check.char_count('利率按 2.0% 假设'), 11)        # 百分之二点零 6 字
+        self.assertEqual(check.char_count('1.4 倍'), 4)
+        self.assertEqual(check.char_count('第 12 年，交 10 万'), 7)         # 第十二年，交十万
+        self.assertEqual(check.char_count('2026 年'), 5)                  # 年份一位一位念
+        self.assertEqual(check.char_count('252,756 英里'), 13)            # 二十五万二千七百五十六
+        self.assertFalse(check.is_placeholder('〔2020〕'))
+        self.assertTrue(check.is_placeholder('〔待定〕'))
+
+    def test_self_check_numbers(self):
+        """效果自查手写字数：提示"""
+        self.notes(self.edit('plan.md', ('| 表达 |', '| 表达 | S1 24 字，约 5 秒；')), '「表达」手写了字数')
 
     def test_rules(self):
         d = self.edit('content.md', ('| M1 | 已核实 |', '| M1 | 〔待核实〕 |'))

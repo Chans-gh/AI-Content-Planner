@@ -85,7 +85,7 @@ MUST_SHARE, ALL_SHARE = 0.85, 1.15   # 原句 + 必讲 ≤ 上限的 85%；全�
 LONG_SENTENCE = 40
 HAS_NUMBER = re.compile(r'\d|[一二两三四五六七八九十百千]+[万亿]|百分之')
 
-PLACEHOLDER = re.compile(r'〔[^〕]*〕')
+PLACEHOLDER = re.compile(r'〔(?!\d+〕)[^〕]*〕')   # 〔2020〕这类文号里的年份不算占位
 REF_DATA = re.compile(r'(?<![A-Za-z0-9_])P(\d+)-(\d+)(?![\d])')
 REF_SEG = re.compile(r'(?<![A-Za-z0-9_])P(\d+)(?![\d-])')
 
@@ -221,14 +221,64 @@ def s_ids(cell):
 
 
 def spoken(cell):
-    """句里要念的字：有「」的只算「」里的，没有就算整格"""
-    quoted = re.findall(r'「(.*?)」', cell)
-    return '；'.join(quoted) if quoted else cell
+    """句里要念的字：有「」的只算最外层「」里的（里面套的引号照留），没有就算整格"""
+    out, buf, depth = [], [], 0
+    for ch in cell:
+        if ch == '「':
+            depth += 1
+            if depth == 1:
+                continue
+        elif ch == '」' and depth:
+            depth -= 1
+            if depth == 0:
+                out.append(''.join(buf))
+                buf = []
+                continue
+        if depth:
+            buf.append(ch)
+    return '；'.join(out) if out else cell
+
+
+DIGITS = '零一二三四五六七八九'
+NUMBER = re.compile(r'(\d{1,3}(?:,\d{3})+|\d+)(?:\.(\d+))?\s*(%|％)?')   # 252,756 是一个数
+
+
+def cn_int(n):
+    """整数的念法：40 → 四十，1005 → 一千零五，120000 → 十二万"""
+    if n < 10:
+        return DIGITS[n]
+    for base, unit in ((10 ** 8, '亿'), (10 ** 4, '万')):
+        if n >= base:
+            hi, lo = divmod(n, base)
+            return cn_int(hi) + unit + (('零' if lo < base // 10 else '') + cn_int(lo) if lo else '')
+    out, zero = '', False
+    for step, unit in ((1000, '千'), (100, '百'), (10, '十'), (1, '')):
+        d = n // step % 10
+        if d:
+            out += ('零' if zero else '') + DIGITS[d] + unit
+            zero = False
+        elif out:
+            zero = True
+    return out[1:] if out.startswith('一十') else out
+
+
+def number_len(m, after=''):
+    """一个数念出来几个字：2.0% → 百分之二点零 6 字；1.4 → 一点四 3 字；2026 年 → 二零二六 4 字"""
+    whole, frac, pct = m.group(1).replace(',', ''), m.group(2), m.group(3)
+    if len(whole) > 12 or (len(whole) == 4 and not frac and not pct and after.lstrip().startswith('年')):
+        n = len(whole)                       # 年份、编号一位一位念
+    else:
+        n = len(cn_int(int(whole)))
+    return n + (1 + len(frac) if frac else 0) + (3 if pct else 0)
 
 
 def char_count(text):
-    """按念的算：一个汉字、一个数字、一个英文词各算 1；标点不算"""
-    return len(re.findall(r'[一-鿿]|\d|[A-Za-z]+', text))
+    """按念的算：一个汉字、一个英文词各算 1，数字按念法算（2.0% 算 6 字）；标点不算"""
+    n, last = 0, 0
+    for m in NUMBER.finditer(text):
+        n += len(re.findall(r'[一-鿿]|[A-Za-z]+', text[last:m.start()])) + number_len(m, text[m.end():])
+        last = m.end()
+    return n + len(re.findall(r'[一-鿿]|[A-Za-z]+', text[last:]))
 
 
 def value_of(cell):
@@ -246,9 +296,21 @@ def make_terms(cell):
 
 
 def red_words(cell):
-    """红线「词：「收益」「回报」；……除外」→ ['收益', '回报']（只取第一个「；」之前的）"""
+    """红线「词：「收益」「回报」；除外：S1、题目」→ ['收益', '回报']（只取第一个「；」之前的）"""
     m = re.match(r'\s*词\s*[：:](.*)', cell, re.S)
     return re.findall(r'「(.*?)」', re.split(r'[；;]', m.group(1))[0]) if m else []
+
+
+def red_except(cell):
+    """红线「词：……；除外：S1、S25、题目」→ (['S1', 'S25'], 有没有「题目」, 例外是不是这样写的)；没有例外 → ([], False, True)"""
+    m = re.match(r'\s*词\s*[：:][^；;]*[；;]\s*(.*)', cell, re.S)
+    if not m or not m.group(1).strip():
+        return [], False, True
+    rest = m.group(1).strip()
+    e = re.match(r'除外\s*[：:](.*)', rest, re.S)
+    if not e:
+        return [], False, False
+    return s_ids(e.group(1)), '题目' in e.group(1), True
 
 
 def split_row(line):
@@ -542,6 +604,8 @@ def check(folder, handoff=False):
                 r.err('content.md:红线', f'{i} 的「怎么查」要以「词：」「条件：」「人工：」开头')
             elif how.lstrip().startswith('词') and not red_words(how):
                 r.err('content.md:红线', f'{i} 写了「词：」，后面要用「」列出词')
+            elif how.lstrip().startswith('词') and not red_except(how)[2]:
+                r.note('content.md:红线', f'{i} 的例外要写成「；除外：S1、题目」（S 编号和「题目」），下游才读得出；读不出的按没有例外查')
     rules, assets = {}, {}
     if '约束' in cmap:
         rows = exact_table(r, 'content.md:约束', cmap['约束'], RULE_HEAD, '约束')
@@ -813,9 +877,13 @@ def check(folder, handoff=False):
 
     # ---------- 红线的词出现在念什么里 ----------
     for b, row in lines_.items():
+        skip, _, _ = red_except(row['怎么查'])
+        for s in skip:
+            if s not in says:
+                r.err('content.md:红线', f'{b} 的除外写了 {s}，念什么里没有这句')
         for w in red_words(row['怎么查']):
             for s, srow in says.items():
-                if w and w in spoken(srow['句']):
+                if w and w in spoken(srow['句']) and s not in skip:
                     r.note(f'content.md:{seg_of[s]}:念什么', f'{s} 用了红线 {b} 的词「{w}」（引述原话可以；原句撞红线要在交接前改掉）')
 
     # ---------- 字数（估算，不做硬约束）、长句、原句、可删 ----------
@@ -849,6 +917,9 @@ def check(folder, handoff=False):
             if miss:
                 r.err('plan.md:效果自查', '阻力' + ''.join(miss) + ' 没写由哪段回应')
             bad_blocks(res, 'plan.md:效果自查', '阻力一行')
+        for row in self_rows.values():
+            if re.search(r'\d+\s*字', row['结果']):
+                r.note('plan.md:效果自查', f'「{row["查什么"]}」手写了字数：字数、秒数会跟着改稿变，写「见 brief.py」或段号、S 编号，不写数')
         end_ = self_rows.get('终点', {}).get('结果', '')
         if end_ and not is_placeholder(end_) and not REF_SEG.search(end_):
             r.err('plan.md:效果自查', '终点一行要写落在哪段（段号）')
