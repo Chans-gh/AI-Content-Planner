@@ -325,8 +325,8 @@ class CheckTest(unittest.TestCase):
 
     def test_spoken_and_count(self):
         """要念的字只剥最外层「」；数字按念法算字数；〔2020〕这类文号不算占位"""
-        s1 = '「「前五年没收益，买它图啥？」这话不冤：头几年退保，确实拿得少。」'
-        self.assertEqual(check.char_count(check.spoken(s1)), 24)
+        s1 = '「「下班就关电脑，有错吗？」这话不全错：可第二天的活，确实会堆起来。」'
+        self.assertEqual(check.char_count(check.spoken(s1)), 26)
         self.assertEqual(check.spoken('「甲」（停顿）「乙」'), '甲；乙')
         self.assertEqual(check.char_count('利率按 2.0% 假设'), 11)        # 百分之二点零 6 字
         self.assertEqual(check.char_count('1.4 倍'), 4)
