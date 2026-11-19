@@ -27,11 +27,13 @@ class BriefTest(unittest.TestCase):
     def test_example(self):
         code, out, _ = run(EXAMPLE)
         self.assertEqual(code, 0)
-        for s in ('**主线**', '## 效果', '## 形式', '## 表达', '**基调**：冷静播报', '### P1', '### P3', '受众：「又一条航天新闻」',
-                  '画面 H1〔代码画〕', '说法 P1 b', 'P3-2〔已核实〕', '## 不能送生成的素材', 'M1'):
+        for s in ('**主线**', '## 总则', '**基调**：冷静播报', '**语速**：中', '## 红线', 'B3 不许', '### P1', '### P3',
+                  '从 → 到：「又一条航天新闻」', '看 H1〔代码画 · 一个数〕', '最大的字：252,756 英里', '念 S1〔原句〕', '念 S9〔可删①〕',
+                  'P3-2〔已核实〕', '## 不能送生成的素材', 'M1', '## 字数', '| P2 | 25 秒 | 78 | 95 | 112 |'):
             self.assertIn(s, out)
         p3 = out[out.index('### P3'):]
-        self.assertLess(p3.index('画面 H6'), p3.index('说法 P3 a、b'))   # 每段先列画面再列说法
+        self.assertLess(p3.index('看 H6'), p3.index('念 S8'))   # 每段先列看什么再列念什么
+        self.assertNotIn('P3-4', p3)   # 去向「不讲」的不列
         self.assertNotIn('还没交接', out)
         self.assertNotIn('## 衍生', out)
 
@@ -56,7 +58,7 @@ class BriefTest(unittest.TestCase):
         self.addCleanup(shutil.rmtree, d)
         for n in ('plan.md', 'content.md'):
             shutil.copy(os.path.join(EXAMPLE, n), d)
-        p = os.path.join(d, 'plan.md')
+        p = os.path.join(d, 'content.md')
         with open(p, encoding='utf-8') as f:
             t = f.read()
         with open(p, 'w', encoding='utf-8') as f:
@@ -72,6 +74,25 @@ class BriefTest(unittest.TestCase):
         code, out, err = run(d)
         self.assertEqual((code, out), (1, ''))
         self.assertIn('content.md', err)
+
+    def test_budget(self):
+        with open(os.path.join(EXAMPLE, 'content.md'), encoding='utf-8') as f:
+            nums = brief.budget(f.read())
+        self.assertEqual([(n[0], n[1], n[4]) for n in nums], [('P1', 15, 67.5), ('P2', 25, 112.5), ('P3', 20, 90)])
+
+    def test_no_narration_no_budget(self):
+        d = tempfile.mkdtemp()
+        self.addCleanup(shutil.rmtree, d)
+        for n in ('plan.md', 'content.md'):
+            shutil.copy(os.path.join(OK, n), d)
+        p = os.path.join(d, 'content.md')
+        with open(p, encoding='utf-8') as f:
+            t = f.read()
+        with open(p, 'w', encoding='utf-8') as f:
+            f.write(t.replace('| 语速 | 中 |', '| 语速 | 无 |').replace('| 声音 | 旁白，第三人称 |', '| 声音 | 不说话，只上字 |'))
+        code, out, err = run(d)
+        self.assertEqual(code, 0, err)
+        self.assertNotIn('## 字数', out)
 
 
 if __name__ == '__main__':

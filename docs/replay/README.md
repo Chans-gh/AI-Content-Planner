@@ -2,7 +2,7 @@
 
 [← SPEC](../SPEC.md) · [PRD 第 8 节](../PRD.md#8-验收)
 
-> 这是第 1 版（`video-content-planner`，在 [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video) 的分支上做）的回放记录。第 2 版只把各目录的 `plan.md`、`research.md` 转成了格式 `ai-content-planner/1`（加格式行、立意十项、新表头和取值），内容和结论不变，见文末「第 2 版转格式」。第 3 版再转成格式 `ai-content-planner/2`（`research.md` 改名 `content.md`，按段组织），见文末「第 3 版转格式」。第 4 版（0.6.0）再转成格式 `ai-content-planner/3`，见文末「第 4 版转格式」；第 5 版（0.7.0）再转成格式 `ai-content-planner/4`，见文末「第 5 版转格式」；正文里的 U 编号、「阶段」「方向」是第 1 版的说法。
+> 这是第 1 版（`video-content-planner`，在 [AI-Coding-Video](https://github.com/Chans-gh/AI-Coding-Video) 的分支上做）的回放记录。第 2 版只把各目录的 `plan.md`、`research.md` 转成了格式 `ai-content-planner/1`（加格式行、立意十项、新表头和取值），内容和结论不变，见文末「第 2 版转格式」。第 3 版再转成格式 `ai-content-planner/2`（`research.md` 改名 `content.md`，按段组织），见文末「第 3 版转格式」。第 4 版（0.6.0）再转成格式 `ai-content-planner/3`，见文末「第 4 版转格式」；第 5 版（0.7.0）再转成格式 `ai-content-planner/4`，见文末「第 5 版转格式」；第 6 版（0.8.0）再转成格式 `ai-content-planner/5`，见文末「第 6 版转格式」；正文里的 U 编号、「阶段」「方向」是第 1 版的说法。
 > 文中的 `cases/…`、`skills/ai-coding-video/…`、`README.md`、`site/` 都指 AI-Coding-Video 仓库；「风格后」「分镜后」在第 2 版合成了「下游」，`skills/video-content-planner/` 现在是本仓库的 `skills/ai-content-planner/`。
 
 2026-11-08 至 11-09 做。按 SPEC 第 10 节批 B：三支案例回放、四个边界任务、接手测试，按发现的问题修 Skill，用 `news-artemis` 的回放换掉 `example/`。
@@ -164,3 +164,19 @@
 | `python3 scripts/selfcheck.py` | 通过（含上面一项） |
 
 **说法字数的提示是这一版要解决的问题本身**：原来的参考说法每点一句，60 秒的片子合起来远不到 240 字，所以 `check.py` 按每秒 2.5–5 字逐段提示。这次只转格式、不重新策划，没把它们扩成口播初稿；照新规矩从头写一支，是批 I2 的短视频回放。边界任务的中间态这次没重跑：格式 4 只加了检查，中间态的错只会多、不会少。
+
+## 第 6 版转格式
+
+2026-11-19 做（SPEC-5-P 批 J1）。8 个目录和 `example/` 照 Skill 的 `handoff.md` 第 7 节从格式 4 转成 `ai-content-planner/5`：`content.md` 是唯一交给下游的文件，`plan.md` 只给用户看。
+
+- **先用脚本出草稿，再逐支手改**：脚本把形式、表达并成 content.md 的「总则」，「不能丢的」挪成红线 B，说法挪成念什么 S（全片连号），画面挪成看什么 H，信息加「去向」；拿不准的格子写占位，逐支手改到 `--handoff` 通过。
+- **内容和结论没变，补的是格式 5 要的格子**：主角、最大的字、上屏的字、配哪句、情绪、节奏、去向照原有内容填；红线的「怎么查」改成「词：」「条件：」「人工：」三种之一；「语速」没有配音实测，都取「中」。
+- **念什么补了句子**：格式 4 的说法每点一句，格式 5 要求每个要讲的点有一句念它、有口播的段至少一句「可删」，所以长片补了句子，都从本段已核实的信息里来，没加新事实。`news-artemis` P5 那句 41 字的长句拆成三句，并补上「按计划」（原来违反了它自己的边界：失联时段要带「按计划」）。
+- **有冲突、没用上的信息写「不讲」和理由**：`short-voyager` P3-5、`news-artemis` P6-7、`edge-conflict` P1-3、`example/` P3-4；待核实表的「落在」写到 S、B 编号。
+
+念什么句数（其中可删）：`example/` 11（3）、`news-artemis` 32（10）、`course-first-video` 28（8）、`shop-skincare` 19（7）、`short-voyager` 14（3）；四个边界任务 2–3 句，都是原句或必讲。
+
+| 命令（在本仓库根目录） | 结果 |
+|---|---|
+| `python3 -I skills/ai-content-planner/scripts/check.py <目录> --handoff`，`example/` 和本目录下 8 个目录 | `example/`、`short-voyager` 是「通过」；另 7 支 0 个错，各 1 个「只有一个打法」的提示 |
+| `python3 scripts/selfcheck.py` | 通过（含上面一项） |
